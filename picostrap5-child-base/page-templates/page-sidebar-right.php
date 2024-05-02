@@ -9,16 +9,21 @@ defined( 'ABSPATH' ) || exit;
 
 get_header();
 ?>
-<div class="py-6 bg-light">
-    <div class="container">
-        <h1 class="display-4"><?php the_title(); ?></h1>
-        <p><?php if( function_exists( 'aioseo_breadcrumbs' ) ) aioseo_breadcrumbs(); ?></p>
-  </div>
-</div>
 
-<div id="container-content-page" class="container">
-    <div class="row">
-        <div class="col-md-9 py-5">
+<div class="container main-content">
+    <div class="row ">
+        <!-- START right nav -->
+        <div class="col-xl-4 order-last">
+            <?php 
+            get_sidebar();
+            ?>
+        </div>
+        <!-- END right nav -->
+        <!-- START content -->
+        <div class="col-xl-8 order-first">
+            <?php if( function_exists( 'aioseo_breadcrumbs' ) ) aioseo_breadcrumbs(); ?>
+            <a id="main-content"></a>
+            <h1 class="margin-top-zero"><?php the_title(); ?></h1>
             <?php 
 
             if ( have_posts() ) : 
@@ -32,15 +37,9 @@ get_header();
 			<p>&nbsp;</p>
 			<?php get_template_part( 'page-templates/taxonomy', 'page' ); ?>
         </div>
-
-        <div class="col-md-3 pt-5">
-            <?php 
-            get_sidebar();
-            ?>
-        </div>
-
+        <!-- END content --> 
     </div>
 </div>
 
-
 <?php get_footer();
+

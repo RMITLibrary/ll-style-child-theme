@@ -10,7 +10,7 @@ This should be moved to a stylesheet once style is determined. -->
   text-decoration: none !important;
   color: #000054;
 }
-li.page_item {
+/*li.page_item {
     list-style:none;
 	padding-left: 1.2rem;
 	text-decoration: none;
@@ -24,9 +24,9 @@ ul
 .sidebar-nv, .child_item {
  {
 	text-decoration: none !important;
-}
+}*/
 </style>
-<div class="wrapper bg-light p-3" id="wrapper-main-sidebar">		
+<div class="wrapper" id="wrapper-main-sidebar">		
 <section>
 <nav class="right-nav" aria-label="Section Menu">	
 <?php
@@ -43,10 +43,10 @@ if ( $post->post_parent) {
 			// if there is a great-grandparent
 			$ggslug = $greatgrand->post_name; // get the slug for the great-grandparent post
 			$ggtitle = get_the_title( $greatgrand->ID ); //get the title for the great-grandparent post
- 			echo '<h4 class="sidebar-nv"><a href="/'.$ggslug.'">'.$ggtitle.'</a></h4><hr>'; //output the great-grandparent link
+ 			echo '<h2 class="sidebar-nv"><a href="/'.$ggslug.'">'.$ggtitle.'</a></h2>'; //output the great-grandparent link
 			$gslug = $grandparent->post_name; // get the slug for the grandparent post
 			$gtitle = get_the_title( $grandparent->ID ); //get the title for the grandparent post
- 			echo '<h5 class="sidebar-nv"><a href="/'.$gslug.'">'.$gtitle.'</a></h5>'; //output the grandparent link
+ 			echo '<h3 class="sidebar-nv"><a href="/'.$gslug.'">'.$gtitle.'</a></h3>'; //output the grandparent link
 			$children = wp_list_pages( array(
 				'title_li' => '', //no list heading
 				'child_of' => $post->post_parent, // output sub pages of the parent of the current post
@@ -59,14 +59,14 @@ if ( $post->post_parent) {
 			$parent_slug = $post_data->post_name; //get the slug for the parent post
 			$title = get_the_title( $post->post_parent ); //get the title for the parent post
 			if ( $children ) {
-				echo ('<div id="list"><h6 class="sidebar-nv"><a href="/'.$parent_slug.'">'.$title.'</a></h6>');//output parent link at H6
+				echo ('<div id="list"><h4 class="sidebar-nv"><a href="/'.$parent_slug.'">'.$title.'</a></h4>');//output parent link at h4
 				echo ('<ul class="sidebar-indent">'.$children.'</ul></div>'); //output children
 			}		
 		} else {
 			//if no great-grandparent
  			$gslug = $grandparent->post_name; // get the slug for the grandparent post
 			$gtitle = get_the_title( $grandparent->ID ); //get the title for the grandparent post
- 			echo '<h4 class="sidebar-nv"><a href="/'.$gslug.'">'.$gtitle.'</a></h4><hr>'; //outout the grandparent link
+ 			echo '<h2 class="sidebar-nv"><a href="/'.$gslug.'">'.$gtitle.'</a></h2>'; //outout the grandparent link
 			$children = wp_list_pages( array(
 				'title_li' => '', //no list heading
 				'child_of' => $post->post_parent, // output sub pages of the parent of the current post
@@ -83,7 +83,7 @@ if ( $post->post_parent) {
 			//if we change child_of to self, we don't get siblings - this is how the WP walker works.
 			//need to rewrite the algorithm to only show children of current page
 			if ( $children ) {
-				echo ('<h5 class="sidebar-nv"><a href="/'.$parent_slug.'">'.$title.'</a></h5>');//output parent link at H5
+				echo ('<h3 class="sidebar-nv"><a href="/'.$parent_slug.'">'.$title.'</a></h3>');//output parent link at h3
 				echo ('<div id="list"><ul>'.$children.'</ul></div>'); //output children
 			}	
 		}
@@ -101,7 +101,7 @@ if ( $post->post_parent) {
 		$parent_slug = $post_data->post_name; //get the slug for the parent post
 		$title = get_the_title( $post->post_parent ); //get the title for the parent post
 		if ( $children ) {
-			echo ('<h4 class="sidebar-nv"><a href="/'.$parent_slug.'">'.$title.'</a></h4><hr>');//output parent link at H4
+			echo ('<h2 class="sidebar-nv"><a href="/'.$parent_slug.'">'.$title.'</a></h2>');//output parent link at h2
 			echo ('<div id="list"><ul>'.$children.'</ul></div>'); //output children
 		}		
 	}
@@ -116,8 +116,8 @@ if ( $post->post_parent) {
 	$slug = $post->post_name; // get the slug for this post
 	$title = get_the_title( $post->ID ); //get the title for this post
 	if ( $children ) {
-		echo ('<h4 class="sidebar-nv"><a href="/'.$slug.'">'.$title.'</a></h4><hr>');//output the parent link at H4
-		echo ('<div id="list"><h5 class="sidebar-nv">'.$children.'</h5></div>'); //output the children
+		echo ('<h2 class="sidebar-nv"><a href="/'.$slug.'">'.$title.'</a></h2>');//output the parent link at h2
+		echo ('<div id="list"><h3 class="sidebar-nv">'.$children.'</h3></div>'); //output the children
 	}
 }
 ?>
@@ -143,11 +143,11 @@ list.querySelectorAll('a').forEach(a => {
   }
 })
 //as above, but for Heading 6
-list.querySelectorAll('h6').forEach(h6 => {
-  const text = h6.innerHTML; 
+list.querySelectorAll('h4').forEach(h4 => {
+  const text = h4.innerHTML; 
   const match = text.match(regex);
   if(match) {
-	h6.innerHTML = match[1].charAt(0).toUpperCase() + match[1].slice(1);
+	h4.innerHTML = match[1].charAt(0).toUpperCase() + match[1].slice(1);
   }
 })
 </script>

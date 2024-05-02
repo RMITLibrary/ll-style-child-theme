@@ -14,5 +14,37 @@
 
 
 // CUSTOM CSS : THE CHILD THEME STUFF, IF ITS THERE
-@import "custom";
+@import "design-system/utilities";
+
+//Design system
+//Visual language
+@import "design-system/space";
+@import "design-system/typography";
+@import "design-system/links";
+
+//Simple components
+@import 'design-system/button';
+@import "design-system/accordion";
+@import "design-system/blockquote";
+@import 'design-system/table';
+
+//Complex components
+@import 'design-system/footer';
+@import "design-system/breadcrumbs";
+@import "design-system/navigation";
+//@import "design-system/top-nav";  //Comment out for now. Implement as much in wordpress first
+@import 'design-system/video-image';
+
+@import 'design-system/layout';
+
+//Replaces custom styles defined via customize / additonal styles
+@import "learning-lab/old-site-styles"
+
+/* 
+    NOTE: hugo complies to /sass/main.min.css 
+    Which is different from the wordpress
+*/
+  
+//A DEMO STATEMENT for testing      
+//body {background:lime;  }  
 
