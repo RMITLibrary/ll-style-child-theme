@@ -4,7 +4,7 @@ defined('ABSPATH') || exit;
 
 ?>
 <!doctype html>
-<html <?php language_attributes(); ?>>
+<html <?php language_attributes(); ?> class="nav-fixed">
 
 <head>
 
