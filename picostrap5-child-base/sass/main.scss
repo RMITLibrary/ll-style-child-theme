@@ -3,7 +3,10 @@
 // THIS IS THE MAIN SCSS PIPELINE START
 //////////////////////////////////////////////////
  
-//IMPORT BOOTSTRAP 
+//IMPORT BOOTSTRAP.
+/*
+Note theme_variables.scss is now loaded by bootstrap-loader but can be important for customisation.
+*/
 @import "bootstrap-loader"; 
 
 
@@ -13,7 +16,7 @@
 @import "woocommerce";
 
 
-// CUSTOM CSS : THE CHILD THEME STUFF, IF ITS THERE
+// CUSTOM CSS
 @import "design-system/utilities";
 
 //Design system
@@ -32,19 +35,20 @@
 @import 'design-system/footer';
 @import "design-system/breadcrumbs";
 @import "design-system/navigation";
-//@import "design-system/top-nav";  //Comment out for now. Implement as much in wordpress first
+@import "design-system/top-nav";  
 @import 'design-system/video-image';
 
 @import 'design-system/layout';
 
 //Replaces custom styles defined via customize / additonal styles
-@import "learning-lab/old-site-styles"
+@import "learning-lab/old-site-styles";
+    
+//Any final custom styles can go here
+@import "custom";
 
 /* 
-    NOTE: hugo complies to /sass/main.min.css 
-    Which is different from the wordpress
+    Note: Wordpress seems to cache this file.
+    Changes can take anywhere between 10-30mins to be recognised by the online sass compiler.
+    Make any minimal changes in a linked file (suchas _custom.scss).
 */
-  
-//A DEMO STATEMENT for testing      
-//body {background:lime;  }  
 

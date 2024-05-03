@@ -1,8 +1,7 @@
 // Use this file to overwrite the basic Bootstrap variables and add your own variables
 // To overwrite a Bootstrap variable you don´t have to touch the Bootstrap folder.
 // Just copy a variable from /sass/bootstrap5/_variables.scss, paste it here and edit the value.
-// Remember that to customize base color values and main variables, you can just launch the WordPress Customizer
-// Editing this file in the CHILD THEME.
+// Remember that to customize base color values and main variables, you can just launch the WordPress Customizer.
 
 // SOME EXPERIMENTS for your quick testing:
 //$primary:teal;
@@ -10,19 +9,93 @@
 
 
 
-//example from huemint
-/*
-$theme-colors: (
-    "light":      #dfddda,
-    "dark":       #190b25,
-    "primary":    #5151cf,
-    "secondary":  #7059ca,
-    "info":       #f34d94,
-    "accent1":    #2b415d,
-    "accent2":    #5f6799,
-    "accent3":    #a9aeb7,
-    "success":    #1fa463,
-    "warning":    #e1cc1f,
-    "danger":     #ef240f,
+// LET'S CUSTOMIZE SOME BOOTSTRAP VARIABLES 
+
+//CUSTOM SPACING UP TO 8
+$spacer: 1rem !default;
+$spacers: (
+  0: 0,
+  1: $spacer * .25,
+  2: $spacer * .5,
+  3: $spacer,
+  4: $spacer * 1.5,
+  5: $spacer * 3,
+  6: ($spacer * 4.5),  //added
+  7: ($spacer * 6), //added
+  8: ($spacer * 7.5), //added
+
+) !default;
+
+//ENABLE NEGATIVE MARGIN UTILITY CLASSES
+$enable-negative-margins: true;
+
+//CUSTOMIZE UTILITIES VIA UTILITIES API
+$utilities: (
+  "min-viewport-height": ( //ADD min-vh CLASSES
+    property: min-height,
+    class: min-vh,
+    responsive: true,
+    values: ( 
+      25: 25vh,
+      50: 50vh,
+      75: 75vh,
+      100: 100vh,
+    )
+  ),
+   
 );
-*/
+
+/* START COLOUR */
+
+/* core design system colours */
+
+$dark-grey: #333;               //primary text colour
+$interface-grey: #BFBFBF;
+$underlay-selected: #E6E6E6;    //use sparingly
+$underlay-grey: #f5f5f5;
+
+$rmit-blue: #000054;
+$blue-70: #4D4D88;
+$blue-hover: #0051A8;
+$rmit-red: #E61E2A;
+$correct-green: #009969;
+
+
+/* map our colours to bootstrap variables - is it worth mapping all grey vars? */
+
+$gray-100: $underlay-grey;
+$gray-300: $interface-grey;
+$gray-400: $interface-grey;
+$gray-600: $interface-grey;
+$gray-900: $dark-grey;
+
+$blue: $rmit-blue;
+$green: $correct-green;
+$red: $rmit-red;
+
+
+/* link colours */
+$link-hover-color: $blue-hover;
+$link-hover-decoration: none;
+
+$focus-color: rgba(13, 110, 253, 0.5);
+
+
+/* tables */
+$table-striped-bg: $underlay-grey;
+
+/* END COLOUR */
+
+@font-face {
+    font-family: 'Museo700';
+    src: url("../fonts/museo-700.woff2") format("woff");
+}
+
+/* START TYPOGRAPHY variables */
+
+$font-family-sans-serif: "Helvetica Neue", Arial, system-ui, -apple-system, "Segoe UI", Roboto,  "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+$font-family-serif: "Museo700", Museo700, serif;
+
+$lead-font-weight: 500;
+$enable-rfs: false;             //turn off responsive font scaling
