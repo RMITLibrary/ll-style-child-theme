@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
 get_header();
 ?>
 
-<div class="container main-content">
+<div class="container" id="page-content">
     <div class="row ">
         <!-- START right nav -->
         <div class="col-xl-4 order-last">

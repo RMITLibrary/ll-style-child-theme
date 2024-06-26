@@ -187,3 +187,13 @@ function tags_tinymce_fix( $init )
 }
 add_filter('tiny_mce_before_init', 'tags_tinymce_fix');
 //-----------------------------
+
+//Remove blank p tags
+add_filter('the_content', 'remove_empty_p', 11);
+function remove_empty_p($content){
+    $content = force_balance_tags($content);
+    //return preg_replace('#<p>\s*+(<br\s*/*>)?\s*</p>#i', '', $content);
+    return preg_replace('#<p></p>#i', '', $content);
+}
+
+include('custom-shortcodes.php');

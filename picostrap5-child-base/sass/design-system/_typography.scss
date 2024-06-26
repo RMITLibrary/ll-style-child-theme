@@ -1,3 +1,5 @@
+//@import "fonts/museo";
+
 //These mixins can be useful to save us repeating code
 @mixin type-small {
     font-size: 0.8125rem;
@@ -44,18 +46,15 @@ small, .small {
     @include type-small;
 }
 
-.lead, .introductory-paragraph
-{
-  @include type-lead
-}
-
 
 h1, h2, h3, h4, h5, h6 {
     color: $primary;
     font-family: $font-family-serif;
     
     @include do-space(margin-top, lg); 
-    @include do-space(margin-bottom, xs); 
+    
+	margin-bottom: 0.75rem;
+	@include media-breakpoint-up(md) { margin-bottom: 1rem; }
 }
 
 .h1, .h2, .h3, .h4, .h5, .h6 {
@@ -63,7 +62,9 @@ h1, h2, h3, h4, h5, h6 {
     font-family: $font-family-serif;
     
     @include do-space(margin-top, lg); 
-    @include do-space(margin-bottom, xs); 
+   
+	margin-bottom: 0.75rem;
+	@include media-breakpoint-up(md) { margin-bottom: 1rem; }
 }
 
 //h1 has a slightly increased margin bottom
@@ -77,24 +78,11 @@ h6, .h6 {
 }
 
 //reduce indenting on lists
-/* 
-Wrapping inside of id theme-main for wordpress
-Admin buttons get margin-bottom, heard to remove otherewise :( 
-*/
-.main-content {
-    ul, ol {
-        @include do-space(margin-top, xs);          //should we have margin-top?
-        @include do-space(margin-bottom, sm, important);
-        @include do-space(padding-left, sm); 
-    }
-}
-
-
-/*ul, ol {
-    @include do-space(margin-top, xs);   
+ul, ol {
+    @include do-space(margin-top, xs);          //should we have margin-top?
     @include do-space(margin-bottom, sm, important);
     @include do-space(padding-left, sm); 
-}*/
+}
 
 li {
     padding-left: 0.5rem;
@@ -117,7 +105,7 @@ li > ul {
     h5, .h5 { font-size: 1.125rem; }
     h6, .h6 { font-size: 1.125rem; }
     
-    .lead, .introductory-paragraph {  font-size: 1.125rem;  }  
+    .lead {  font-size: 1.125rem;  }  
 } 
 
 .apa {

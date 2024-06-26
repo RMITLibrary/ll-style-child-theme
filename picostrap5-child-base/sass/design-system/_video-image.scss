@@ -29,11 +29,12 @@ figure.img-left {
 	width: 100%;
 	
 	@include media-breakpoint-up(md) { 
-		width: 40rem;
+		width: $img-width-lg;
 		height: 22.5rem;
 		padding-bottom: 0;
 	}
 }
+
 
 .video {
 	border-bottom: 1px solid $interface-grey;
@@ -46,7 +47,6 @@ figure.img-left {
 		width: 100%;
 		
 			/* At large screen sizes, we can set 16:9 values as layout is adaptive rather than responsive */
-		
 	}
 	
 	figcaption {
@@ -132,7 +132,7 @@ figure {
 }
 
 //Replicates above behaviour, insurance if class applied to image rather than creating new div.
-figure.portrait {
+img.portrait {
 	max-width: $img-width-md;
 	margin: 0px auto;
 }
@@ -176,7 +176,7 @@ figure.img-transcript {
 
 			display: flex;
 			align-items: flex-end;
-			gap: 24px;
+			gap: 1.5rem;
 			flex: 1 0 0;
 			align-self: stretch;
 

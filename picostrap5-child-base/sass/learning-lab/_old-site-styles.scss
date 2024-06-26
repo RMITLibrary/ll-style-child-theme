@@ -222,13 +222,13 @@ line-height:25px }
 
 /* === Accordion =============================== */
 
-.lightweight-accordion {
+/*.lightweight-accordion {
   margin-bottom: 2em !important;
-}
+}*/
 
 .lightweight-accordion .lightweight-accordion-title {
   background: none !important;
-  border-bottom: solid 1px #ccc;
+  //border-bottom: solid 1px $interface-grey;
 }
 
 .media {
