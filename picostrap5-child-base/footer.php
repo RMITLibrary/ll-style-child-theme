@@ -136,11 +136,9 @@
 	<?php 
 	} //END ELSE CASE ?>
 
-
 	<?php wp_footer(); ?>
+<!-- adding requirements for context/hamburger menu -->
 <script>
-    
-/* Grab both the menu button and the page content */
 var menuButton = document.getElementById("menu-button");
 var pageContent = document.getElementById("theme-main"); 
 var footer = document.getElementById("wrapper-footer-colophon"); 
@@ -181,6 +179,16 @@ function showHideMenu() {
 }
 
 </script>
+<!-- adding requirements for context/hamburger menu end -->
+<!-- adding requirements for reponsive iframes -->
+<!-- Jquery called elsewhere <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> -->
+    <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/js/iframeResizer.min.js"></script>
+    <script type="text/javascript">
+        iFrameResize({log:true});
+    </script>
+<!-- adding requirements for reponsive iframes end -->
+
+
 	</body>
 </html>
 

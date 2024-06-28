@@ -149,6 +149,7 @@
 
 figure .transcript {
 	border-bottom: 0px;	/* Border included in figure itself */
+    max-width: 100%;
 }
 
 
@@ -180,4 +181,16 @@ figure .transcript {
         margin: 0;
         background-color: $underlay-grey;
     }
+}
+
+/* 
+Ensure the first child has no top margin 
+and last child has no margin bottom 
+*/
+.accordion-body > *:first-child {
+    margin-top: 0px;
+}
+
+.accordion-body > *:last-child {
+    margin-bottom: 0px;
 }

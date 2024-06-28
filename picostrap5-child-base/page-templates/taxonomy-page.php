@@ -6,24 +6,28 @@ $llkeywords = get_field( "field_6527440d6f9a2" );
 $llcategory = get_field("field_65275ce3c7e36");
 ?>
 
-<p>&nbsp;</p>
-<p>&nbsp;</p>
 
 <!-- keywords echo - https://www.advancedcustomfields.com/resources/taxonomy/ -->      
 <?php if ($llkeywords ){ ?>
-<p><strong>Keywords </strong>
+
 <?php 
 $terms = get_field('field_6527440d6f9a2');
 if( $terms ): ?>
+<div class="keywords">
+    <h2 class="h5">Keywords</h2>
+    <ul>
     <?php foreach( $terms as $term ): ?>
-| <strong><a href="<?php echo esc_url( get_term_link($term)); ?>"><?php echo esc_html($term->name); ?></a></strong>  
+            <li><a href="<?php echo esc_url( get_term_link($term)); ?>"><?php echo esc_html($term->name); ?></a></li>  
     <?php endforeach; ?>
-<?php endif; ?> </p>
+    </ul>
+</div>
+<?php endif; ?> 
 <!-- keywords echo end 
 <?php } ?>
 
 <!-- category echo - https://www.advancedcustomfields.com/resources/taxonomy/ --> 
 <?php if ($llcategory ){ ?>
+<!--
 <p><strong>Subjects </strong>
 <?php 
 $terms = get_field('field_65275ce3c7e36');
@@ -33,6 +37,7 @@ if( $terms ): ?>
     <?php endforeach; ?>
 <?php endif; ?>
 </p>
+-->
 <!-- category echo end -->
 <?php } ?>
 

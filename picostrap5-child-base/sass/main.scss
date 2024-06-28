@@ -67,10 +67,11 @@ Note theme_variables.scss is now loaded by bootstrap-loader but can be important
 @import 'design-system/layout';*/
 
 //Replaces custom styles defined via customize / additonal styles
-
+@import "learning-lab/old-site-styles";
+@import "learning-lab/lightweight-accordion";
 @import "learning-lab/nav-additions";  //adds additional styles for right nav and breadcrumbs
 
-@import "learning-lab/old-site-styles";
+
     
 //Any final custom styles can go here
 @import "custom";
