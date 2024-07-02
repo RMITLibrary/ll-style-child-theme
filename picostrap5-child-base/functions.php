@@ -188,12 +188,44 @@ function tags_tinymce_fix( $init )
 add_filter('tiny_mce_before_init', 'tags_tinymce_fix');
 //-----------------------------
 
-//Remove blank p tags
-add_filter('the_content', 'remove_empty_p', 11);
-function remove_empty_p($content){
-    $content = force_balance_tags($content);
-    //return preg_replace('#<p>\s*+(<br\s*/*>)?\s*</p>#i', '', $content);
-    return preg_replace('#<p></p>#i', '', $content);
+//-----------------------------
+// CUSTOM FUNCTIONS BELOW HERE
+
+//-----------------------------
+// Functions to create Context Menu items
+
+function doContextMenuAccordion($title, $pageId)
+{
+	$headId = 'accordion-head-' . $pageId;
+	$bodyId = 'accordion-body-' . $pageId;
+
+	$output = '';
+
+	$output .= '<div class="accordion-item">';
+	$output .= '<h2 class="accordion-header" id="' . $headId .'">';
+	$output .= '<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#' . $bodyId . '" aria-expanded="false" aria-controls="' . $bodyId . '">';    
+	$output .= $title;
+	$output .= '</button>';
+	$output .= '</h2>';
+	$output .= '<div id="' . $bodyId . '" class="accordion-collapse collapse" aria-labelledby="' . $headId . '">';
+	$output .= '<div class="accordion-body"><ul>' . doContextMenuChildren($pageId) . '</ul></div></div></div>';
+
+	return $output;
+}
+
+//-----------------------------
+// Grab children of certain page id
+
+function doContextMenuChildren($pageId)
+{
+	return wp_list_pages(
+		array(
+			'child_of' => $pageId,
+			'depth' => 1,
+			'title_li' => null,
+			'echo' => false
+		)
+	);
 }
 
 include('custom-shortcodes.php');

@@ -91,3 +91,32 @@
 	}
 	
 } 
+
+#context-menu {
+	.accordion-body  {	
+		a {
+			color: $white;
+			text-decoration: none;
+		}
+
+		a:hover {
+			text-decoration: underline;
+		}
+
+		ul {
+			padding-left: 2.5rem;
+			margin-bottom: 0 !important;
+		}
+
+		li {
+			list-style-type: none;
+			margin-bottom: 1rem;
+		}
+
+		@include media-breakpoint-up(md) { 
+			ul {
+				column-count: 2;
+			}
+		}
+	}
+}

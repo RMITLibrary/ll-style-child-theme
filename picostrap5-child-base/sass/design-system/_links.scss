@@ -89,7 +89,7 @@ p a:visited:hover {
     
     li {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         @include type-lead;
         padding: 0;
         margin-bottom: 0.5rem;

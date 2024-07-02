@@ -1,6 +1,6 @@
 <?php
 
-function subscribe_link_att($atts, $content = null) {
+/*function subscribe_link_att($atts, $content = null) {
     $default = array(
         'link' => '#',
     );
@@ -10,7 +10,67 @@ function subscribe_link_att($atts, $content = null) {
     return 'Follow us on '.$content.'';
 
 }
-add_shortcode('subscribe', 'subscribe_link_att');
+add_shortcode('subscribe', 'subscribe_link_att');*/
+
+function blockquote_nav_att($atts, $content = null) {
+	$default = array(
+        'link' => 'https://www.rmit.edu.au',
+        'category' => '',
+		'title' => 'My blockquote nav',
+		'extra-info' => '',
+		'icon' => ''
+    );
+	
+	$a = shortcode_atts($default, $atts);
+    $content = do_shortcode($content);
+	
+	$output = '';
+    
+    $output .= '<blockquote class="complex">';
+    $output .= '<a href="' . $a['link'] .'">';
+    $output .= '<div class="content">'; 
+	
+	if($a['category'] != '') {
+		$output .= '<p class="category">'. $a['category'] . '</p>';
+	}
+	
+    $output .= '<h3>' . $a['title'] . '</h3>';
+	if($content != null) {
+		$output .= '<p>' . $content . '</p>';
+	}
+	
+	if($a['extra-info'] != '') {
+		$output .= '<small>'. $a['extra-info'] . '</small>';
+	}
+	
+    $output .= '</div>';
+	
+	if($a['icon'] != '') {
+		$output .= '<div class="icon-wrap">';
+		$output .= '<img src="'. $a['icon'] . '" alt="" />';
+		$output .= '</div>';
+	}
+	
+    $output .= '</a></blockquote>';
+	return $output;
+}
+
+/*
+<blockquote class="complex">
+	<a href="mylink">
+		<div class="content">
+			<p class="category">Category</p>
+			<h3>This is a title </h3>
+			<p>This is the blockquote content.</p>
+			<small>Extra information</small>
+		</div>
+		<div class="icon-wrap">
+			<img src="my-icon.png" alt="" />
+		</div>
+	</a>
+</blockquote>
+
+*/
 
 function bootstrap_accordion_att($atts, $content = null) {
     $default = array(
@@ -52,8 +112,24 @@ function generate_id($string, $prefix) {
     return $prefix . '-' . $hyphenatedString;
 }
 
-add_shortcode('bs-accordion', 'bootstrap_accordion_att');
+function the_content_filter($content) {
+    $block = join("|",array("blockquote-nav", "bs-accordion"));
+    $rep = preg_replace("/(<p>)?\[($block)(\s[^\]]+)?\](<\/p>|<br \/>?)?/","[$2$3]",$content);
+    $rep = preg_replace("/(<p>)?\[\/($block)](<\/p>|<br \/>?)?/","[/$2]",$rep);
+    return $rep;
+}
+add_filter("the_content", "the_content_filter");
 
+
+add_shortcode('bs-accordion', 'bootstrap_accordion_att');
+add_shortcode('blockquote-nav', 'blockquote_nav_att');
+
+/*
+[bs-accordion title='Item 1 ']
+
+[bs-accordion title='Transcript' type='transcript']
+
+*/
 /*
 
 <div class="accordion-item">

@@ -1,3 +1,20 @@
+<?php
+                /*wp_nav_menu(
+                    array(
+                        'theme_location' => 'primary',
+                        'container' => false,
+                        'menu_class' => '',
+                        'fallback_cb' => '__return_false',
+                        'items_wrap' => '<ul id="%1$s" class="navbar-nav me-auto mb-2 mb-md-0 %2$s">%3$s</ul>',
+                        'walker' => new bootstrap_5_wp_nav_menu_walker()
+                    )
+                );*/
+				
+				
+				
+				
+				
+                ?>
 <!-- ******************* The Navbar Area ******************* -->
 <div id="wrapper-navbar" itemscope itemtype="http://schema.org/WebSite">
 
@@ -36,20 +53,35 @@
     <div class="container nav-container not-wordpress">
         <div class="row">
             <!-- START menu -->
-            <div class="col-xl-8">  
-                <!-- This needs significant reork, maybe rplace with static menu for prototype??? -->
-				<?php
-                wp_nav_menu(
-                    array(
-                        'theme_location' => 'primary',
-                        'container' => false,
-                        'menu_class' => '',
-                        'fallback_cb' => '__return_false',
-                        'items_wrap' => '<ul id="%1$s" class="navbar-nav me-auto mb-2 mb-md-0 %2$s">%3$s</ul>',
-                        'walker' => new bootstrap_5_wp_nav_menu_walker()
-                    )
-                );
-                ?>
+            <div class="col-xl-8">
+				<div class="accordion accordion-white" id="context-menu-accordion">	
+						<?php echo doContextMenuAccordion('Assessments', 4266); ?>
+						<?php echo doContextMenuAccordion('Writing fundamentals', 4257); ?>
+						<!-- START Subject support - special case -->
+						<div class="accordion-item">
+							<h2 class="accordion-header" id="accordion-head-subject-support">
+								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-body-subject-support" aria-expanded="true" aria-controls="accordion-body-subject-support">
+								Subject support
+							  	</button>
+							</h2>
+							<div id="accordion-body-subject-support" class="accordion-collapse collapse" aria-labelledby="accordion-head-subject-support" style="">
+								<div class="accordion-body">
+									<ul>
+										<li><a href="/art-and-design/">Art and design</a></li>
+										<li><a href="">Chemistry</a></li>
+										<li><a href="">Legal studies</a></li>
+										<li><a href="">Life sciences</a></li>
+										<li><a href="">Maths</a></li>
+										<li><a href="">Nursing</a></li>
+									</ul>
+								</div>
+							  </div>
+						</div>
+					
+						<!-- END subject support - special case -->
+                </div>
+                
+				
 				
             </div>
             <!-- END menu -->
