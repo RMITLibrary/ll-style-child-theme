@@ -112,17 +112,6 @@ function generate_id($string, $prefix) {
     return $prefix . '-' . $hyphenatedString;
 }
 
-function the_content_filter($content) {
-    $block = join("|",array("blockquote-nav", "bs-accordion"));
-    $rep = preg_replace("/(<p>)?\[($block)(\s[^\]]+)?\](<\/p>|<br \/>?)?/","[$2$3]",$content);
-    $rep = preg_replace("/(<p>)?\[\/($block)](<\/p>|<br \/>?)?/","[/$2]",$rep);
-    return $rep;
-}
-add_filter("the_content", "the_content_filter");
-
-
-add_shortcode('bs-accordion', 'bootstrap_accordion_att');
-add_shortcode('blockquote-nav', 'blockquote_nav_att');
 
 /*
 [bs-accordion title='Item 1 ']
@@ -159,5 +148,110 @@ add_shortcode('blockquote-nav', 'blockquote_nav_att');
 	</div>
 
 */
+
+function landing_banner_att($atts, $content = null) {
+    $default = array(
+        'caption' => 'Image by Digital Learning, RMIT Library',
+        'img' => 'https://rmitlibrary.github.io/cdn/learninglab/illustration/home-default.png',
+        'alt' => 'A vector illustration showing a desk featuring variousitems a student might need'
+    );
+    $a = shortcode_atts($default, $atts);
+    $content = do_shortcode($content);
+    
+    $output = '';
+    
+    $output .= '<div class="landing-banner">';
+    $output .= '<figure aria-labelledby="caption-text">';
+    $output .= '<img src="' . $a['img'] . '" alt="' . $a['alt'] . '" />';    
+    $output .= '</figure>';
+    $output .= '<div class="landing-content">';
+    $output .= '<div class="red-bar"></div>';
+    $output .= '<h1>' . get_the_title() . '</h1>';
+    $output .= '<p class="lead">' . $content  . '</p>';
+    $output .= '<p class="small">' . $a['caption']  . '</p>';
+    $output .= '</div></div>';
+
+    return $output;
+
+}
+
+
+/* 
+[landing-banner img='https://path.to/image' alt='description of the image' caption='Image by creator name']Description of the landing page[/landing-banner]
+
+<div class="landing-banner">
+			<figure aria-labelledby="caption-text"><img src="/images/assignments.png" alt="A vector illustration showing a desk featuring..." /></figure>
+			<div class="landing-content">
+				<div class="red-bar"></div>
+				<h1>Title</h1>
+				<p class="lead">New to uni? University essentials has you covered. Find out more about topics as diverse as group work, critical thinking and even artificial intelligence.</p>
+				<p class="small"  id="caption-text">Photo by &lt;insert Photographer name&gt; on Unsplash</p>
+			</div>
+		</div>
+        */
+
+function landing_list_att($atts) {
+    $default = array(
+        'category' => ''
+    );
+    $a = shortcode_atts($default, $atts);
+    
+    $pageId = get_the_ID();
+
+    $output = '';
+    $output .= '<div class="landing-link">';
+    
+    if($a['category'] != '') {
+		$output .= '<h2 class="h3">'. $a['category'] . '</h2>';
+	}
+    
+    //doChildrenList() is defined in functions.php
+    $output .= '<ul class="link-list">'. doChildrenList($pageId) . '</ul>';
+    $output .= '</div>';
+
+    return $output;
+}
+
+/*
+
+
+
+<div class="landing-link">
+				<h2 class="h3">Optional category</h2>
+				<ul class="link-list">
+					<li><a href="">Link 1</a></li>
+					<li><a href="">Link 2</a></li>
+					<li><a href="">Link 3</a></li>
+					<li><a href="">Link 4</a></li>
+					<li><a href="">Link 5</a></li>
+				</ul>
+			</div>
+
+*/
+
+function do_homepage_att($atts) {
+
+	$output = create_home_page_html();
+    
+	return $output;
+}
+
+
+function the_content_filter($content) {
+    $block = join("|",array("blockquote-nav", "bs-accordion", "landing-banner", "landing-list", "do-home-page"));
+    $rep = preg_replace("/(<p>)?\[($block)(\s[^\]]+)?\](<\/p>|<br \/>?)?/","[$2$3]",$content);
+    $rep = preg_replace("/(<p>)?\[\/($block)](<\/p>|<br \/>?)?/","[/$2]",$rep);
+    return $rep;
+}
+add_filter("the_content", "the_content_filter");
+
+
+
+add_shortcode('bs-accordion', 'bootstrap_accordion_att');
+add_shortcode('blockquote-nav', 'blockquote_nav_att');
+add_shortcode('landing-banner', 'landing_banner_att');
+add_shortcode('landing-list', 'landing_list_att');
+add_shortcode('do-home-page', 'do_homepage_att');
+
 
 ?>

@@ -71,7 +71,8 @@ Note theme_variables.scss is now loaded by bootstrap-loader but can be important
 @import "learning-lab/lightweight-accordion";
 @import "learning-lab/nav-additions";  //adds additional styles for right nav and breadcrumbs
 @import "learning-lab/landing-banner";
-
+@import "learning-lab/home-page";
+@import "learning-lab/other"  ;             //other styles that don't fit into a category
     
 //Any final custom styles can go here
 @import "custom";

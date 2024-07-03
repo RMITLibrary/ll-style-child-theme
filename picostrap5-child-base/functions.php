@@ -191,6 +191,7 @@ add_filter('tiny_mce_before_init', 'tags_tinymce_fix');
 //-----------------------------
 // CUSTOM FUNCTIONS BELOW HERE
 
+
 //-----------------------------
 // Functions to create Context Menu items
 
@@ -208,7 +209,7 @@ function doContextMenuAccordion($title, $pageId)
 	$output .= '</button>';
 	$output .= '</h2>';
 	$output .= '<div id="' . $bodyId . '" class="accordion-collapse collapse" aria-labelledby="' . $headId . '">';
-	$output .= '<div class="accordion-body"><ul>' . doContextMenuChildren($pageId) . '</ul></div></div></div>';
+	$output .= '<div class="accordion-body"><ul>' . doChildrenList($pageId) . '</ul></div></div></div>';
 
 	return $output;
 }
@@ -216,7 +217,7 @@ function doContextMenuAccordion($title, $pageId)
 //-----------------------------
 // Grab children of certain page id
 
-function doContextMenuChildren($pageId)
+function doChildrenList($pageId)
 {
 	return wp_list_pages(
 		array(
@@ -228,4 +229,5 @@ function doContextMenuChildren($pageId)
 	);
 }
 
+include('function-inc/home-page.php');
 include('custom-shortcodes.php');

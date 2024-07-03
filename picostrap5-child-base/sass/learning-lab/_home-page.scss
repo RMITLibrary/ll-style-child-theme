@@ -1,0 +1,211 @@
+// START home-banner
+.home-banner {
+    position: relative;
+    
+    .background-image {
+        display: block;
+        width: 100%;
+        background-size: 0 0;
+        background-image:url('https://rmitlibrary.github.io/cdn/learninglab/illustration/home-default.png');   
+    }
+
+    /* 16:9 background image hack */
+    .background-image:before {
+        content: '';
+        display: block;
+        padding-top: 56.25%;
+        background-image: inherit;
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 0.5rem;
+    }
+    
+    h1 {
+        margin-top: 1rem;
+    }
+    
+    @include media-breakpoint-up(lg) { 
+
+        .background-image {
+            background-image:url('https://rmitlibrary.github.io/cdn/learninglab/illustration/home-wide.png');
+        }
+         
+        /*Adjust image ratio to wide - 3:1 */
+        .background-image:before {
+            padding-top: 33.33%;
+        }
+        
+        /* Position title over image */
+        h1 { 
+            position: absolute;
+            width: 100%;
+            top: 3rem;
+            
+            margin: 0;
+            text-align: center;
+            font-size: 3rem;
+        }
+    }
+    
+    @include media-breakpoint-up(xl) {    
+        h1 { 
+            top: 3.5rem; 
+            font-size: 3.5rem;
+        }
+    }
+    
+    @include media-breakpoint-up(xxl) {    
+        h1 { 
+            top: 4rem; 
+            font-size: 4.5rem;
+        }
+    }  
+}
+// END home-banner
+
+// START home-intro
+.home-intro {
+    margin: 1rem auto;
+    margin-bottom: 0;
+    
+    .lead { margin-top: 0; }   
+    .small { margin-bottom: 0; }
+    
+    form {
+        margin-top: 2rem;
+        width: 100%;
+    }
+    
+    label {
+        margin: 0;
+        margin-bottom: 0.5rem;
+    }
+    
+    .mag-glass {
+        @include mag-glass;
+        width: 20px;
+        height: 20px;
+    }
+    
+    button {
+        margin: 0;
+    }
+    
+    @include media-breakpoint-up(md) {
+        form {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        label {
+            display: block;
+            margin: 0;
+            margin-top: 0.25rem;
+        }
+        
+    }
+    
+    @include media-breakpoint-up(lg) {
+        width: 40rem;
+        margin-top: 1.5rem;   
+    }
+}
+// END home-intro
+
+// START home-panel
+.home-panel-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    
+    margin-top: 3rem;
+    
+    .home-panel {
+        @include link-feature;
+        display: block;
+        
+        border-radius: 0.5rem;
+        background-color: $underlay-grey;
+        
+        img {
+            border-radius: 0.5rem 0.5rem 0 0;
+        }
+        
+        h2, p {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        
+        h2 {
+            margin-top: 0.5rem;
+            margin-bottom: 0;
+            
+            font-size: 1.4375rem;
+        }
+        
+        p {
+            margin-top: 0.5rem;
+        }
+        
+        & > p:last-child {
+            margin-bottom: 1.5rem;
+        }
+    }
+    
+    @include media-breakpoint-up(md) {
+       
+        flex-direction: row;
+        flex-wrap: wrap;       
+        gap: 1.5rem;
+        
+        .home-panel {
+            width: 13.5rem;
+            flex-shrink: 0;
+            
+            h2 {
+                font-size: 1.125rem;
+            }
+            
+            p {
+               font-size: 1rem;
+            }
+        }
+    }
+    
+    @include media-breakpoint-up(lg) {       
+        gap: 3rem 1.5rem;
+        margin-top: 4rem;
+        
+        .home-panel {
+            width: 18.5rem;
+            
+            h2 {
+                margin-top: 1rem;
+                font-size: 1.4375rem;
+            }
+            
+        }
+    }
+    
+    @include media-breakpoint-up(xl) {       
+        .home-panel {
+            width: 22.25rem;
+            
+            p {
+                font-size: 1.125rem;
+            }
+        }
+    }
+    
+    @include media-breakpoint-up(xxl) {         
+        .home-panel {
+            width: 26rem;
+            
+            h2 {
+                font-size: 1.75rem;
+            }
+        }
+    }
+    
+}
+// START home-panel
