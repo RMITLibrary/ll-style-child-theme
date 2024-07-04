@@ -28,6 +28,7 @@ ul
 }*/
 </style>
 
+	
 <?php
 /*
 $greatGrandParent = '';		//Section e.g. Art and design
@@ -39,56 +40,107 @@ $parent = get_post_parent($post);
 $grandParent = get_post_parent($parent);
 $greatGrandParent = get_post_parent($grandParent);
 
-echo('id: ' . $greatGrandParent->ID . ' greatGrandParent: ' . $greatGrandParent->post_name . '<br/>');
-echo('id: ' . $grandParent->ID . ' grandParent: '. $grandParent->post_name . '<br/>');
-echo('id: ' . $parent->ID . ' parent: ' . $parent->post_name . '<br/>');
-echo("---<br />");
+?>
 
-/*echo doNavHeading('h2', 'http://www.bbc.com', 'h2');
-echo doNavHeading('Link h3', 'http://www.google.com', 'h3');
-echo doNavHeading('Selected h3', 'http://www.google.com', 'h3', true);*/
+<nav class="right-nav" aria-label="Section Menu">
 
+<?php
+/*
+4 screnarios to deal with:
+, it's 4 levels down so
+*/
 if($greatGrandParent->ID && $grandParent->ID) {
 
-	echo('//deepest level - 5 levels down<br />');
+	//echo('//deepest level - 5 levels down<br />');
+    //Send grandparent id to list grandparent children, then use $parent to recursively to the subpages 
 	echo doNavHeading($greatGrandParent, 'h2');
 	echo doNavHeading($grandParent, 'h3');
-	doChildrenManual($grandParent->ID, $post);
+	doChildrenManual($grandParent->ID, $post, $parent);
 } 
 elseif($grandParent->ID && $parent->ID) {
 
-	echo('//middle level - 4 levels down<br />');
+	//echo('//middle level - 4 levels down<br />');
 	echo doNavHeading($grandParent, 'h2');
 	echo doNavHeading($parent, 'h3');
 	doChildrenManual($parent->ID, $post);
 }
 elseif($parent->ID) {
-	echo('//shallowest level - 3 levels down<br />');
+	//echo('//shallowest level - 3 levels down<br />');
 	/* Weirdly greatGrandParent is showing up the same as $parent*/
 	echo doNavHeading($parent, 'h2');
 	echo doNavHeading($post, 'h3', 'selected');
 	echo doChildrenList($post->ID);
-	//doChildrenManual($post);
 }
 else
 {
-	echo('//At a section, unlikely - 2 levels down<br />');
+	//echo('//At a section, unlikely - 2 levels down<br />');
 	echo doNavHeading($post, 'h2', 'selected');
-	//echo doNavHeading($post, 'h3');
+	//Handle list of other sections here echo doNavHeading($post, 'h3');
 }
+    
+    ?>
+</nav>
 
+<?php
 
+/*echo('<p>id: ' . $greatGrandParent->ID . ' greatGrandParent: ' . $greatGrandParent->post_name . '<br/>');
+echo('id: ' . $grandParent->ID . ' grandParent: '. $grandParent->post_name . '<br/>');
+echo('id: ' . $parent->ID . ' parent: ' . $parent->post_name . '<br/>');
+echo("---</p>");*/
 
-//blergh();
+function doChildrenManual($parent_id, $thePost, $thePostParent = null)
+{
+	// $parent_id is the ID of the parent or grandparent post
 
-echo("---<br />");
-//$pageId = $post->ID;
-//echo doChildrenList($pageId);
+	// Set up the arguments for the query
+	$args = array(
+		'post_type'      => 'page',
+		'post_status'    => 'publish',
+		'posts_per_page' => -1,           // Get all children
+		'post_parent'    => $parent_id,
+		'orderby'        => 'menu_order',
+		'order'          => 'ASC'  
+	);
 
-//doChildrenManual($parent->ID);
-	
-echo("---<br />");
+	// Create a new query
+	$child_query = new WP_Query($args);
 
+	// Check if the query returns any posts
+	if ($child_query->have_posts()) {
+		echo '<ul>';
+		// Loop through the posts
+		while ($child_query->have_posts()) {
+			$child_query->the_post();
+			// Output the title and link to the post
+            
+            $post_slug = get_post_field('post_name', get_the_ID());
+            
+			if($thePost->ID == get_the_ID()) {
+                //If there's a match with current post, do selected code and do children pages (recursively)
+                echo '<li><a href="/' . $post_slug . '" class="selected"  aria-current="page">' . formatAfterTheColon(get_the_title()) . '</a>';
+				doChildrenManual($thePost->ID, $thePost);
+			}
+			else {
+                //Otherwise, output the link
+                echo '<li><a href="/' . $post_slug . '">' . formatAfterTheColon(get_the_title()) . '</a>';
+                //If thePostParent->ID exists, we are in a subpage.
+                //If thePostParent->ID matches the loop item, do children pages (recursively)
+                if($thePostParent->ID == get_the_ID())
+                {
+                    doChildrenManual($thePostParent->ID, $thePost);
+                }
+                echo '</li>';
+			}  
+		}
+		echo '</ul>';
+	} else {
+		// No children found
+		//echo 'No child posts found.<br />';
+	}
+
+	// Reset post data
+	wp_reset_postdata();
+}
 
 function doNavHeading($myPost, $tag, $selected = null)
 {
@@ -109,150 +161,10 @@ function doNavHeading($myPost, $tag, $selected = null)
 	return $output;
 }
 
-function doChildrenManual($parent_id, $myPost = null)
-{
-	// $parent_id is the ID of the parent post
-
-	// Set up the arguments for the query
-	$args = array(
-		'post_type'      => 'page', // Change this to your custom post type if needed
-		'post_status'    => 'publish',
-		'posts_per_page' => -1, // Get all children
-		'post_parent'    => $parent_id,
-		'orderby'        => 'menu_order', // Order by date or any other field
-		'order'          => 'ASC'   // Order ascending or descending
-	);
-
-	// Create a new query
-	$child_query = new WP_Query($args);
-
-	// Check if the query returns any posts
-	if ($child_query->have_posts()) {
-		echo '<ul>';
-		// Loop through the posts
-		while ($child_query->have_posts()) {
-			$child_query->the_post();
-			// Output the title and link to the post
-			if($myPost->ID == get_the_ID()) {
-				echo '<li class="selected">' . get_the_title() . '</li>';
-				doChildrenManual($myPost->ID, $myPost);
-			}
-			else {
-				echo '<li><a href="' . get_permalink() . '">' . get_the_title() . '</a></li>';
-			}
-			
-		}
-		echo '</ul>';
-	} else {
-		// No children found
-		echo 'No child posts found.<br />';
-	}
-
-	// Reset post data
-	wp_reset_postdata();
-}
-
 ?>
 
-<div class="wrapper" id="wrapper-main-sidebar">		
-<section>
-<nav class="right-nav" aria-label="Section Menu">	
-<?php
-//start dynamic sidebar nav - hierarchical
-// see example of this sidebar here: http://ll-nav.blackaeonium.net/art-and-design/artist-statement/
-if ( $post->post_parent) {
-	//if there is a parent
-	$grandparent = get_post_parent( $post->post_parent ); //get a grandparent post
-	$parentpost = get_post_parent( $post ); //get the parent post
-	if ( $grandparent ) {
-		// if there is a grandparent
-		$greatgrand = get_post_parent( $parentpost->post_parent ); //get a great-grandparent post
-		if ( $greatgrand ) {
-			// if there is a great-grandparent
-			$ggslug = $greatgrand->post_name; // get the slug for the great-grandparent post
-			$ggtitle = get_the_title( $greatgrand->ID ); //get the title for the great-grandparent post
- 			echo '<h2 class="sidebar-nv"><a href="/'.$ggslug.'">'.$ggtitle.'</a></h2>'; //output the great-grandparent link
-			$gslug = $grandparent->post_name; // get the slug for the grandparent post
-			$gtitle = get_the_title( $grandparent->ID ); //get the title for the grandparent post
- 			echo '<h3 class="sidebar-nv"><a href="/'.$gslug.'">'.$gtitle.'</a></h3>'; //output the grandparent link
-			$children = wp_list_pages( array(
-				'title_li' => '', //no list heading
-				'child_of' => $post->post_parent, // output sub pages of the parent of the current post
-				'depth'	   => 2, //the depth of how many children/grandchildren in the hierarchy to display - if there is a parent (i.e. not the first ancestor page) display two
-				'link_before' => '<div class="child_item">', // HTML to put before the child link
-				'link_after' => '</div>',  // HTML to put before the child link
-				'echo'     => 0 // don't echo the list (list is echoed later in the doc)
-			) );
-			$post_data = get_post($post->post_parent); //get the data for the parent post
-			$parent_slug = $post_data->post_name; //get the slug for the parent post
-			$title = get_the_title( $post->post_parent ); //get the title for the parent post
-			if ( $children ) {
-				echo ('<div id="list"><h4 class="sidebar-nv"><a href="/'.$parent_slug.'">'.$title.'</a></h4>');//output parent link at h4
-				echo ('<ul class="sidebar-indent">'.$children.'</ul></div>'); //output children
-			}		
-		} else {
-			//if no great-grandparent
- 			$gslug = $grandparent->post_name; // get the slug for the grandparent post
-			$gtitle = get_the_title( $grandparent->ID ); //get the title for the grandparent post
- 			echo '<h2 class="sidebar-nv"><a href="/'.$gslug.'">'.$gtitle.'</a></h2>'; //outout the grandparent link
-			$children = wp_list_pages( array(
-				'title_li' => '', //no list heading
-				'child_of' => $post->post_parent, // output sub pages of the parent of the current post
-				'depth'	   => 2, //the depth of how many children/grandchildren in the hierarchy to display - if there is a parent (i.e. not the first ancestor page) display two
-				'link_before' => '<div class="child_item">', // HTML to put before the child link
-				'link_after' => '</div>',  // HTML to put before the child link
-				'echo'     => 0 // don't echo the list (list is echoed later in the doc)
-			) );
-			$post_data = get_post($post->post_parent); //get the data for the parent post
-			$parent_slug = $post_data->post_name; //get the slug for the parent post
-			$title = get_the_title( $post->post_parent ); //get the title for the parent post
-			//this echo is showing nieces and nephews which need to be removed and only show children of self
-			//if we reduce depth, we don't get children
-			//if we change child_of to self, we don't get siblings - this is how the WP walker works.
-			//need to rewrite the algorithm to only show children of current page
-			if ( $children ) {
-				echo ('<h3 class="sidebar-nv"><a href="/'.$parent_slug.'">'.$title.'</a></h3>');//output parent link at h3
-				echo ('<div id="list"><ul>'.$children.'</ul></div>'); //output children
-			}	
-		}
-	} else {
-		//if no grandparent
- 		$children = wp_list_pages( array(
-		'title_li' => '', //no list heading
-		'child_of' => $post->post_parent, // output sub pages of the parent of the current post
-		'depth'	   => 2, //the depth of how many children/grandchildren in the hierarchy to display - if there is a parent (i.e. not the first ancestor page) display two
-		'link_before' => '<div class="child_item">', // HTML to put before the child link
-		'link_after' => '</div>',  // HTML to put before the child link
-		'echo'     => 0 // don't echo the list (list is echoed later in the doc)
-		) );
-		$post_data = get_post($post->post_parent); //get the data for the parent post
-		$parent_slug = $post_data->post_name; //get the slug for the parent post
-		$title = get_the_title( $post->post_parent ); //get the title for the parent post
-		if ( $children ) {
-			echo ('<h2 class="sidebar-nv"><a href="/'.$parent_slug.'">'.$title.'</a></h2>');//output parent link at h2
-			echo ('<div id="list"><ul>'.$children.'</ul></div>'); //output children
-		}		
-	}
-} else {
-	//if no parent
-	$children = wp_list_pages( array(
-		'title_li' => '', //no list heading
-		'child_of' => $post->ID, // output subpages of the current post
-		'depth'	   => 1, //the depth of how many children/grandchildren in the hierarchy to display - if no parent, then only display one (i.e. first ancestor page which has no parent)
-		'echo'     => 0 // don't echo the list (list is echoed later in the doc)
-	) );
-	$slug = $post->post_name; // get the slug for this post
-	$title = get_the_title( $post->ID ); //get the title for this post
-	if ( $children ) {
-		echo ('<h2 class="sidebar-nv"><a href="/'.$slug.'">'.$title.'</a></h2>');//output the parent link at h2
-		echo ('<div id="list"><h3 class="sidebar-nv">'.$children.'</h3></div>'); //output the children
-	}
-}
-?>
-</nav>
-</section>			
-<?php //end dynamic sidebar nav ?>
-</div>
+
+
 <script language="javascript">
 //this script shortens strings for titles that repeat the section title at the start
 //it currently looks for the characters colon and space ": " in the page title
