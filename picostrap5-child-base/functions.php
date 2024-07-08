@@ -193,6 +193,52 @@ add_filter('tiny_mce_before_init', 'tags_tinymce_fix');
 
 
 //-----------------------------
+//Create custom breadcrumbs
+function createBreadcrumbs($thePost)
+{
+	$parent = get_post_parent($thePost);
+	$grandParent = get_post_parent($parent);
+	$greatGrandParent = get_post_parent($grandParent);
+	
+	$output = '';
+
+	$output .= '<nav aria-label="breadcrumbs">';
+	$output .= '<ul class="breadcrumbs">';
+	
+	$output .= '<li><a href="/">Home</a></li>';
+	if($greatGrandParent->ID) {
+		$output .= '<li><a href="/' . $greatGrandParent->post_name . '">' . formatAfterTheColon(get_the_title($greatGrandParent)) . '</a>';
+	}
+	
+	if($grandParent->ID) {
+		$output .= '<li><a href="/' . $grandParent->post_name . '">' . formatAfterTheColon(get_the_title($grandParent)) . '</a>';
+	}
+	
+	if($parent->ID) {
+		$output .= '<li><a href="/' . $parent->post_name . '">' . formatAfterTheColon(get_the_title($parent)) . '</a>';
+	}
+	
+	$output .= '</ul>';
+	$output .= '</nav>';
+	return $output;
+	
+	/*
+	<nav aria-label="breadcrumbs">
+    <ul class="breadcrumbs">
+        <li><a href="link">Home</a></li>
+        <li><a href="link">Item 1</a></li>
+        <li><a href="link">Item 2</a></li>
+        <li><a href="link">Item 3</a></li>
+        <li><a href="link">Item 4</a></li>
+        <li><a href="link">Item 5</a></li>
+    </ul>
+</nav>
+	*/
+}
+
+
+
+//-----------------------------
 //Format text to split sting at colon and return second part capitalised
 function formatAfterTheColon($string)
 {

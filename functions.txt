@@ -1,0 +1,151 @@
+functions.php - custom functions outlined below
+sidebar.php - custom code and functions
+header.php - minor change, added class "nav-fixed" to html tag
+custom-shortcodes.php - custom functions
+page.php - minor changes to markup 
+footer.php - outputs static footer code, includes javsacript for context/hamburger menu and iframe resize
+
+└── page-templates
+
+	page-sidebar-right.php - template for all content pages
+	prev-next-sandy-test.php - does prev and next buttons (might not need to be placed here?)
+	empty.php - used in home page
+	landing.php - used for landing pages
+	
+
+
+└── function-inc
+
+	home-page.php - function to output static html code for home page
+
+
+└── js
+
+	iframeResizer.min.js - resizes iframe content
+	(Could include script from footer.php??)
+
+
+└── sass
+
+	complies to css-output/bundle.css
+
+
+└── partials
+
+	header-navbar.php - markup for custom header and context menu 
+	(Could be integrated in header.php)
+	Custom code goes in here, included in main.scss
+
+
+└── fonts
+
+	museo-700.woff2 - heading font, referenced in sass
+
+
+
+-----------------------------------------------
+functions.php
+
+//// createBreadcrumbs
+Creates custom breadcrumbs
+
+
+called from:
+page_templates/page-sidebar-right.php
+...
+
+args:
+$thePost - the post to ancestors from
+
+calls:
+formatAfterTheColon (in functions.php)
+
+
+//// formatAfterTheColon
+Formats string - capitialises string section after 1st colon.
+E.g. "Artists statement: writing Process" becomes "Writing process"
+
+called from
+createBreadcrumbs (in functions.php)
+doChildrenManual* - (in sidebar.php)
+(in page_templates/prev-next-sandy-test.php*)
+
+args:
+$string - the string to format
+
+
+//// doContextMenuAccordion
+Creates an accordion for the context (hamburger) menu based on $pageId arg
+
+called from:
+page_templates/header.php
+
+args:
+$title - Title to be displayed on the accordion
+$pageId - Id of the page we to get children of
+
+calls:
+doChildrenList (in functions.php)
+
+
+//// doChildrenList
+Creates an series of links something like <li><a href="link"></a></li> (more class are added to li tag)
+
+called from:
+doContextMenuAccordion (in functions.php)
+
+args:
+$pageId - Id of the page we to get children of
+
+calls:
+wp_list_pages() - wordpress function
+
+
+//// includes
+function-inc/home-page.php - function to output static html code for home page
+custom-shortcodes.php - functions to do a variiety of shortcodes
+
+
+
+
+-----------------------------------------------
+page.php
+
+//// default page template?
+
+calls:
+aioseo_breadcrumbs (update with createBreadcrumbs)
+
+
+
+
+-----------------------------------------------
+footer.php
+
+//// default page template?
+
+calls:
+aioseo_breadcrumbs (update with createBreadcrumbs)
+
+
+* change name?
+
+
+
+└── createBreadcrumbs
+    └── main.scss
+    └── app-specific/
+    └── bootstrap/
+    └── design-system/
+	
+	
+	
+	
+	
+	
+functions.php
+└── sass/
+    └── main.scss
+    └── app-specific/
+    └── bootstrap/
+    └── design-system/
