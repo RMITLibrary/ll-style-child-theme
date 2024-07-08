@@ -1,7 +1,21 @@
 <?php
+/**
+ * Template Name: Home Page
+ *
+ * Template for displaying a page just with the header and footer area and a "naked" content area in between.
+ * Good for landingpages and other types of pages where you want to add a lot of custom markup.
+ *
+ * @package UnderStrap
+ */
 
-function create_home_page_html() {
-	$output = '<!-- START home banner -->
+// Exit if accessed directly.
+defined( 'ABSPATH' ) || exit;
+
+get_header();
+?>
+<div class="container" id="page-content">
+
+   <!-- START home banner -->
 		<div class="home-banner">
             <span class="background-image" role="img" aria-label="A vector style image showing a desk with a laptop, a house plant, a mug filled with pencils, an open book and a hot cup of coffee. Book shelves are shown in the background. There’s a cat on the lower shelf."></span>
             <h1>Learning lab</h1>
@@ -49,12 +63,11 @@ function create_home_page_html() {
             <a href="/subject-areas/" class="home-panel">
                 <img src="https://rmitlibrary.github.io/cdn/learninglab/illustration/subject-support.png" alt="" />
                 <h2 class="link-large">Subject support</h2>
-                <p>Specific resources for specific subjects. Whether it\'s statistics or art, chemistry or nursing, subject support can help.</p>
+                <p>Specific resources for specific subjects. Whether it's statistics or art, chemistry or nursing, subject support can help.</p>
             </a>
         </div>
-        <!-- END home panels -->';
-    
-	return $output;
-}
+        <!-- END home panels -->
+	
+</div>
 
-?>
+<?php get_footer();

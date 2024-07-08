@@ -35,7 +35,7 @@ get_header();
                 _e( 'Sorry, no posts matched your criteria.', 'textdomain' );
             endif;
             ?>
-			<?php get_template_part( 'page-templates/prev-next-sandy-test', 'page' ); ?>
+			<?php get_template_part( 'page-templates/prev-next-buttons', 'page' ); ?>
 			<?php get_template_part( 'page-templates/taxonomy', 'page' ); ?>
         </div>
         <!-- END content --> 

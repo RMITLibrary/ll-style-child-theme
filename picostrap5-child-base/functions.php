@@ -16,8 +16,10 @@
 
     PLEASE WATCH THE VIDEOS FOR BEST RESULTS:
     https://www.youtube.com/playlist?list=PLtyHhWhkgYU8i11wu-5KJDBfA9C-D4Bfl
-
+	Custom functions from Line 200
 */
+
+
 
 // DE-ENQUEUE PARENT THEME BOOTSTRAP JS BUNDLE
 add_action( 'wp_print_scripts', function(){
@@ -79,6 +81,7 @@ add_filter( 'wp_is_application_passwords_available', '__return_false' );
 // 
 if (!function_exists('aioseo_breadcrumbs')) :
   function aioseo_breadcrumbs() {
+	  //not in use
     /*if (!is_home()) {
 	
       echo '<nav class="breadcrumb mb-4 mt-2 bg-light py-2 px-3 small rounded">';
@@ -188,17 +191,52 @@ function tags_tinymce_fix( $init )
 add_filter('tiny_mce_before_init', 'tags_tinymce_fix');
 //-----------------------------
 
-//-----------------------------
+
+
+//-----------------------------------------------------------------------------------
 // CUSTOM FUNCTIONS BELOW HERE
+//
+//
+//-----------------------------------------------------------------------------------
+
 
 
 //-----------------------------
-//Create custom breadcrumbs
+//	createBreadcrumbs
+
+//	Output markup for breadcrumbs. Current page is listed in 
+//	breadcrumbs due to proximity to title
+
+//	Called from:	page-templates/landing.php
+//					page-templates/page-sidebar-right.php
+
+//	args:			$thePost - page where the breadcrumbs will be shown
+
+//	calls:			formatAfterTheColon
+
+//	usage:			echo createBreadcrumbs($post);
+
+//	Expected output
+//	<nav aria-label="breadcrumbs">
+//		<ul class="breadcrumbs">
+//		<li><a href="/">Home</a></li>
+//		<li><a href="/greatGrandParent">Great grandparent/a></li>
+//		<li><a href="/grandParent">Grandparent</a></li>
+//		<li><a href="/parent">Parent</a></li>
+//		</ul>
+//	</nav>
+
 function createBreadcrumbs($thePost)
 {
 	$parent = get_post_parent($thePost);
 	$grandParent = get_post_parent($parent);
 	$greatGrandParent = get_post_parent($grandParent);
+	
+//	Debug code
+//	echo('<p>id: ' . $greatGrandParent->ID . ' greatGrandParent: ' . $greatGrandParent->post_name . '<br/>');
+//	echo('id: ' . $grandParent->ID . ' grandParent: '. $grandParent->post_name . '<br/>');
+//	echo('id: ' . $parent->ID . ' parent: ' . $parent->post_name . '<br/>');
+//	echo("---</p>");
 	
 	$output = '';
 
@@ -206,11 +244,14 @@ function createBreadcrumbs($thePost)
 	$output .= '<ul class="breadcrumbs">';
 	
 	$output .= '<li><a href="/">Home</a></li>';
-	if($greatGrandParent->ID) {
+	
+	//	At one level $greatGrandParent and $parent have the same value. Due to bug?
+	//	Check that both $greatGrandParent and $grandParent have a value to solve this.
+	if($greatGrandParent->ID && $grandParent->ID) {
 		$output .= '<li><a href="/' . $greatGrandParent->post_name . '">' . formatAfterTheColon(get_the_title($greatGrandParent)) . '</a>';
 	}
 	
-	if($grandParent->ID) {
+	if($grandParent->ID && $parent->ID) {
 		$output .= '<li><a href="/' . $grandParent->post_name . '">' . formatAfterTheColon(get_the_title($grandParent)) . '</a>';
 	}
 	
@@ -220,26 +261,27 @@ function createBreadcrumbs($thePost)
 	
 	$output .= '</ul>';
 	$output .= '</nav>';
-	return $output;
-	
-	/*
-	<nav aria-label="breadcrumbs">
-    <ul class="breadcrumbs">
-        <li><a href="link">Home</a></li>
-        <li><a href="link">Item 1</a></li>
-        <li><a href="link">Item 2</a></li>
-        <li><a href="link">Item 3</a></li>
-        <li><a href="link">Item 4</a></li>
-        <li><a href="link">Item 5</a></li>
-    </ul>
-</nav>
-	*/
+	return $output;	
 }
 
 
 
 //-----------------------------
-//Format text to split sting at colon and return second part capitalised
+//	formatAfterTheColon
+
+//	Formats string - capitialises string section after 1st colon.
+//	E.g. "Artists statement: writing Process" becomes "Writing process"
+
+//	Called from:	createBreadcrumbs
+//					outputChildNav
+
+//	args:			$string - the string to format
+
+//	usage:			echo formatAfterTheColon("Throw away: keep this");
+
+//	Expected output
+//	"Keep this"
+
 function formatAfterTheColon($string)
 {
     // Split the string at colon
@@ -256,8 +298,20 @@ function formatAfterTheColon($string)
 }
 
 
+
 //-----------------------------
-// Functions to create Context Menu items
+//	doContextMenuAccordion
+
+//	Creates an accordion for the context (hamburger) menu based on $pageId argument
+
+//	Called from:	page_templates/header.php
+
+//	args:			$title - Title to be displayed on the accordion
+//					$pageId - Id of the page whose children we want to display
+
+//	calls:			doChildrenList
+
+//	usage:			echo doContextMenuAccordion('Assessments', 4266);
 
 function doContextMenuAccordion($title, $pageId)
 {
@@ -278,8 +332,25 @@ function doContextMenuAccordion($title, $pageId)
 	return $output;
 }
 
+
+
 //-----------------------------
-// Grab children of certain page id
+//	doChildrenList
+
+//	Creates a list of child pages: links wrapped in list items
+
+//	Called from:	doContextMenuAccordion
+//					custom-shortcodes/_main.php
+
+//	args:			$pageId - Id of the page we to get children of
+
+//	calls:			wp_list_pages() - wordpress function
+
+//	usage:			echo doChildrenList($pageId);
+
+//	Expected output
+//	<li class="page_item page-item-3107 page_item_has_children"><a href="link">Page title</a></li>
+//	Extra classes not required, an artefact of using wp_list_pages()
 
 function doChildrenList($pageId)
 {
@@ -293,5 +364,10 @@ function doChildrenList($pageId)
 	);
 }
 
-include('function-inc/home-page.php');
-include('custom-shortcodes.php');
+
+
+//-----------------------------
+//	All shortcode code is included here,
+//	all shortcodes are registered here
+
+include('custom-shortcodes/_main.php');

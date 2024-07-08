@@ -1,22 +1,8 @@
 functions.php - custom functions outlined below
 sidebar.php - custom code and functions
-header.php - minor change, added class "nav-fixed" to html tag
-custom-shortcodes.php - custom functions
+header.php - custom code
 page.php - minor changes to markup 
 footer.php - outputs static footer code, includes javsacript for context/hamburger menu and iframe resize
-
-└── page-templates
-
-	page-sidebar-right.php - template for all content pages
-	prev-next-sandy-test.php - does prev and next buttons (might not need to be placed here?)
-	empty.php - used in home page
-	landing.php - used for landing pages
-	
-
-
-└── function-inc
-
-	home-page.php - function to output static html code for home page
 
 
 └── js
@@ -30,18 +16,40 @@ footer.php - outputs static footer code, includes javsacript for context/hamburg
 	complies to css-output/bundle.css
 
 
-└── partials
-
-	header-navbar.php - markup for custom header and context menu 
-	(Could be integrated in header.php)
-	Custom code goes in here, included in main.scss
-
-
 └── fonts
 
 	museo-700.woff2 - heading font, referenced in sass
 
 
+└── page-templates
+
+	Note some templates have been moved into the "bkp" folder. Move them back into this folder if required. This is true for both "picostrap5" and "picostrap5-child-base"
+	
+	Templates in use
+
+	home-page.php - used in home page
+	landing.php - used for landing pages
+	page-sidebar-right.php - template for all content pages
+	
+	Called from page-sidebar-right
+	
+	prev-next-buttons.php - does prev and next buttons 
+	taxonomy-page.php - adds keywords at bottom of the page
+	
+	Templates not being used
+	
+	empty.php - not currently in use, could be useful
+	
+	Templates to be implemented
+	
+	sidebar-right-last - Use for the last page in a section
+	sidebar-right-start - Use for the first page in a section
+
+
+└── custom-shortcodes
+
+	_main.php - all shortcode code is included here, all shortcodes are registered here
+	
 
 -----------------------------------------------
 functions.php
@@ -124,8 +132,7 @@ footer.php
 
 //// default page template?
 
-calls:
-aioseo_breadcrumbs (update with createBreadcrumbs)
+
 
 
 * change name?
