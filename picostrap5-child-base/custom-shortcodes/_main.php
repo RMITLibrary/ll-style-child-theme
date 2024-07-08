@@ -1,16 +1,5 @@
 <?php
 
-/*function subscribe_link_att($atts, $content = null) {
-    $default = array(
-        'link' => '#',
-    );
-    $a = shortcode_atts($default, $atts);
-    $content = do_shortcode($content);
-
-    return 'Follow us on '.$content.'';
-
-}
-add_shortcode('subscribe', 'subscribe_link_att');*/
 
 function blockquote_nav_att($atts, $content = null) {
 	$default = array(
@@ -72,10 +61,17 @@ function blockquote_nav_att($atts, $content = null) {
 
 */
 
+function transcript_accordion_att($atts, $content = null) {
+	return doAccordion("transcript", $atts, $content);
+}
+
 function bootstrap_accordion_att($atts, $content = null) {
+	return doAccordion("regular", $atts, $content);
+}
+
+function doAccordion($type, $atts, $content = null) {
     $default = array(
-        'title' => 'My accordion',
-        'type' => 'Regular'
+        'title' => 'Transcript'
     );
     $a = shortcode_atts($default, $atts);
     $content = do_shortcode($content);
@@ -86,7 +82,7 @@ function bootstrap_accordion_att($atts, $content = null) {
     $labelTag = 'h2';
     $extraClass = '';
     
-    if ($a['type'] == 'transcript') {
+    if ($type == 'transcript') {
         $labelTag = 'p';
         $extraClass = 'transcript';
     }
@@ -103,7 +99,6 @@ function bootstrap_accordion_att($atts, $content = null) {
     $output .= '<div class="accordion-body">' . $content . '</div></div></div>';
 
     return $output;
-
 }
 
 function generate_id($string, $prefix) {
@@ -229,16 +224,10 @@ function landing_list_att($atts) {
 
 */
 
-function do_homepage_att($atts) {
-
-	$output = create_home_page_html();
-    
-	return $output;
-}
 
 
 function the_content_filter($content) {
-    $block = join("|",array("blockquote-nav", "bs-accordion", "landing-banner", "landing-list", "do-home-page"));
+    $block = join("|",array("blockquote-nav", "bs-accordion", "transcript-accordion", "landing-banner", "landing-list"));
     $rep = preg_replace("/(<p>)?\[($block)(\s[^\]]+)?\](<\/p>|<br \/>?)?/","[$2$3]",$content);
     $rep = preg_replace("/(<p>)?\[\/($block)](<\/p>|<br \/>?)?/","[/$2]",$rep);
     return $rep;
@@ -248,10 +237,10 @@ add_filter("the_content", "the_content_filter");
 
 
 add_shortcode('bs-accordion', 'bootstrap_accordion_att');
+add_shortcode('transcript-accordion', 'transcript_accordion_att');
 add_shortcode('blockquote-nav', 'blockquote_nav_att');
 add_shortcode('landing-banner', 'landing_banner_att');
 add_shortcode('landing-list', 'landing_list_att');
-add_shortcode('do-home-page', 'do_homepage_att');
 
 
 ?>

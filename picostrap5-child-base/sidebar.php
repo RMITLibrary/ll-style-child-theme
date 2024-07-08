@@ -11,21 +11,6 @@ This should be moved to a stylesheet once style is determined. -->
   text-decoration: none !important;
   color: #000054;
 }
-/*li.page_item {
-    list-style:none;
-	padding-left: 1.2rem;
-	text-decoration: none;
-	font-size: 1rem;
-}
-ul
-{
-    list-style-type:none;
-    padding:0px;
-}
-.sidebar-nv, .child_item {
- {
-	text-decoration: none !important;
-}*/
 </style>
 
 	
@@ -33,7 +18,7 @@ ul
 /*
 $greatGrandParent = '';		//Section e.g. Art and design
 $grandParent = '';			//Section e.g. Artist statement
-$parent = '';			//Section e.g. Artist statement
+$parent = '';			//Section e.g. 
 */
 
 $parent = get_post_parent($post);
@@ -69,7 +54,8 @@ elseif($parent->ID) {
 	/* Weirdly greatGrandParent is showing up the same as $parent*/
 	echo doNavHeading($parent, 'h2');
 	echo doNavHeading($post, 'h3', 'selected');
-	echo doChildrenList($post->ID);
+	doChildrenManual($post->ID, null);
+		
 }
 else
 {
@@ -78,7 +64,7 @@ else
 	//Handle list of other sections here echo doNavHeading($post, 'h3');
 }
     
-    ?>
+?>
 </nav>
 
 <?php
@@ -165,7 +151,7 @@ function doNavHeading($myPost, $tag, $selected = null)
 
 
 
-<script language="javascript">
+<!--<script language="javascript">
 //this script shortens strings for titles that repeat the section title at the start
 //it currently looks for the characters colon and space ": " in the page title
 //this requires strict naming conventions for the title that use a colon 
@@ -190,5 +176,5 @@ list.querySelectorAll('h4').forEach(h4 => {
 	h4.innerHTML = match[1].charAt(0).toUpperCase() + match[1].slice(1);
   }
 })
-</script>
+</script>-->
 		
