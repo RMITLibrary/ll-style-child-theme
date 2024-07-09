@@ -67,9 +67,9 @@
 	
 }
 
-.landing-link-container {
+.landing-list-container {
 	
-	.landing-link {
+	.landing-list {
 		width: 100%;
 		max-width: 26.125rem;
 		margin-top: 3rem;
@@ -92,11 +92,11 @@
 	}
 	
 	@include media-breakpoint-up(lg) { 
-		.landing-link {
+		.landing-list {
 			max-width: 26.125rem;
 		}
 		
-		.landing-link > *:last-child {
+		.landing-list > *:last-child {
 			margin-bottom: 0px;
 		}
 	}

@@ -240,26 +240,26 @@ function createBreadcrumbs($thePost)
 	
 	$output = '';
 
-	$output .= '<nav aria-label="breadcrumbs">';
-	$output .= '<ul class="breadcrumbs">';
+	$output .= '<nav aria-label="breadcrumbs">' . "\n";
+	$output .= '<ul class="breadcrumbs">' . "\n";
 	
-	$output .= '<li><a href="/">Home</a></li>';
+	$output .= '<li><a href="/">Home</a></li>' . "\n";
 	
 	//	At one level $greatGrandParent and $parent have the same value. Due to bug?
 	//	Check that both $greatGrandParent and $grandParent have a value to solve this.
 	if($greatGrandParent->ID && $grandParent->ID) {
-		$output .= '<li><a href="/' . $greatGrandParent->post_name . '">' . formatAfterTheColon(get_the_title($greatGrandParent)) . '</a>';
+		$output .= '<li><a href="/' . $greatGrandParent->post_name . '">' . formatAfterTheColon(get_the_title($greatGrandParent)) . '</a></li>' . "\n";
 	}
 	
 	if($grandParent->ID && $parent->ID) {
-		$output .= '<li><a href="/' . $grandParent->post_name . '">' . formatAfterTheColon(get_the_title($grandParent)) . '</a>';
+		$output .= '<li><a href="/' . $grandParent->post_name . '">' . formatAfterTheColon(get_the_title($grandParent)) . '</a></li>' . "\n";
 	}
 	
 	if($parent->ID) {
-		$output .= '<li><a href="/' . $parent->post_name . '">' . formatAfterTheColon(get_the_title($parent)) . '</a>';
+		$output .= '<li><a href="/' . $parent->post_name . '">' . formatAfterTheColon(get_the_title($parent)) . '</a></li>' . "\n";
 	}
 	
-	$output .= '</ul>';
+	$output .= '</ul>'  . "\n";
 	$output .= '</nav>';
 	return $output;	
 }
@@ -320,13 +320,13 @@ function doContextMenuAccordion($title, $pageId)
 
 	$output = '';
 
-	$output .= '<div class="accordion-item">';
-	$output .= '<h2 class="accordion-header" id="' . $headId .'">';
+	$output .= '<div class="accordion-item">' . "\n";
+	$output .= '<h2 class="accordion-header" id="' . $headId .'">' . "\n";
 	$output .= '<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#' . $bodyId . '" aria-expanded="false" aria-controls="' . $bodyId . '">';    
 	$output .= $title;
-	$output .= '</button>';
-	$output .= '</h2>';
-	$output .= '<div id="' . $bodyId . '" class="accordion-collapse collapse" aria-labelledby="' . $headId . '">';
+	$output .= '</button>' . "\n";
+	$output .= '</h2>' . "\n";
+	$output .= '<div id="' . $bodyId . '" class="accordion-collapse collapse" aria-labelledby="' . $headId . '">' . "\n";
 	$output .= '<div class="accordion-body"><ul>' . doChildrenList($pageId) . '</ul></div></div></div>';
 
 	return $output;
@@ -367,7 +367,6 @@ function doChildrenList($pageId)
 
 
 //-----------------------------
-//	All shortcode code is included here,
-//	all shortcodes are registered here
+//	All shortcode code is included and added below
 
 include('custom-shortcodes/_main.php');

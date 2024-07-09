@@ -1,4 +1,5 @@
 
+
 <!-- this style changes the page link style in the sidebar nav 
 to indicate the current page and removes bullets from unordered lists. 
 The wp_list_pages function allocates the classes automatically. 
@@ -16,68 +17,75 @@ This should be moved to a stylesheet once style is determined. -->
 	
 <?php
 /*
-$greatGrandParent = '';		//Section e.g. Art and design
-$grandParent = '';			//Section e.g. Artist statement
-$parent = '';			//Section e.g. 
+// VARIABLE NAMING PROTOCOLS
+//------------------------------------------------
+$greatGrandParent = '';		// Landing page / Subject area page e.g. 'Art and design'
+$grandParent = '';			// Top-level section page e.g. 'Artist statement'
+$parent = '';				// Second-level page - i.e. child of top-level e.g. 'Writing process'
+							// Third-level page - i.e. child of second-level e.g. 'Mind mapping'
+							// Note: there should not be any further levels than these 4
 */
 
+// Get the lineage of the current page (if any)
+// Note: a page may not have a parent, grandparent or great-grandparent depending on it's position in the navigation hierarcy
 $parent = get_post_parent($post);
 $grandParent = get_post_parent($parent);
 $greatGrandParent = get_post_parent($grandParent);
 
 ?>
-
+<!-- START SIDEBAR NAV PANEL -->
 <nav class="right-nav" aria-label="Section Menu">
 
 <?php
-/*
-4 screnarios to deal with:
-, it's 4 levels down so
-*/
-if($greatGrandParent->ID && $grandParent->ID) {
+	
+// There are 4 possible scenarios to display in the sidebar navigation panel:
 
-	//echo('//deepest level - 5 levels down<br />');
-    //Send grandparent id to list grandparent children, then use $parent to recursively to the subpages 
+if($greatGrandParent->ID && $grandParent->ID) {
+	// if the current page has a great-grandparent (i.e. third-level page)
+	// show the following headings for great-grandparent and grandparent
+	// then recursively output current page siblings (there should be no children at this level)
 	echo doNavHeading($greatGrandParent, 'h2');
 	echo doNavHeading($grandParent, 'h3');
-	doChildrenManual($grandParent->ID, $post, $parent);
+	outputChildNav($grandParent->ID, $post, $parent);
 } 
 elseif($grandParent->ID && $parent->ID) {
-
-	//echo('//middle level - 4 levels down<br />');
+	// if the current page doesn't have a great-grandparent but has a grandparent (i.e. second-level page)
+	// show the following headings for grandparent and parent
+	// then recursively output current page siblings and children
 	echo doNavHeading($grandParent, 'h2');
 	echo doNavHeading($parent, 'h3');
-	doChildrenManual($parent->ID, $post);
+	outputChildNav($parent->ID, $post);
 }
 elseif($parent->ID) {
-	//echo('//shallowest level - 3 levels down<br />');
-	/* Weirdly greatGrandParent is showing up the same as $parent*/
+	// if the current page doesn't have a great-grandparent or grandparent (i.e. top-level page)
+	// show the following headings for parent and current page
+	// then recursively output current page's children
 	echo doNavHeading($parent, 'h2');
 	echo doNavHeading($post, 'h3', 'selected');
-	doChildrenManual($post->ID, null);
+	outputChildNav($post->ID, null);
 		
 }
 else
 {
-	//echo('//At a section, unlikely - 2 levels down<br />');
+	// if the current page doesn't have a great-grandparent, grandparent or parent (i.e. landing / subject area page)
+	// show the following headings for current page
+	// then recursively output direct children (need to add this bit??)
 	echo doNavHeading($post, 'h2', 'selected');
 	//Handle list of other sections here echo doNavHeading($post, 'h3');
 }
     
 ?>
 </nav>
+<!-- END SIDEBAR NAV PANEL -->
 
 <?php
 
-/*echo('<p>id: ' . $greatGrandParent->ID . ' greatGrandParent: ' . $greatGrandParent->post_name . '<br/>');
-echo('id: ' . $grandParent->ID . ' grandParent: '. $grandParent->post_name . '<br/>');
-echo('id: ' . $parent->ID . ' parent: ' . $parent->post_name . '<br/>');
-echo("---</p>");*/
+// This function builds the hierarchical navigation for current page siblings and/or children where required, <br>
+// depending on the current page level in the hierarchy - i.e. child, parent, grandparent or great-grandparent
 
-function doChildrenManual($parent_id, $thePost, $thePostParent = null)
+function outputChildNav($parent_id, $thePost, $thePostParent = null)
 {
 	// $parent_id is the ID of the parent or grandparent post
-
 	// Set up the arguments for the query
 	$args = array(
 		'post_type'      => 'page',
@@ -91,56 +99,64 @@ function doChildrenManual($parent_id, $thePost, $thePostParent = null)
 	// Create a new query
 	$child_query = new WP_Query($args);
 
-	// Check if the query returns any posts
+	// Check if the query returns any posts (pages) - i.e. does the current page have a parent or grandparent page?
 	if ($child_query->have_posts()) {
+		// if there are children, create an unordered list of pages
 		echo '<ul>';
-		// Loop through the posts
+		// Loop through the pages 
+		// This will output the current page and its sibling pages in the correct menu order
 		while ($child_query->have_posts()) {
 			$child_query->the_post();
-			// Output the title and link to the post
+			// Output the title and link to the page
             
             $post_slug = get_post_field('post_name', get_the_ID());
             
 			if($thePost->ID == get_the_ID()) {
-                //If there's a match with current post, do selected code and do children pages (recursively)
+                // If the post ID matches with the current page, output the selected code and then output the child nav if there are children (recursively)
+				// This only outputs the children of the current page and not the children of the current page siblings
+				// If the title has a colon, implement the formatAfterTheColon() function to shorten the title
                 echo '<li><a href="/' . $post_slug . '" class="selected"  aria-current="page">' . formatAfterTheColon(get_the_title()) . '</a>';
-				doChildrenManual($thePost->ID, $thePost);
+				outputChildNav($thePost->ID, $thePost);
 			}
 			else {
-                //Otherwise, output the link
+                // Otherwise, output the link
+				// If the title has a colon after the first part, implement the formatAfterTheColon() function (in functions.php) to remove the first part and shorten the title
                 echo '<li><a href="/' . $post_slug . '">' . formatAfterTheColon(get_the_title()) . '</a>';
-                //If thePostParent->ID exists, we are in a subpage.
-                //If thePostParent->ID matches the loop item, do children pages (recursively)
+                // If thePostParent->ID exists, we are in a subpage.
+				// If thePostParent->ID matches the loop item, do children pages (recursively)
+				// This only outputs the siblings of the current page and not the children of the current page
                 if($thePostParent->ID == get_the_ID())
                 {
-                    doChildrenManual($thePostParent->ID, $thePost);
+                    outputChildNav($thePostParent->ID, $thePost);
                 }
                 echo '</li>';
 			}  
 		}
 		echo '</ul>';
 	} else {
-		// No children found
-		//echo 'No child posts found.<br />';
+		// If no children found, do nothing
+
 	}
 
 	// Reset post data
 	wp_reset_postdata();
 }
 
+// This function builds the correct HTML for H2 and H3 navigation items whether selected or not selected
 function doNavHeading($myPost, $tag, $selected = null)
 {
+	// Create the variable for the output
 	$output = '';
-	
+    
+	// Set the title and slug for the navigation item
 	$title = get_the_title($myPost);
 	$slug = $myPost->post_name;
-	
-	if($selected == true)
-	{
+    
+	// If the item ins selected, set the class to "selected"
+	if($selected == true) {
 		$output .= '<' . $tag . ' class="selected">' . $title . '</' . $tag . '>';
 	}
-	else
-	{
+	else {
 		$output .= '<' . $tag . '><a href="/' . $slug . '">' . $title . '</a></' . $tag . '>';
 	}	
 		

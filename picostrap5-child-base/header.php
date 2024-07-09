@@ -84,9 +84,14 @@ defined('ABSPATH') || exit;
             <!-- START menu -->
             <div class="col-xl-8">
 				<div class="accordion accordion-white" id="context-menu-accordion">	
-						<?php echo doContextMenuAccordion('Assessments', 4266); ?>
-						<?php echo doContextMenuAccordion('Writing fundamentals', 4257); ?>
-						<!-- START Subject support - special case -->
+						<?php 
+                            //Identify the page ids of each landing page, doContextMenuAccordion 
+                            //will generate the accordion code and list of child pages.
+                            echo doContextMenuAccordion('Assessments', 4266);
+                            echo doContextMenuAccordion('Writing fundamentals', 4257); 
+                        ?>
+						<!-- START Subject support
+                        special case. Effectively each of the child pages here is a section page. For the nav, however, we want toshow these under the banner of subject support. -->
 						<div class="accordion-item">
 							<h2 class="accordion-header" id="accordion-head-subject-support">
 								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-body-subject-support" aria-expanded="true" aria-controls="accordion-body-subject-support">
@@ -106,12 +111,8 @@ defined('ABSPATH') || exit;
 								</div>
 							  </div>
 						</div>
-					
 						<!-- END subject support - special case -->
-                </div>
-                
-				
-				
+                </div>	
             </div>
             <!-- END menu -->
         </div>

@@ -106,7 +106,8 @@
     }
     
     @include media-breakpoint-up(lg) {
-        width: 40rem;
+		// Adjust this width as text changes to get a nice clean block with search box - max 40rem
+        width: 37rem;
         margin-top: 1.5rem;   
     }
 }
@@ -149,6 +150,12 @@
         
         & > p:last-child {
             margin-bottom: 1.5rem;
+        }
+    }
+	
+	.home-panel:hover {
+        h2 {
+           @include link-feature-hover;
         }
     }
     
