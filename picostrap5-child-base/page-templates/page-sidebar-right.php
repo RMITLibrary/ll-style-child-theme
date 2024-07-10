@@ -36,6 +36,11 @@ get_header();
             endif;
             ?>
 			<?php get_template_part( 'page-templates/prev-next-buttons', 'page' ); ?>
+            <?php 
+                // Get the value of 'additional_resources' using ACF's get_field function
+                $additional_resources = get_field('additional_resources');
+                echo strip_tags_before_echo($additional_resources);
+            ?>
 			<?php get_template_part( 'page-templates/taxonomy', 'page' ); ?>
         </div>
         <!-- END content --> 

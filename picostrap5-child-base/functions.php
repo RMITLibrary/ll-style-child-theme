@@ -200,6 +200,32 @@ add_filter('tiny_mce_before_init', 'tags_tinymce_fix');
 //-----------------------------------------------------------------------------------
 
 
+//Allowing HTML and Shortcodes:
+//Update the Meta Box Display Function:
+//Ensure that the textarea allows HTML content and shortcodes.
+
+function display_additional_resources_meta_box( $post ) {
+    $additional_resources = get_post_meta( $post->ID, 'additional_resources', true );
+    wp_nonce_field( 'save_additional_resources_meta_box', 'additional_resources_meta_box_nonce' );
+    echo '<textarea style="width:100%;height:100px;" id="additional_resources" name="additional_resources">' . esc_textarea( $additional_resources ) . '</textarea>';
+}
+
+//Update the Save Function:
+//Ensure that the content is saved without stripping HTML tags.
+function save_additional_resources_meta_box( $post_id ) {
+    if ( ! isset( $_POST['additional_resources_meta_box_nonce'] ) || ! wp_verify_nonce( $_POST['additional_resources_meta_box_nonce'], 'save_additional_resources_meta_box' ) ) {
+        return;
+    }
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+        return;
+    }
+    if ( ! current_user_can( 'edit_post', $post_id ) ) {
+        return;
+    }
+    if ( isset( $_POST['additional_resources'] ) ) {
+        update_post_meta( $post_id, 'additional_resources', wp_kses_post( $_POST['additional_resources'] ) );
+    }
+}
 
 //-----------------------------
 //	createBreadcrumbs

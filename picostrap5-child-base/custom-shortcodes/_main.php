@@ -17,7 +17,7 @@
 //  shortcode:  [blockquote-nav]
 
 //	usage:			
-//  [blockquote-nav category='Category' title='This is the title' extra-info='Extra information' icon='https://path.to/icon.svg']This is the blockquote content.[/blockquote-nav]
+//  [blockquote-nav category='Category' link='/cohesion' title='This is the title' extra-info='Extra information' icon='https://path.to/icon.svg']This is the blockquote content.[/blockquote-nav]
 
 //	Expected output
 //  <blockquote class="complex">
@@ -118,6 +118,7 @@ function transcript_accordion_att($atts, $content = null) {
 //              $atts - attributes as follows:
 
 //  $atts:      title   Title of the accordion (optional - defaults to "Transcript")
+//              open    Set to true to open accordion by default.
 
 //	calls:		doAccordion
 
@@ -168,7 +169,8 @@ function bootstrap_accordion_att($atts, $content = null) {
 function doAccordion($type, $atts, $content = null) {
     //If title attribute is omitted, default to "Transcript"
     $default = array(
-        'title' => 'Transcript'
+        'title' => 'Transcript',
+        'open' => ''
     );
     
     //merges user-defined attributes with a set of default values ($default)
@@ -185,6 +187,19 @@ function doAccordion($type, $atts, $content = null) {
     $labelTag = 'h2';
     $extraClass = '';
     
+    //these vars control whether accordion is open or not. It's closed by default
+    $buttonState = 'collapsed';
+    $ariaExpanded = 'false';
+    $bodyState  = '';
+    
+    //if we have a attribut of open=true, set variable to make this happen
+    if($a['open'] == 'true')
+    {
+        $buttonState = '';
+        $ariaExpanded = 'true';
+        $bodyState = 'show';
+    }
+    
     //if type is transcript, adjust some of the tags to style differently
     if ($type == 'transcript') {
         $labelTag = 'p';
@@ -196,11 +211,11 @@ function doAccordion($type, $atts, $content = null) {
     
     $output .= '<div class="accordion-item ' . $extraClass . '">' . "\n";
     $output .= '<' . $labelTag .' class="accordion-header" id="' . $headId .'">' . "\n";
-    $output .= '<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#' . $bodyId . '" aria-expanded="false" aria-controls="' . $bodyId . '">';    
+    $output .= '<button class="accordion-button ' . $buttonState . '" type="button" data-bs-toggle="collapse" data-bs-target="#' . $bodyId . '" aria-expanded="'. $ariaExpanded . '" aria-controls="' . $bodyId . '">';    
     $output .= $a['title'];
     $output .= '</button>' . "\n";
     $output .= '</' . $labelTag . '>' . "\n";
-    $output .= '<div id="' . $bodyId . '" class="accordion-collapse collapse" aria-labelledby="' . $headId . '">' . "\n";
+    $output .= '<div id="' . $bodyId . '" class="accordion-collapse collapse ' . $bodyState . '" aria-labelledby="' . $headId . '">' . "\n";
     $output .= '<div class="accordion-body">' . $content . '</div></div></div>';
 
     return $output;
@@ -243,7 +258,7 @@ function generate_id($string, $prefix) {
 //	args:		$content - description of the landing page (max 280 characters)
 //              $atts - attributes as follows:
 
-//  $atts:      img         Absolute path to image
+//  $atts:      url         Absolute path to image
 //              alt         Alt tag for the above image
 //              caption     Attribution for the image (optional)  
 //              aspect      "portrait" if omitted landscape is provided by default (optional)
@@ -254,9 +269,9 @@ function generate_id($string, $prefix) {
 //  shortcode:  [ll-image][/ll-image]
 
 //	usage:			
-//  [ll-image img='' alt='Alt tag for the image' caption='Caption here' aspect='portrait' left='true' border='true' size='sm'][/ll-image]
+//  [ll-image url='https://path.to/image' alt='Alt tag for the image' caption='Caption here' aspect='portrait' left='true' border='true' size='sm'][/ll-image]
 //
-//  [ll-image img='' alt='Alt tag for the image']
+//  [ll-image url='https://path.to/image' alt='Alt tag for the image']
 //      [transcript-accordion]<p>Transcript content.</p>[/transcript-accordion]
 //  [/ll-image]
 
@@ -287,7 +302,7 @@ function generate_id($string, $prefix) {
 function image_att ($atts, $content = null) {
     $default = array(
         'alt' => '',
-        'img' => '',
+        'url' => '',
         'border' => '',
         'left' => '',
         'aspect' => '',
@@ -361,7 +376,7 @@ function image_att ($atts, $content = null) {
                        
             
     //Build <img> tag with alt tag, add border if present
-    $imageTag = '<img src="' . $a['img'] . '" alt="' . $a['alt'] . '"';   
+    $imageTag = '<img src="' . $a['url'] . '" alt="' . $a['alt'] . '"';   
             
     if($a['border'] != '') { 
         $imageTag .= ' class="border"'; 
@@ -400,6 +415,127 @@ function image_att ($atts, $content = null) {
     
     
     return $debug;*/
+}
+
+//-----------------------------
+//	video_att
+//
+//	Creates an image, options for portrait, caption and transcript for the landing page
+
+//	args:		$content - description of the landing page (max 280 characters)
+//              $atts - attributes as follows:
+
+//  $atts:      url         Absolute path to video - eg https://www.youtube.com/embed/w_IEpVVdNrE
+//              caption     Attribution for the video (optional)  
+//              left        Align image to the left - centred by default (optional)
+//              alert       html message for an alert banner (optional)
+
+
+//  shortcode:  [ll-image][/ll-image]
+
+//	usage:			
+//  [ll-image img='' alt='Alt tag for the image' caption='Caption here' aspect='portrait' left='true' border='true' size='sm'][/ll-image]
+//
+//  [ll-video url='']
+//      [transcript-accordion]<p>Transcript content.</p>[/transcript-accordion]
+//  [/ll-video]
+
+//  Expected output
+//<figure class="video">
+//	<div class="responsive-video">
+//		<iframe src="https://www.youtube.com/embed/video-id" frameborder="0" 
+//		allowfullscreen=""></iframe>
+//	</div>
+//	<figcaption>An example caption for this image.</figcaption>
+//	<div class="accordion-item transcript">
+//		<!-- lots of additional accordion code goes here -->	
+//	</div>
+//</figure>
+
+function video_att($atts, $content = null) {
+    $default = array(
+        'url' => '',
+        'left' => '',
+        'caption' => '',
+        'alert' => ''
+        
+    );
+    $a = shortcode_atts($default, $atts);
+    $content = do_shortcode($content);
+        
+    $output = '';
+            
+    //Build figure tag
+    $output .= '<figure class="video ';
+            
+    //if left = true, add class to align image left
+    if($a['left'] != '') { 
+        $output .= 'img-left '; 
+    }
+    
+    $output .= '">' . "\n";
+
+    //if there's an alert message, call alert_banner_att to do the mark-up
+    if($a['alert'] != '') { 
+        $output .= doAlertBanner($a['alert']);   
+    }      
+    
+    $output .= '<div class="responsive-video">' . "\n"; 
+    $output .= '<iframe src="' . $a['url'] . '" frameborder="0" allowfullscreen=""></iframe>' . "\n";
+            
+    $output .= '</div>' . "\n"; 
+     
+    //If caption exists
+    if($a['caption'] != '') { 
+        $output .= '<figcaption>' . $a['caption'] . '</figcaption>' . "\n"; 
+    }  
+        
+    //If $content exists, there's a transcript, add output from [transcript-accordion]
+	if($content != null) {
+		$output .= $content;
+	}   
+        
+    $output .= '</figure>' . "\n";
+            
+    return $output; 
+}
+
+//-----------------------------
+//	alert_banner_att
+
+//	Creates an alert banner in the bootstrap style
+
+//	args:		$atts:
+
+//  alert:  The message, html can be included
+
+// called from:  video_att
+
+//  shortcode:  [alert-banner]
+
+//	usage:			
+//  [alert-banner mess='<strong>Warning!</strong> Message goes here' /]
+
+//  Expected output
+//<div class="alert alert-danger alert-dismissible">
+//    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+//    <strong>Warning!</strong> Message here.
+//</div>
+    
+function alert_banner_att($atts) {
+    
+    return doAlertBanner($att['alert']);
+}
+    
+
+function doAlertBanner($content)
+{ 
+    $output = '<div class="alert alert-danger alert-dismissible">'  . "\n";
+    $output .= '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' . "\n";
+    $output .= wp_kses_post($content);
+    $output .= '</div>';
+
+    return $output;    
 }
 
 //-----------------------------
@@ -519,12 +655,33 @@ function landing_list_att($atts) {
 function the_content_filter($content) {
     
     //Add in shortcodes to this list
-    $block = join("|",array("blockquote-nav", "bs-accordion", "transcript-accordion", "ll-image", "landing-banner", "landing-list"));
+    $block = join("|",array("blockquote-nav", "bs-accordion", "transcript-accordion", "ll-image", "ll-video", "alert-banner", "landing-banner", "landing-list"));
     $rep = preg_replace("/(<p>)?\[($block)(\s[^\]]+)?\](<\/p>|<br \/>?)?/","[$2$3]",$content);
     $rep = preg_replace("/(<p>)?\[\/($block)](<\/p>|<br \/>?)?/","[/$2]",$rep);
     return $rep;
 }
 add_filter("the_content", "the_content_filter");
+
+
+//-----------------------------
+//	strip_tags_before_echo
+
+//When the above isn't working, use this function right before echoing 
+//content to definitely get rid of <br> and <p></p> (but not <br />)
+
+//called by: Additional_resources page-template
+
+function strip_tags_before_echo($content) {
+    // Strip out <br> tags
+    $content = preg_replace('/<br\s*\/?>/', '', $content);
+    
+    // Strip out <p></p> tags
+    $content = preg_replace('/<p[^>]*>[\s|&nbsp;]*<\/p>/', '', $content);
+    
+    // Return the stripped content
+    return $content;
+}
+
 
 
 //-----------------------------
@@ -534,6 +691,8 @@ add_filter("the_content", "the_content_filter");
 add_shortcode('bs-accordion', 'bootstrap_accordion_att');
 add_shortcode('transcript-accordion', 'transcript_accordion_att');
 add_shortcode('ll-image', 'image_att');
+add_shortcode('ll-video', 'video_att');
+add_shortcode('alert-banner', 'alert_banner_att');
 add_shortcode('blockquote-nav', 'blockquote_nav_att');
 add_shortcode('landing-banner', 'landing_banner_att');
 add_shortcode('landing-list', 'landing_list_att');
