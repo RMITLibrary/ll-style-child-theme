@@ -110,3 +110,117 @@ $img-width-sm: 18.5rem;     //296px*/
     figure { width: 7.5rem; }
 }
 
+// Striped list 
+// Mirrors functionality of a striped table
+.striped-list {
+	
+	padding: 0;
+	
+	li {
+		list-style-type: none;
+		padding: 0.75rem 0.5rem;
+		margin: 0;
+	}
+	
+	//Alternate grey and white
+	li:nth-child(odd) {
+		background-color: $underlay-grey;
+	}
+
+	//adjust padding on larger screens
+	@include media-breakpoint-up(md) { 
+		
+		li {
+			padding: 0.75rem 1rem; 
+		}
+	}
+}
+
+//For larger screens, set up classes to do multi column lists, preserving the alternating background
+@include media-breakpoint-up(md) { 
+	
+	.striped-list-col-2 {
+		display: grid;
+    	grid-template-columns: 1fr 1fr;
+		
+		//select the first and second items of every set of four items, apply a light grey bg
+		li:nth-child(4n+1),
+		li:nth-child(4n+2) {
+		  background-color: $underlay-grey;
+		}
+		
+		//select the third and second items of every set of four items, apply a white bg
+		li:nth-child(4n+3),
+		li:nth-child(4n+4) {
+		  background-color: $white;
+		}
+		
+		// span across both columns if the number of items is odd
+		li:last-child:nth-child(odd) {
+		  grid-column: span 2;
+		}
+			
+	}
+	
+	.striped-list-col-3 {
+		display: grid;
+    	grid-template-columns: 1fr 1fr 1fr;
+		
+		li:nth-child(6n+1),
+		li:nth-child(6n+2),
+		li:nth-child(6n+3) {
+		  background-color: $underlay-grey;
+		}
+
+		li:nth-child(6n+4),
+		li:nth-child(6n+5),
+		li:nth-child(6n+6) {
+		  background-color: $white
+		}
+		
+		//span last item all columns if the there's one item on last row
+		li:nth-last-child(1):nth-child(3n+1) {
+			grid-column: span 3;
+		}
+		
+		//span last item across two columns if the there's two items on last row
+		li:nth-last-child(1):nth-child(3n+2) {
+			grid-column: span 2;
+		}
+	}
+	
+	
+	.striped-list-col-4 {
+		display: grid;
+    	grid-template-columns: 1fr 1fr 1fr 1fr;
+		
+		li:nth-child(8n+1),
+		li:nth-child(8n+2),
+		li:nth-child(8n+3),
+		li:nth-child(8n+4) {
+		  background-color: $underlay-grey;
+		}
+
+		li:nth-child(8n+5),
+		li:nth-child(8n+6),
+		li:nth-child(8n+7),
+		li:nth-child(8n+8){
+		  background-color: $white
+		}
+		
+		//span last item all columns if the there's one item on last row
+		li:nth-last-child(1):nth-child(4n+1) {
+			grid-column: span 4;
+		}
+		
+		//span last item all columns if the there's two items on last row
+		li:nth-last-child(1):nth-child(4n+2) {
+			grid-column: span 3;
+		}
+		
+		//span last item all columns if the there's three items on last row
+		li:nth-last-child(1):nth-child(4n+3) {
+			grid-column: span 2;
+		}
+	}
+}

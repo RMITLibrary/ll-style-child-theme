@@ -97,6 +97,7 @@ function blockquote_nav_att($atts, $content = null) {
 //              $atts - attributes as follows:
 
 //  $atts:      title  Title of the accordion (optional - defaults to "Transcript")
+//				size	IF set to "full-width", transcript is set to 100% width (optional)
 
 //  shortcode:  [transcript-accordion]
 
@@ -170,6 +171,7 @@ function doAccordion($type, $atts, $content = null) {
     //If title attribute is omitted, default to "Transcript"
     $default = array(
         'title' => 'Transcript',
+		'size' => '',
         'open' => ''
     );
     
@@ -204,6 +206,12 @@ function doAccordion($type, $atts, $content = null) {
     if ($type == 'transcript') {
         $labelTag = 'p';
         $extraClass = 'transcript';
+		
+		//this additional class stratches the transcript accordion to 100% of container width
+		if($a['size'] == 'full-width')
+		{
+			$extraClass .= '  transcript-full-width';
+		}
     }
     
     //output the html markup

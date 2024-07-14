@@ -20,8 +20,12 @@ $nextTitle = formatAfterTheColon(get_the_title($nextID));
     <a class="btn btn-nav-prev" href="<?php echo get_permalink($prevID); ?>"><span class="visually-hidden">Previous: </span><?php echo $prevTitle; ?></a>
 
 <?php }
-if (!empty($nextID)) { ?>
+$is_last_page = get_query_var('is_last_page');
+if (!empty($nextID && $is_last_page != 'true')) { 
 
+?>
+	
 <a class="btn btn-nav-next" href="<?php echo get_permalink($nextID); ?>"><span class="visually-hidden">Next: </span><?php echo $nextTitle ; ?></a>
+	
 <?php } ?>
 </nav><!-- .navigation -->

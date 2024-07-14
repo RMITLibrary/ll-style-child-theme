@@ -13,6 +13,7 @@ $llcategory = get_field("field_65275ce3c7e36");
 <?php 
 $terms = get_field('field_6527440d6f9a2');
 if( $terms ): ?>
+<hr class="margin-top-xl">
 <div class="keywords">
     <h2 class="h5">Keywords</h2>
     <ul>
