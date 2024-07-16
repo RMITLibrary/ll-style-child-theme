@@ -594,7 +594,7 @@ function landing_banner_att($atts, $content = null) {
     $output .= '<div class="red-bar"></div>' . "\n";
     $output .= '<h1>' . get_the_title() . '</h1>' . "\n";
     $output .= '<p class="lead">' . $content  . '</p>' . "\n";
-    $output .= '<p class="small">' . $a['caption']  . '</p>' . "\n";
+    $output .= '<p class="small" id="caption-text">' . $a['caption']  . '</p>' . "\n";
     $output .= '</div></div>';
 
     return $output;

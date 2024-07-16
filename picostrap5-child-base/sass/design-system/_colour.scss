@@ -1,0 +1,16 @@
+@mixin set-colours($text-col, $bg-col: $white) { 
+	color: $text-col;
+	background-color: $bg-col;
+}
+
+//Series of classes used to mark text to highlight certain words or phrases. It's important to remember to never use colour alone to convey information, due to visual impairments such as colour blindness.
+
+//If you want a sequence of colours more distinguishable to people with colour-bg-blindness, follow this pattern: teal, pink, green, purple, brown, blue, red, yellow
+.color-teal { @include set-colours(#14523F, #C6F1E4); }
+.color-pink { @include set-colours(#691668, #F4C3F3); }
+.color-green { @include set-colours(#2E562E, #E1EFE1); }
+.color-purple { @include set-colours(#522E99, #E6DCF4); }
+.color-brown { @include set-colours(#704123, #F4E7DC); }
+.color-blue { @include set-colours($rmit-blue, #D6E4FA); }
+.color-red { @include set-colours($rmit-red, #FFE5E5); }
+.color-yellow { @include set-colours(#665200, #FFF9E0); }
