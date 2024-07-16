@@ -141,7 +141,7 @@
         margin-right: 0.5rem !important;
     }
     
-    .accordion-body p {
+    .accordion-body p, .accordion-body li {
         font-size: 0.9375rem !important;
     }
 
@@ -152,6 +152,11 @@ figure .transcript {
     max-width: 100%;
 }
 
+/* By default, transcript accordion has a max-width of 40rem, 
+add this additional class to stratch it 100% */
+.transcript-full-width {
+	max-width: 100%;
+}
 
 .nav-accordion {
     border: 0;

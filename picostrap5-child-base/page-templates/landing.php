@@ -24,7 +24,7 @@ get_header();
 			_e( 'Sorry, no posts matched your criteria.', 'textdomain' );
 		endif;
 		?>
-		<?php //get_template_part( 'page-templates/taxonomy', 'page' ); ?>
+		<?php //get_template_part( 'page-templates/includes/taxonomy', 'page' ); ?>
 	</div>
 </div>
 

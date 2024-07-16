@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name:  Page with Sidebar on the Right
+ * Template Name:  Last content page
  *
 
  */
@@ -35,6 +35,10 @@ get_header();
                 _e( 'Sorry, no posts matched your criteria.', 'textdomain' );
             endif;
             ?>
+			<?php 
+				$is_last_page = 'true'; 
+				set_query_var('is_last_page', $is_last_page);
+			?>
 			<?php get_template_part( 'page-templates/includes/prev-next-buttons', 'page' ); ?>
 			<?php get_template_part( 'page-templates/includes/additional-resources', 'page' ); ?>
 			<?php get_template_part( 'page-templates/includes/taxonomy', 'page' ); ?>
