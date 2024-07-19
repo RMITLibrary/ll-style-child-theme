@@ -97,7 +97,9 @@ function blockquote_nav_att($atts, $content = null) {
 //              $atts - attributes as follows:
 
 //  $atts:      title  Title of the accordion (optional - defaults to "Transcript")
-//				size	IF set to "full-width", transcript is set to 100% width (optional)
+//				size	If set to "full-width", transcript is set to 100% width (optional)
+//              id      Allows an id to be deirectly adssigned to the button. 
+//                      required to get "skip to text only content" to work 
 
 //  shortcode:  [transcript-accordion]
 
@@ -120,6 +122,8 @@ function transcript_accordion_att($atts, $content = null) {
 
 //  $atts:      title   Title of the accordion (optional - defaults to "Transcript")
 //              open    Set to true to open accordion by default.
+//              size    option for full width
+//              id      Set an id for the button, allows accordion to be targeted by a skip content link
 
 //	calls:		doAccordion
 
@@ -172,7 +176,8 @@ function doAccordion($type, $atts, $content = null) {
     $default = array(
         'title' => 'Transcript',
 		'size' => '',
-        'open' => ''
+        'open' => '',
+        'id' => ''
     );
     
     //merges user-defined attributes with a set of default values ($default)
@@ -193,13 +198,20 @@ function doAccordion($type, $atts, $content = null) {
     $buttonState = 'collapsed';
     $ariaExpanded = 'false';
     $bodyState  = '';
+    $id = '';
     
-    //if we have a attribut of open=true, set variable to make this happen
+    //if we have a attribute of open=true, set variable to make this happen
     if($a['open'] == 'true')
     {
         $buttonState = '';
         $ariaExpanded = 'true';
         $bodyState = 'show';
+    }
+    
+    //if we have an id add it.
+    if($a['id'] != '')
+    {
+        $id = 'id="' . $a['id'] .'"';    
     }
     
     //if type is transcript, adjust some of the tags to style differently
@@ -219,7 +231,7 @@ function doAccordion($type, $atts, $content = null) {
     
     $output .= '<div class="accordion-item ' . $extraClass . '">' . "\n";
     $output .= '<' . $labelTag .' class="accordion-header" id="' . $headId .'">' . "\n";
-    $output .= '<button class="accordion-button ' . $buttonState . '" type="button" data-bs-toggle="collapse" data-bs-target="#' . $bodyId . '" aria-expanded="'. $ariaExpanded . '" aria-controls="' . $bodyId . '">';    
+    $output .= '<button class="accordion-button ' . $buttonState . '" type="button" data-bs-toggle="collapse" data-bs-target="#' . $bodyId . '" aria-expanded="'. $ariaExpanded . '" aria-controls="' . $bodyId . '" ' . $id . '>';    
     $output .= $a['title'];
     $output .= '</button>' . "\n";
     $output .= '</' . $labelTag . '>' . "\n";
@@ -237,6 +249,7 @@ function doAccordion($type, $atts, $content = null) {
 //	Generate unique id
 
 //	Called from:	doAccordion
+//                  Note: these ids will change every time the page is loaded
 
 //	args:			$string  the title of the accordion
 //                  $prefix either "head" or "body"

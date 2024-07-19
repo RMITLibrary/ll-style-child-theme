@@ -1,0 +1,50 @@
+// Used in highlight text activities with buttons. Find a better name
+.button-group {
+	.text-markup-btn, #showHideAll {
+		margin-bottom: 1rem;
+	}
+	
+	@include media-breakpoint-down(md) { 
+		.text-markup-btn, #showHideAll {
+			display: block;
+			width: 100%;
+		}
+	}
+}
+
+
+//Used in stateichighlighted text examples
+.highlight-grid {
+    
+    ul {
+        list-style-type: none;
+    }
+    
+    ul, li {
+        margin: 0;
+        padding: 0;
+    }
+    
+    li {
+        display: inline-block;
+        margin-right: 0.25rem;
+    }
+    
+    label, span {
+        display: inline;
+        padding: 2px;
+    }
+    
+    @include media-breakpoint-up(md) { 
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+        gap: 1.5rem;
+        
+        p { margin: 0 }
+        
+        li {
+            display: block;
+            margin-bottom: 1.75rem;
+        }
+    }
+}

@@ -1,4 +1,42 @@
 //stops the wordpress admin bar from covering content
-.wp-admin-bar-root-default {
-    margin-top: -2rem;
+/*
+.nav-fixed {
+    #wp-admin-bar-root-default {
+        top: -1.5rem !important;
+    } 
+}
+*/
+
+// Develop this further to allow more control and options
+// Place in design system
+.my-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    
+    @include media-breakpoint-up(sm) { 
+        grid-template-columns: 1fr 1fr 1fr; 
+    }
+    
+    @include media-breakpoint-up(lg) { 
+        gap: 1.5rem;
+        grid-template-columns: 1fr 1fr 1fr 1fr; 
+    }
+}
+
+aside.visually-hidden-focusable div {
+    padding: 16px 24px;
+    
+    @include do-space(margin-top, sm);
+    @include do-space(margin-bottom, sm);
+    
+    border: 2px solid $red;
+    
+    & > :first-child {
+        margin-top: 0;
+    }
+    
+    & > :last-child {
+        margin-bottom: 0;
+    }
 }
