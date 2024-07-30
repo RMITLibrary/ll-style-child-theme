@@ -56,22 +56,49 @@ elseif($grandParent->ID && $parent->ID) {
 	echo doNavHeading($parent, 'h3');
 	outputChildNav($parent->ID, $post);
 }
-elseif($parent->ID) {
+elseif ($parent->ID) {
+    // if the current page doesn't have a great-grandparent or grandparent (i.e. top-level page)
+    // show the heading for parent
+    echo doNavHeading($parent, 'h2');
+    
+	// Retrieve children of the current post
+    $children = get_posts(array(
+        'post_type' => $post->post_type,
+        'post_parent' => $post->ID,
+        'numberposts' => -1
+    ));
+    
+    // Check if there are any children
+    if (!empty($children)) {
+        // There are children, show the heading for current page
+		echo doNavHeading($post, 'h3', 'selected');
+		
+		// Output current page's children
+    	outputChildNav($post->ID, null);
+		
+    } else {
+        // There are no children, so there's a shallower structure to this page's section.
+		// output the parent's children (including this page which will be selected)
+		outputChildNav($parent->ID, $post);
+    }
+}
+/*elseif($parent->ID) {
 	// if the current page doesn't have a great-grandparent or grandparent (i.e. top-level page)
 	// show the following headings for parent and current page
 	// then recursively output current page's children
 	echo doNavHeading($parent, 'h2');
 	echo doNavHeading($post, 'h3', 'selected');
 	outputChildNav($post->ID, null);
-		
-}
+	
+	echo('If condition 3');
+}*/
 else
 {
 	// if the current page doesn't have a great-grandparent, grandparent or parent (i.e. landing / subject area page)
 	// show the following headings for current page
 	// then recursively output direct children (need to add this bit??)
 	echo doNavHeading($post, 'h2', 'selected');
-	//Handle list of other sections here echo doNavHeading($post, 'h3');
+	outputChildNav($post->ID, null);
 }
     
 ?>

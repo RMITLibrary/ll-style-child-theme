@@ -87,8 +87,10 @@ defined('ABSPATH') || exit;
 						<?php 
                             //Identify the page ids of each landing page, doContextMenuAccordion 
                             //will generate the accordion code and list of child pages.
-                            echo doContextMenuAccordion('Assessments', 4266);
-                            echo doContextMenuAccordion('Writing fundamentals', 4257); 
+							echo doContextMenuAccordion('University essentials', 6823);
+							echo doContextMenuAccordion('Writing fundamentals', 6825); 
+                            echo doContextMenuAccordion('Assessments', 6828);
+                            echo doContextMenuAccordion('Referencing', 2545);
                         ?>
 						<!-- START Subject support
                         special case. Effectively each of the child pages here is a section page. For the nav, however, we want toshow these under the banner of subject support. -->
@@ -102,11 +104,12 @@ defined('ABSPATH') || exit;
 								<div class="accordion-body">
 									<ul>
 										<li><a href="/art-and-design/">Art and design</a></li>
-										<li><a href="">Chemistry</a></li>
-										<li><a href="">Legal studies</a></li>
-										<li><a href="">Life sciences</a></li>
-										<li><a href="">Maths</a></li>
-										<li><a href="">Nursing</a></li>
+										<li><a href="/chemistry/">Chemistry</a></li>
+										<li><a href="/law-resources/">Legal studies</a></li>
+										<li><a href="/maths-statistics/">Mathematics and statistics</a></li>
+										<li><a href="/resources-nursing/">Nursing</a></li>
+										<li><a href="/physics/">Physics</a></li>
+										<!-- <li><a href="//">Life sciences</a></li> -->
 									</ul>
 								</div>
 							  </div>
