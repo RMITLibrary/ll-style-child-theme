@@ -100,6 +100,16 @@ Exception: grey-med passes against white bg  */
 	background-color: var(--yellow-light);
 }
 
+.no-bg {
+	background: none;
+}
+
+.border {
+    border: 1px solid !important;
+    padding: 1px 4px;
+}
+
+
 .color1 { color: var(--blue); }
 .color1-b { border: var(--blue-med) 1px solid; }
 .color1-h { background-color: var(--blue-light); }
@@ -142,9 +152,9 @@ Exception: grey-med passes against white bg  */
     margin: 2em 0 1em 0;
 }
 
-.heppp-content-link h2 {
-    margin-top: 1em; 
-    font-size: 1.4em;
+.heppp-content-link h3 {
+    margin-top: 1rem; 
+    font-size: 1.25rem;
 }
 
 .colorBox {
@@ -171,16 +181,36 @@ vertical-align:top;
 line-height:25px }
 
 
+/* === Buttons styles =============================== */
+.btn-info, .btn-success, .btn-warning, .btn-danger {
+	padding: 8px 16px;
+	border-radius: 4px;
+}
+
+.btn-lg {
+	font-size: 20px;
+	border-radius: 4px;
+}
+
+
+.btn-sm {
+	font-size: 14px;
+	border-radius: 4px;
+	padding: 4px 8px;
+}
+
 /* === Responsive video embed =============================== */
  
-/*.responsive-video {
-  position: relative;
-  padding-bottom: 56.25%;
-  height: 0;
-  overflow: hidden;
-  max-width: 100%;
-}*/
 
+.responsive-video {
+	position: relative;
+	padding-bottom: 56.25%;
+	height: 0;
+	overflow: hidden;
+	max-width: 100%;
+}
+
+//The below styles are replicated in video part of design system
 /*.responsive-video iframe,
 .responsive-video object,
 .responsive-video embed {
@@ -219,6 +249,14 @@ line-height:25px }
 	}
 }
 
+code {
+	margin: 20px;
+    color: #104880;
+    background-color: #fff;
+    padding: 20px;
+    display: block;
+    border: 1px solid;
+}
 
 /* === Accordion =============================== */
 

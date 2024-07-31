@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name:  Page with Sidebar on the Right
+ * Template Name:  Content page
  *
 
  */

@@ -5,14 +5,14 @@ to indicate the current page and removes bullets from unordered lists.
 The wp_list_pages function allocates the classes automatically. 
 This should be moved to a stylesheet once style is determined. -->
 
-<style>
+<!--<style>
 [aria-current="page"] {
   pointer-events: none !important; 
   cursor: default;
   text-decoration: none !important;
   color: #000054;
 }
-</style>
+</style>-->
 
 	
 <?php

@@ -2,6 +2,7 @@
 
 
 .right-nav, .right-nav-accordion, .right-nav-simple {
+	
     box-sizing: border-box; 
     max-width: 36rem;   
     
@@ -83,6 +84,13 @@
             padding-left: 5rem;   //less 0.25rem to account for border
         }
     }
+	
+	[aria-current="page"] {
+		pointer-events: none !important; 
+		cursor: default;
+		text-decoration: none !important;
+		color: #000054;
+	}
 }
 
 .right-nav, .right-nav-simple {
