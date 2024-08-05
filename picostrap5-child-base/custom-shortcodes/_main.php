@@ -272,173 +272,6 @@ function generate_id($string, $prefix) {
 
 
 //-----------------------------
-//	image_att
-
-//	Creates an image, options for portrait, caption and transcript for the landing page
-
-//	args:		$content - description of the landing page (max 280 characters)
-//              $atts - attributes as follows:
-
-//  $atts:      url         Absolute path to image
-//              alt         Alt tag for the above image
-//              caption     Attribution for the image (optional)  
-//              aspect      "portrait" if omitted landscape is provided by default (optional)
-//              left        Align image to the left - centred by default (optional)
-//              border      Add a 1px border to the image (optional)
-//              size        (optional)
-
-//  shortcode:  [ll-image][/ll-image]
-
-//	usage:			
-//  [ll-image url='https://path.to/image' alt='Alt tag for the image' caption='Caption here' aspect='portrait' left='true' border='true' size='sm'][/ll-image]
-//
-//  [ll-image url='https://path.to/image' alt='Alt tag for the image']
-//      [transcript-accordion]<p>Transcript content.</p>[/transcript-accordion]
-//  [/ll-image]
-
-//  Expected output
-//<figure class="img-transcript">
-//	<div>
-//		<div>
-//			<img src="my-image.jpg" alt="An example image" />
-//		</div>
-//		<div class="accordion-item transcript"> 
-//			<!-- lots of additional accordion code goes here -->	
-//		</div>
-//	</div>
-//</figure>
-//    
-//<figure class="img-transcript caption-side">
-//	<div class="img-caption-wrap">
-//		<div class="portrait">
-//			<img src="my-image.jpg" alt="An example image" />
-//		</div>
-//		<figcaption>An example caption for this image.</figcaption>
-//		<div class="accordion-item transcript"> 
-//			<!-- lots of additional accordion code goes here -->	
-//		</div>
-//	</div>
-//</figure>
-
-function image_att ($atts, $content = null) {
-    $default = array(
-        'alt' => '',
-        'url' => '',
-        'border' => '',
-        'left' => '',
-        'aspect' => '',
-        'size' => '',
-        'caption' => ''
-        
-    );
-    $a = shortcode_atts($default, $atts);
-    $content = do_shortcode($content);
-            
-    //START Build figure tag
-    $figureTag = '<figure class="';
-            
-    //if left = true, add class to align image left
-    if($a['left'] != '') { 
-        $figureTag .= 'img-left '; 
-    }
-            
-    //If $content exists, there's a transcript, add a class
-	if($content != null) {
-		$figureTag .= 'img-transcript ';
-	}
-            
-    //if portrait and there's a caption, add a class
-    if($a['aspect'] == 'portrait' && $a['caption'] != '') { 
-        $figureTag .= 'caption-side '; 
-    }
-    
-    //add size attribute if required       
-    if($a['size'] != '') { 
-        
-        $sizeSuffix = $a['size'];
-        if($a['size'] == 'full-width')
-        {
-            $sizeSuffix = "full"; 
-        }
-        $figureTag .= 'img-width-' . $sizeSuffix . ' '; 
-    }
-    
-    $figureTag .= '">';
-    //END Build figure tag 
-         
-            
-    //START Build outer div tag
-    $outerDiv = '<div class="';
-    
-    //if theere's a caption, add in the class
-    if($a['caption'] != '') { 
-        $outerDiv .= 'img-caption-wrap '; 
-    }
-    $outerDiv .= '">';       
-    //END Build outer div tag
-      
-            
-    //START Build inner div tag
-    $innerDiv = '<div class="';
-    
-    //if theere's a caption, add in the class
-    if($a['aspect'] == 'portrait') { 
-        $innerDiv .= 'portrait '; 
-    }
-    $innerDiv .= '">';       
-    //END Build inner div tag
-            
-    $figCaptionTag = '';
-            
-    if($a['caption'] != '') { 
-        $figCaptionTag .= '<figcaption>' . $a['caption'] . '</figcaption>' . "\n"; 
-    }       
-    
-                       
-            
-    //Build <img> tag with alt tag, add border if present
-    $imageTag = '<img src="' . $a['url'] . '" alt="' . $a['alt'] . '"';   
-            
-    if($a['border'] != '') { 
-        $imageTag .= ' class="border"'; 
-    }     
-    $imageTag .= ' />' . "\n";
-           
- 
-    //Start output phase       
-    $output = '';
-    $output .= $figureTag . "\n";
-    $output .= $outerDiv . "\n";
-    $output .= $innerDiv . "\n";
-    $output .= $imageTag . "\n";
-    $output .= '</div>' . "\n";
-    $output .= $figCaptionTag;
-    $output .= '</div>' . "\n";  
-    
-    //If $content exists, there's a transcript, add output from [transcript-accordion] or [lightweight-accordion]
-	if($content != null) {
-		$output .= $content;
-	}        
-                  
-    $output .= '</figure>' . "\n";
-            
-    return $output; 
-    
-    /*$debug = '<pre><code>';
-    $debug .= $imageTag;
-    
-    //$debug .= 'img: ' . $a['img'] . "\n";
-    $debug .= 'alt: ' . $a['alt'] . "\n";
-    $debug .= 'left: ' . $a['left'] . "\n";
-    $debug .= 'border: ' . $a['border'] . "\n";
-    $debug .= 'size: ' . $a['size'] . "\n";
-    $debug .= '</code></pre>';
-    
-    
-    return $debug;*/
-}
-
-//-----------------------------
 //	video_att
 //
 //	Creates an image, options for portrait, caption and transcript for the landing page
@@ -669,6 +502,39 @@ function landing_list_att($atts) {
 
 
 //-----------------------------
+//	ll_code_example_att
+
+//	Outputs a code example. 
+//  Note to output shortcode examples, you'll need to escape html and [ - &lbrack;  and ] - &rbrack; at editor level
+
+//  shortcode:  [ll-code][/ll-code]
+
+//	usage:			
+//  [landing-list category='Optional category /]
+
+//  Expected output - fill in later
+
+
+function ll_code_example_att($atts, $content = null) {
+    $default = array(
+        'wrap' => ''
+    );
+    $a = shortcode_atts($default, $atts);
+    
+    $tag = '<div class="highlight"><pre><code>';
+    
+    if($a['wrap'] != '') {
+		$tag = '<div class="highlight wrap-code"><pre><code>';
+	}
+    
+    // Remove <br> tags from the content
+    $content = str_replace(array('<br>', '<br />'), '', $content);
+    
+    return $tag . $content . '</code></pre></div>';
+}
+
+
+//-----------------------------
 //	the_content_filter
 
 //	Prevents empty <p> or <br> tags being added in between shortcodes
@@ -676,7 +542,7 @@ function landing_list_att($atts) {
 function the_content_filter($content) {
     
     //Add in shortcodes to this list
-    $block = join("|",array("blockquote-nav", "bs-accordion", "transcript-accordion", "ll-image", "ll-video", "alert-banner", "landing-banner", "landing-list"));
+    $block = join("|",array("blockquote-nav", "bs-accordion", "transcript-accordion", "ll-image", "ll-video", "alert-banner", "landing-banner", "landing-list", "transcript", "ll-code"));
     $rep = preg_replace("/(<p>)?\[($block)(\s[^\]]+)?\](<\/p>|<br \/>?)?/","[$2$3]",$content);
     $rep = preg_replace("/(<p>)?\[\/($block)](<\/p>|<br \/>?)?/","[/$2]",$rep);
     return $rep;
@@ -703,20 +569,24 @@ function strip_tags_before_echo($content) {
     return $content;
 }
 
+// include files with code for specific shortcodes. Shortcodes are added in these files too.
 
+include('ll-image.php');
 
 //-----------------------------
 //	Add shortcodes
 //	Shortcodes and their respective functons are added here
 
 add_shortcode('bs-accordion', 'bootstrap_accordion_att');
-add_shortcode('transcript-accordion', 'transcript_accordion_att');
-add_shortcode('ll-image', 'image_att');
+add_shortcode('transcript-accordion', 'transcript_accordion_att');  //remove this old name evnetually
+
+add_shortcode('transcript', 'transcript_accordion_att');
+
 add_shortcode('ll-video', 'video_att');
 add_shortcode('alert-banner', 'alert_banner_att');
 add_shortcode('blockquote-nav', 'blockquote_nav_att');
 add_shortcode('landing-banner', 'landing_banner_att');
 add_shortcode('landing-list', 'landing_list_att');
-
+add_shortcode('ll-code', 'll_code_example_att');
 
 ?>

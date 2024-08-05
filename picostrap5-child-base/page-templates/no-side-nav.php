@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: No side bar
+ * Template Name: No side nav
  *
 
  */

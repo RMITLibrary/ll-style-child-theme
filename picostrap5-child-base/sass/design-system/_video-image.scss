@@ -145,6 +145,14 @@ figure:has(figcaption), figure:has(.transcript) {
 	border-bottom: 1px solid $interface-grey;
 }
 
+// Styling when only figcaption is present within image-caption-wrapper (portrait modes)
+//increase border bottom on figcaption
+figure:has(.image-caption-wrapper):not(:has(.transcript)) {
+	.image-caption-wrapper {
+		margin-bottom: 1rem;
+	}
+}
+
 // Styling when only transcript is present
 //figure:has(.transcript):not(:has(figcaption)) {
 //  

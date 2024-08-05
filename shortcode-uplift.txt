@@ -1,0 +1,51 @@
+To achieve this, you can define the array of shortcodes in a separate file and provide a function to add shortcodes to the array. Then, you can access this array in the the_content_filter function.
+
+Here's how you can do it:
+
+Create a separate file for managing shortcodes (e.g., shortcodes.php):
+<?php
+// Define an array to hold the shortcodes
+$shortcodes = array("blockquote-nav", "bs-accordion", "transcript-accordion", "ll-image", "ll-video", "alert-banner", "landing-banner", "landing-list");
+
+// Function to add a shortcode to the array
+function add_shortcode_to_list($shortcode) {
+    global $shortcodes;
+    if (!in_array($shortcode, $shortcodes)) {
+        $shortcodes[] = $shortcode;
+    }
+}
+
+// Function to get the list of shortcodes
+function get_shortcodes_list() {
+    global $shortcodes;
+    return $shortcodes;
+}
+?>
+
+Include this file in your theme's functions.php:
+<?php
+// Include the shortcodes file
+require_once get_template_directory() . '/path/to/shortcodes.php';
+
+// Your existing the_content_filter function
+function the_content_filter($content) {
+    // Get the list of shortcodes
+    $shortcodes = get_shortcodes_list();
+
+    // Add in shortcodes to this list
+    $block = join("|", $shortcodes);
+    $rep = preg_replace("/(<p>)?\[($block)(\s[^\]]+)?\](<\/p>|<br \/>?)?/", "[$2$3]", $content);
+    $rep = preg_replace("/(<p>)?\[\/($block)](<\/p>|<br \/>?)?/", "[/$2]", $rep);
+    return $rep;
+}
+add_filter("the_content", "the_content_filter");
+?>
+
+Use the add_shortcode_to_list function to add new shortcodes from anywhere in your theme:
+<?php
+// Add a new shortcode to the list
+add_shortcode_to_list("new-shortcode");
+?>
+
+
+This setup allows you to manage the list of shortcodes in a central location (shortcodes.php) and add new shortcodes without modifying the the_content_filter function directly. This approach keeps your code modular and easier to maintain. Text created by generative AI: RMIT (2024). Val [Large language model]. https://val.rmit.edu.au The text copied to the clipboard is current as of 01 August 2024.

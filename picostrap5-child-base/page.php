@@ -18,7 +18,6 @@ get_header();
         <!-- START content -->
         <div class="col-xl-8 order-first">
             <?php echo createBreadcrumbs($post); ?>
-			<?php //if( function_exists( 'aioseo_breadcrumbs' ) ) aioseo_breadcrumbs(); ?>
             <a id="main-content"></a>
             <h1 class="margin-top-zero"><?php the_title(); ?></h1>
             <?php 

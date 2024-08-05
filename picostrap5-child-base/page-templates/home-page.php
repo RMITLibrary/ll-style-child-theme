@@ -1,9 +1,8 @@
 <?php
 /**
- * Template Name: Home Page
+ * Template Name: Home page
  *
- * Template for displaying a page just with the header and footer area and a "naked" content area in between.
- * Good for landingpages and other types of pages where you want to add a lot of custom markup.
+ * Template for displaying the home page.
  *
  * @package UnderStrap
  */

@@ -104,7 +104,14 @@ Exception: grey-med passes against white bg  */
 	background: none;
 }
 
+/*Look to remove this style, update to the less generic, less bootstrap conflicty options below */
 .border {
+    border: 1px solid !important;
+    padding: 1px 4px;
+}
+
+/* Replace generic border style */
+.color-border, .colour-border {
     border: 1px solid !important;
     padding: 1px 4px;
 }
@@ -181,6 +188,13 @@ vertical-align:top;
 line-height:25px }
 
 
+.text-muted { color: var(--grey-med) !important; }
+.text-warning, .warning { color: var(--yellow) !important; }
+.text-danger, .danger { color: var(--red) !important; }
+.text-info { color: var(--blue) !important; }
+.text-success, .success { color: var(--green) !important; }
+
+
 /* === Buttons styles =============================== */
 .btn-info, .btn-success, .btn-warning, .btn-danger {
 	padding: 8px 16px;
@@ -249,7 +263,7 @@ line-height:25px }
 	}
 }
 
-code {
+.kitchen-sink-code {
 	margin: 20px;
     color: #104880;
     background-color: #fff;
@@ -257,6 +271,15 @@ code {
     display: block;
     border: 1px solid;
 }
+
+/*code {
+	margin: 20px;
+    color: #104880;
+    background-color: #fff;
+    padding: 20px;
+    display: block;
+    border: 1px solid;
+}*/
 
 /* === Accordion =============================== */
 
