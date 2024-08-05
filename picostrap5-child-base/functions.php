@@ -391,6 +391,9 @@ function doChildrenList($pageId)
 }
 
 
+/*remove_filter('the_content', 'wptexturize');
+remove_filter('the_title', 'wptexturize');
+remove_filter('comment_text', 'wptexturize');*/
 
 //-----------------------------
 //	All shortcode code is included and added below
