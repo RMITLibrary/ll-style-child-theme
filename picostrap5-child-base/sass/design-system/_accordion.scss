@@ -3,6 +3,21 @@
     @include do-space(margin-bottom, lg); 
 }
 
+// The style below is pretty complicated, but it's useful in certain contexts
+// (wordpress shortcodes)
+
+// When an accordion item is not wrapped an accordion div, 
+// not a transcript or a nav-accordion (when it's used on its own)
+
+// Add in borders top and bottom, add in space.
+.accordion-item:not(.accordion .accordion-item):not(.transcript):not(.nav-accordion) {
+	@include do-space(margin-top, sm); 
+    @include do-space(margin-bottom, lg);
+    border-top: 1px solid $interface-grey;
+	border-bottom: 1px solid $interface-grey;
+}
+
+
 .accordion-item {
     border-color: $interface-grey;
     border-left: 0px;
@@ -28,12 +43,12 @@
 		@include link-feature-hover;
     }
 
-
     .accordion-button:not(.collapsed) {
         background-color: $white;
         box-shadow: inset 0 0px;
     }
 
+	//create the red carat before the title
     .accordion-button::before {
         flex-shrink: 0;
         width: 2rem;
@@ -44,10 +59,12 @@
         transition: transform .2s ease-in-out;
     }
 
+	//prevent bootstrsp carat from being displayed.
     .accordion-button::after {
         display: none;
     }
 
+	//rotate rotate 180 degrees upon opening
     .accordion-button:not(.collapsed)::before {
 
         transform: rotate(-180deg);
@@ -63,21 +80,25 @@
         box-shadow: 0 0 !important;
     }
 
+	//create padding withing the accordion.
     .accordion-body {
         padding: 0.5rem 0 0 0;
         @include do-space(margin-bottom, lg); 
 
+		//Remove the margin from the first item of content with the accordion body
         > first-child {
             @include do-space(margin-top, zero);   
         }
     }
 }
 
+//remove rounded corners
 .accordion-item:first-of-type .accordion-button, 
 .accordion-item:last-of-type  .accordion-button {
     border-radius: 0px !important;
 }
 
+//style for white text variation
 .accordion-white {
     .accordion-item {
         border-color: $white;
@@ -116,16 +137,16 @@
 
 .transcript {
 	border: 0px;
+	border-top: 0px;	//Remove border top in this context
 	border-bottom: 1px solid $interface-grey;
-	max-width: 40rem;	/* Useful if transcript is not wraped in figure tag */
+	max-width: 40rem;	// Useful if transcript is not wraped in figure tag 
 	
-    
     .accordion-button {
 
         font-size: 1rem !important;
         @include link-normal;
 
-        padding: 0.5rem 0 1rem 0;
+        padding: 0.5rem 0 1rem 0 !important;
 
         @include media-breakpoint-up(md) { 
             font-size: 1.125rem !important;
@@ -136,11 +157,12 @@
 			@include link-normal-hover;
         }
     }
-        
+  
     .accordion-button::before {
         margin-right: 0.5rem !important;
     }
     
+	//scale text to 15px within transcript
     .accordion-body p, .accordion-body li {
         font-size: 0.9375rem !important;
     }

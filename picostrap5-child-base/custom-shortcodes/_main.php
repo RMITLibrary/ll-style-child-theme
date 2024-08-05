@@ -88,271 +88,6 @@ function blockquote_nav_att($atts, $content = null) {
 
 
 
-//-----------------------------
-//	transcript_accordion_att
-
-//	Creates a linked blockquote with options for category, extra-info and icon
-
-//	args:		$content - html content in the accordion 
-//              $atts - attributes as follows:
-
-//  $atts:      title  Title of the accordion (optional - defaults to "Transcript")
-//				size	If set to "full-width", transcript is set to 100% width (optional)
-//              id      Allows an id to be deirectly adssigned to the button. 
-//                      required to get "skip to text only content" to work 
-
-//  shortcode:  [transcript-accordion]
-
-//	usage:			
-//  [transcript-accordion]<p>Transcript content (wrap in p tags recommended).</p>[/transcript-accordion]
-
-function transcript_accordion_att($atts, $content = null) {
-	return doAccordion("transcript", $atts, $content);
-}
-
-
-
-//-----------------------------
-//	bootstrap_accordion_att
-
-//	Creates a linked blockquote with options for category, extra-info and icon
-
-//	args:		$content - html content in the accordion 
-//              $atts - attributes as follows:
-
-//  $atts:      title   Title of the accordion (optional - defaults to "Transcript")
-//              open    Set to true to open accordion by default.
-//              size    option for full width
-//              id      Set an id for the button, allows accordion to be targeted by a skip content link
-
-//	calls:		doAccordion
-
-//  shortcode:  [bs-accordion]
-
-//	usage:			
-//  [bs-accordion title="My accordion"]<p>Transcript content (wrap in p tags recommended).</p>[/bs-accordion]
-//  Wrap multiple accordions in a div: 
-//  <div class="accordion" id="accordion-example">
-//  [bs-accordion title="My accordion 1"]<p>Transcript content</p>[/bs-accordion]
-//  [bs-accordion title="My accordion 2"]<p>Transcript content</p>[/bs-accordion]
-//  </div>
-
-//  expected output:
-//<div class="accordion-item transcript">
-//    <p class="accordion-header" id="Transcript-head">
-//      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#Transcript-body" aria-expanded="false" aria-controls="Transcript-body">
-//        Transcript
-//      </button>
-//    </p>
-//    <div id="Transcript-body" class="accordion-collapse collapse" aria-labelledby="Transcript-head">
-//      <div class="accordion-body"><p>Transcript content</p></div>
-//    </div>
-//</div>
-
-function bootstrap_accordion_att($atts, $content = null) {
-	return doAccordion("regular", $atts, $content);
-}
-
-
-
-//-----------------------------
-//	doAccordion
-
-//	Outputs accordion code
-
-//	Called from:	bootstrap_accordion_att
-//                  transcript_accordion_att
-
-//	args:			$type - Can be "transcript" or "regular"
-//                  $atts - attribute object from shortcode functions
-//					$content - html content in the accordion
-
-//	calls:			generate_id
-
-//	usage:			return doAccordion("transcript", $atts, $content);
-
-function doAccordion($type, $atts, $content = null) {
-    //If title attribute is omitted, default to "Transcript"
-    $default = array(
-        'title' => 'Transcript',
-		'size' => '',
-        'open' => '',
-        'id' => ''
-    );
-    
-    //merges user-defined attributes with a set of default values ($default)
-    $a = shortcode_atts($default, $atts);
-    
-    //grab content from within the two shortcode tags
-    $content = do_shortcode($content);
-    
-    //generate a unique id for head and body sections of the accordion
-    $headId = generate_id($a['title'], "head");
-    $bodyId = generate_id($a['title'], "body");
-    
-    //default state is h2
-    $labelTag = 'h2';
-    $extraClass = '';
-    
-    //these vars control whether accordion is open or not. It's closed by default
-    $buttonState = 'collapsed';
-    $ariaExpanded = 'false';
-    $bodyState  = '';
-    $id = '';
-    
-    //if we have a attribute of open=true, set variable to make this happen
-    if($a['open'] == 'true')
-    {
-        $buttonState = '';
-        $ariaExpanded = 'true';
-        $bodyState = 'show';
-    }
-    
-    //if we have an id add it.
-    if($a['id'] != '')
-    {
-        $id = 'id="' . $a['id'] .'"';    
-    }
-    
-    //if type is transcript, adjust some of the tags to style differently
-    if ($type == 'transcript') {
-        $labelTag = 'p';
-        $extraClass = 'transcript';
-		
-		//this additional class stratches the transcript accordion to 100% of container width
-		if($a['size'] == 'full-width')
-		{
-			$extraClass .= '  transcript-full-width';
-		}
-    }
-    
-    //output the html markup
-    $output = '';
-    
-    $output .= '<div class="accordion-item ' . $extraClass . '">' . "\n";
-    $output .= '<' . $labelTag .' class="accordion-header" id="' . $headId .'">' . "\n";
-    $output .= '<button class="accordion-button ' . $buttonState . '" type="button" data-bs-toggle="collapse" data-bs-target="#' . $bodyId . '" aria-expanded="'. $ariaExpanded . '" aria-controls="' . $bodyId . '" ' . $id . '>';    
-    $output .= $a['title'];
-    $output .= '</button>' . "\n";
-    $output .= '</' . $labelTag . '>' . "\n";
-    $output .= '<div id="' . $bodyId . '" class="accordion-collapse collapse ' . $bodyState . '" aria-labelledby="' . $headId . '">' . "\n";
-    $output .= '<div class="accordion-body">' . $content . '</div></div></div>';
-
-    return $output;
-}
-
-
-
-//-----------------------------
-//	generate_id
-
-//	Generate unique id
-
-//	Called from:	doAccordion
-//                  Note: these ids will change every time the page is loaded
-
-//	args:			$string  the title of the accordion
-//                  $prefix either "head" or "body"
-
-//	usage:			$headId = generate_id($a['title'], "head");
-//	Expected output
-//	"head-myTitle-4035"
-
-function generate_id($string, $prefix) {
-    //Make string lower case
-    $lowercaseString = strtolower($string);
-    
-    //Replace spaces with hypens
-    $hyphenatedString = str_replace(' ', '-', $lowercaseString);
-    
-    //add a random number on the end to ensure uniqueness (important for multiple transcript accordions)
-    $randomNumber = rand(1000, 9999);
-    return $prefix . '-' . $hyphenatedString . '-' . $randomNumber;
-}
-
-
-//-----------------------------
-//	video_att
-//
-//	Creates an image, options for portrait, caption and transcript for the landing page
-
-//	args:		$content - description of the landing page (max 280 characters)
-//              $atts - attributes as follows:
-
-//  $atts:      url         Absolute path to video - eg https://www.youtube.com/embed/w_IEpVVdNrE
-//              caption     Attribution for the video (optional)  
-//              left        Align image to the left - centred by default (optional)
-//              alert       html message for an alert banner (optional)
-
-
-//  shortcode:  [ll-image][/ll-image]
-
-//	usage:			
-//  [ll-image img='' alt='Alt tag for the image' caption='Caption here' aspect='portrait' left='true' border='true' size='sm'][/ll-image]
-//
-//  [ll-video url='']
-//      [transcript-accordion]<p>Transcript content.</p>[/transcript-accordion]
-//  [/ll-video]
-
-//  Expected output
-//<figure class="video">
-//	<div class="responsive-video">
-//		<iframe src="https://www.youtube.com/embed/video-id" frameborder="0" 
-//		allowfullscreen=""></iframe>
-//	</div>
-//	<figcaption>An example caption for this image.</figcaption>
-//	<div class="accordion-item transcript">
-//		<!-- lots of additional accordion code goes here -->	
-//	</div>
-//</figure>
-
-function video_att($atts, $content = null) {
-    $default = array(
-        'url' => '',
-        'left' => '',
-        'caption' => '',
-        'alert' => ''
-        
-    );
-    $a = shortcode_atts($default, $atts);
-    $content = do_shortcode($content);
-        
-    $output = '';
-            
-    //Build figure tag
-    $output .= '<figure class="video ';
-            
-    //if left = true, add class to align image left
-    if($a['left'] != '') { 
-        $output .= 'img-left '; 
-    }
-    
-    $output .= '">' . "\n";
-
-    //if there's an alert message, call alert_banner_att to do the mark-up
-    if($a['alert'] != '') { 
-        $output .= doAlertBanner($a['alert']);   
-    }      
-    
-    $output .= '<div class="responsive-video">' . "\n"; 
-    $output .= '<iframe src="' . $a['url'] . '" frameborder="0" allowfullscreen=""></iframe>' . "\n";
-            
-    $output .= '</div>' . "\n"; 
-     
-    //If caption exists
-    if($a['caption'] != '') { 
-        $output .= '<figcaption>' . $a['caption'] . '</figcaption>' . "\n"; 
-    }  
-        
-    //If $content exists, there's a transcript, add output from [transcript-accordion]
-	if($content != null) {
-		$output .= $content;
-	}   
-        
-    $output .= '</figure>' . "\n";
-            
-    return $output; 
-}
 
 //-----------------------------
 //	alert_banner_att
@@ -520,7 +255,7 @@ function ll_code_example_att($atts, $content = null) {
         'wrap' => ''
     );
     $a = shortcode_atts($default, $atts);
-    
+	
     $tag = '<div class="highlight"><pre><code>';
     
     if($a['wrap'] != '') {
@@ -529,6 +264,9 @@ function ll_code_example_att($atts, $content = null) {
     
     // Remove <br> tags from the content
     $content = str_replace(array('<br>', '<br />'), '', $content);
+	
+	//Replace random curly quotes with straight ones (oh, wordpress)
+	//$content = str_replace(array('”', '″', '“'), '&quot;', $content);
     
     return $tag . $content . '</code></pre></div>';
 }
@@ -542,7 +280,7 @@ function ll_code_example_att($atts, $content = null) {
 function the_content_filter($content) {
     
     //Add in shortcodes to this list
-    $block = join("|",array("blockquote-nav", "bs-accordion", "transcript-accordion", "ll-image", "ll-video", "alert-banner", "landing-banner", "landing-list", "transcript", "ll-code"));
+    $block = join("|",array("blockquote-nav", "bs-accordion", "transcript-accordion", "ll-image", "ll-video", "alert-banner", "landing-banner", "landing-list", "transcript","ll-accordion", "ll-code"));
     $rep = preg_replace("/(<p>)?\[($block)(\s[^\]]+)?\](<\/p>|<br \/>?)?/","[$2$3]",$content);
     $rep = preg_replace("/(<p>)?\[\/($block)](<\/p>|<br \/>?)?/","[/$2]",$rep);
     return $rep;
@@ -571,18 +309,14 @@ function strip_tags_before_echo($content) {
 
 // include files with code for specific shortcodes. Shortcodes are added in these files too.
 
-include('ll-image.php');
+include('accordion.php');	//handles ll-accordion and transcript
+include('image.php');	//handles ll-image shortcode
+include('video.php');	//handles ll-video shortcode
 
 //-----------------------------
 //	Add shortcodes
 //	Shortcodes and their respective functons are added here
 
-add_shortcode('bs-accordion', 'bootstrap_accordion_att');
-add_shortcode('transcript-accordion', 'transcript_accordion_att');  //remove this old name evnetually
-
-add_shortcode('transcript', 'transcript_accordion_att');
-
-add_shortcode('ll-video', 'video_att');
 add_shortcode('alert-banner', 'alert_banner_att');
 add_shortcode('blockquote-nav', 'blockquote_nav_att');
 add_shortcode('landing-banner', 'landing_banner_att');

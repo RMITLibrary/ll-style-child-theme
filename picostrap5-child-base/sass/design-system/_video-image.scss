@@ -3,10 +3,12 @@ $img-width-lg: 40rem;       //640px
 $img-width-md: 25rem;       //400px
 $img-width-sm: 18.5rem;     //296px
 
-img {
+/*img {
     width: 100%;
+	max-width: 40rem;
     height: auto;
-}
+}*/
+
 
 figure {
     
@@ -23,6 +25,11 @@ figure {
 		margin-bottom: 0.5rem;
 	}
 	
+	img {
+		width: 100%;
+		max-width: 100%;
+		height: auto;
+	}
 
 	// --- START #1 image sizing
 	
