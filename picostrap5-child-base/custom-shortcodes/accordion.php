@@ -204,14 +204,21 @@ function generate_id($string, $prefix) {
     return $prefix . '-' . $hyphenatedString . '-' . $randomNumber;
 }
 
+//add code to list (used in the_content_filter)
+add_shortcode_to_list("ll-accordion");
+add_shortcode_to_list("transcript");
 
+//add code to wordpress itself
 add_shortcode('ll-accordion', 'bootstrap_accordion_att');
 add_shortcode('transcript', 'transcript_accordion_att');
 
-//Look to phase out this old, longer name
-add_shortcode('transcript-accordion', 'transcript_accordion_att'); 
+//Look to phase out these older names
 
-//Look to phase out this old name
+//add code to list (used in the_content_filter)
+add_shortcode_to_list("transcript-accordion");
+add_shortcode_to_list("bs-accordion");
+
+add_shortcode('transcript-accordion', 'transcript_accordion_att'); 
 add_shortcode('bs-accordion', 'bootstrap_accordion_att');
 
 

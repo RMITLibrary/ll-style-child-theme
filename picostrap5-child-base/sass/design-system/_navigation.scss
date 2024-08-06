@@ -112,9 +112,9 @@
     }
 	
 	h2.selected {
-        border-left: 0.25rem solid $red;
-        padding: 0.25rem 1.5rem 0.75rem 1.25rem;	//less 0.25rem to account for border left, increase padding at top for select state
-        background-color: $underlay-selected;
+        //border-left: 0.25rem solid $red;
+        padding: 0.25rem 1.5rem 0.75rem 1.5rem;	//less 0.25rem to account for border left, increase padding at top for select state
+        //background-color: $underlay-selected;
     }
     
     h3 {

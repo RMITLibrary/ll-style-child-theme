@@ -178,8 +178,10 @@ function image_att ($atts, $content = null) {
     return $debug;*/
 }
 
+//add code to list (used in the_content_filter)
+add_shortcode_to_list("ll-image");
 
-//add the shortcode
+//add code to wordpress itself
 add_shortcode('ll-image', 'image_att');
 
 ?>

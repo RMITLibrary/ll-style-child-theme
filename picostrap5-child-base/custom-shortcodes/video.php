@@ -92,9 +92,12 @@ function video_att($atts, $content = null) {
 	if($a['portrait'] == 'true') { 
         $output .= '<div class="video-wrapper">' . "\n";  
     }
+    
+    //format url to https://www.youtube.com/embed/video-id
+    $url = format_youtube_video_url($a['url']);
 	
     $output .= '<div class="responsive-video">' . "\n"; 
-    $output .= '<iframe src="' . $a['url'] . '" frameborder="0" allowfullscreen=""></iframe>' . "\n";
+    $output .= '<iframe src="' . $url . '" frameborder="0" allowfullscreen=""></iframe>' . "\n";
             
     $output .= '</div>' . "\n"; 
 	
@@ -120,6 +123,38 @@ function video_att($atts, $content = null) {
     return $output; 
 }
 
+//-----------------------------
+//	format_youtube_video_url($url)
+//
+//	We want urls in the form -  https://www.youtube.com/embed/video-id
+//  By default, share gives -   https://youtu.be/video-id or silar
+//  This function extracts video id and reformats to correct url
+
+//	args:		$url - youtube url
+//  returns:    url in the form https://www.youtube.com/embed/video-id
+
+function format_youtube_video_url($url) {
+    // Parse the URL to get its components
+    $parsed_url = parse_url($url);
+
+    // Check if the host is youtu.be
+    if (isset($parsed_url['host']) && $parsed_url['host'] === 'youtu.be') {
+        // Extract the path and remove the leading slash
+        $video_id = ltrim($parsed_url['path'], '/');
+        
+        $formatted_url = 'https://www.youtube.com/embed/' . $video_id;
+        return $formatted_url;
+    }
+    else
+    {
+        return $url;
+    }
+}
+
+//add code to list (used in the_content_filter)
+add_shortcode_to_list("ll-video");
+
+//add code to wordpress itself
 add_shortcode('ll-video', 'video_att');
 
 ?>
