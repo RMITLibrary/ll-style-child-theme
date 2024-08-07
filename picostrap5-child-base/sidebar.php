@@ -119,8 +119,11 @@ function outputChildNav($parent_id, $thePost, $thePostParent = null)
 		'post_status'    => 'publish',
 		'posts_per_page' => -1,           // Get all children
 		'post_parent'    => $parent_id,
-		'orderby'        => 'menu_order',
-		'order'          => 'ASC'  
+		'orderby'        => array(
+            'menu_order' => 'ASC',
+            'title'      => 'ASC'
+        ),
+        'order'          => 'ASC'  
 	);
 
 	// Create a new query
