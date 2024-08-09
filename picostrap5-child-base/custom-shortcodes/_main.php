@@ -40,15 +40,6 @@ add_filter("the_content", "the_content_filter");
 
 
 
-/*function the_content_filter($content) {
-    
-    //Add in shortcodes to this list
-    $block = join("|",array("blockquote-nav", "bs-accordion", "transcript-accordion", "ll-image", "ll-video", "alert-banner", "landing-banner", "landing-list", "transcript","ll-accordion", "ll-code", "nav-panel"));
-    $rep = preg_replace("/(<p>)?\[($block)(\s[^\]]+)?\](<\/p>|<br \/>?)?/","[$2$3]",$content);
-    $rep = preg_replace("/(<p>)?\[\/($block)](<\/p>|<br \/>?)?/","[/$2]",$rep);
-    return $rep;
-}
-add_filter("the_content", "the_content_filter");*/
 
 
 //-----------------------------
@@ -84,5 +75,6 @@ include('alert_banner.php');	  //handles alert-banner shortcode
 
 include('landing.php');	          //handles landing-banner, landing-list 
 include('code_example.php');	  //handles code example shortcode
+include('attribution.php');	       //handles external caption/attribution
 
 ?>

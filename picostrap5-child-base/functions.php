@@ -390,7 +390,21 @@ function doChildrenList($pageId)
 	);
 }
 
+// We have slugs that don't hav the "/" in front and hence break once hierarcy is 
+// deplayed. To fix, let's add the slash in where appropriate.
+function prepend_slash_to_relative_urls($content) {
+    // This regex will find all href attributes that do not start with a /, http, https, or #
+    $pattern = '/href="(?!\/|http|https|#)([^"]*)"/';
+    $replacement = 'href="/$1"';
+    $content = preg_replace($pattern, $replacement, $content);
+    return $content;
+}
+add_filter('the_content', 'prepend_slash_to_relative_urls');
 
+
+// Prevents Worpress trying to rplace standrad striaght quotes with curly ones
+// This was causing issues with code blocks. Worth exploring if there's a way
+// to target code blocks only.
 remove_filter('the_content', 'wptexturize');
 remove_filter('the_title', 'wptexturize');
 remove_filter('comment_text', 'wptexturize');
