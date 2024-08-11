@@ -9,7 +9,10 @@
 
 //  $atts:      url         Absolute path to image
 //              alt         Alt tag for the above image
-//              caption     Attribution for the image (optional)  
+//              caption     Attribution for the image (optional) 
+
+//              caption-id  If multiple images use the same attribution  
+//                          this id will point to it via aria-labelledBy
 
 //              align       center or centre -  to align img to centre (optional)
 //              size        wide, md, sm - sets size of image (optional)
@@ -64,6 +67,7 @@ function image_att ($atts, $content = null) {
         'portrait' => '',
         'size' => '',
         'caption' => '',
+        'attribution-id' => '',
         'classes' => ''
     );
     $a = shortcode_atts($default, $atts);
@@ -118,9 +122,15 @@ function image_att ($atts, $content = null) {
         } 
     }
     
+    
     //if there's anything in clesses, add it (don't document this, for web devs only)
     if($a['classes'] != '') { 
         $figureTag .= $a['classes'] . ' '; 
+    } 
+    
+    //If caption-id has a value, add it as an aria-labelledby
+    if($a['attribution-id'] != '') { 
+        $figureTag .= '" aria-labelledby="' . $a['attribution-id']; 
     } 
     
     $figureTag .= '">';
