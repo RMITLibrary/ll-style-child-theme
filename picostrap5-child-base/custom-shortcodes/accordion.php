@@ -221,5 +221,11 @@ add_shortcode_to_list("bs-accordion");
 add_shortcode('transcript-accordion', 'transcript_accordion_att'); 
 add_shortcode('bs-accordion', 'bootstrap_accordion_att');
 
+// Point lightweight-accordion to transcript_accordion_att temporarily. 
+// Look to find and replace "lightweight-accordion" with "transcript" over time.
+
+add_shortcode_to_list("lightweight-accordion");
+
+add_shortcode('lightweight-accordion', 'transcript_accordion_att'); 
 
 ?>

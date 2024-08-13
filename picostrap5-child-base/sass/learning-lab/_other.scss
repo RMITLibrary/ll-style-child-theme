@@ -13,6 +13,9 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
+	
+	padding: 0;
+	
     
     @include media-breakpoint-up(sm) { 
         grid-template-columns: 1fr 1fr 1fr; 
@@ -22,6 +25,12 @@
         gap: 1.5rem;
         grid-template-columns: 1fr 1fr 1fr 1fr; 
     }
+	
+	li {
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+	}
 }
 
 aside.visually-hidden-focusable div {
