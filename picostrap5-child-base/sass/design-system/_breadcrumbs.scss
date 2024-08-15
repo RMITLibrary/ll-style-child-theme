@@ -2,9 +2,10 @@ ul.breadcrumbs {
 	color: $dark-grey;
 	@include type-small;
 	
-	margin: 0;
+	//margin: 0;
+	margin-top: 0;
+	@do-space(margin-bottom, sm, important);
 	padding: 0;
-	@do-space(margin-bottom, sm);
 	
 	li:first-child { padding: 0; }
 	

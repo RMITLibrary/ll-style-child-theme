@@ -22,123 +22,165 @@ $img-width-sm: 18.5rem;     //296px*/
 }
 */
 
-.two-col-new {
-    
+//text options used in both icont-text and img-text
+@mixin two-col-text {
+	//allow text to fill available space
+	flex: 1;
+	margin: 0;
+
+	//remove margin from first element
+	& > *:first-child {
+		margin-top: 0;
+	}
+
+	//remove margin from first element
+	& > *:last-child {
+		margin-bottom: 0;
+	}
+
+	// Target the first heading, reduce margin
+	h1:first-of-type,
+	h2:first-of-type,
+	h3:first-of-type,
+	h4:first-of-type,
+	h5:first-of-type,
+	h6:first-of-type {
+		margin-bottom: 0.5rem;
+	}
+
+	// Target the first heading and the paragraph immediately following it, reduce margin
+	h1:first-of-type + p,
+	h2:first-of-type + p,
+	h3:first-of-type + p,
+	h4:first-of-type + p,
+	h5:first-of-type + p,
+	h6:first-of-type + p {
+		margin-top: 0.5rem;
+	}
 }
 
-.two-col-icon {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    
-    figure {
-        width: 7.5rem;
-        flex-shrink: 0;
-    }
-}
 
-
-/* On smaller screens we still stack everything */
-.two-col {
-    @include do-space(margin-top, lg); 
+// icon-text shows a image (usually an icon) next to text across all sizes
+.icon-text  {
+	display: flex;
+	align-items: center;	//align to center
+	gap: 1.5rem;
+	
+	//responsive margin top and bottom for the component
+	@include do-space(margin-top, lg); 
     @include do-space(margin-bottom, lg); 
-    
-    /* remove margins expect for a small one at the bottom */
-    figure {
-        margin: 0 0 0.5rem 0;
-    }
-    
-    figure.xs {
-        width: 10rem;
-        margin: 0 auto;
-    }
-    
-    /* no margin or border */
-    figcaption {
-        padding: 0;
-        border: 0;
-    }
-    
-    /* small margin for headings in this context */
-    h2, h3, h4, h5, h6 {
-        margin-top: 1rem;
-    }
-    
-    /* START small screen sizes */
-    /* At screen widths greater then 576px, swap to two column */
-    @include media-breakpoint-up(sm) {  
-        display: flex;
+	
+	// img is 3rem at small screens, 5rem at leager screens
+	figure {
+        margin: 0;
+		max-width: 3rem;
         
-        /* Vertically align items */
-        align-items: center;
-        gap: 1rem;
-        
-        /* flex this to exploit ordering */
-        .content {
-            /* Content to the right */
-            order: 1;
-            display: flex;
-            gap: 1rem;
-            flex-direction: column;
-        }
-        
-        /* remove margins as collapsible margins don't work in flex :( */
-        * {
-            margin: 0 !important;
-        }
-        
-        
-        figure {
-            /* Figure to the right */
-            order: 2;
-            margin: 0;
-            
-            width: 17.5rem;
-            flex-shrink: 0;
-        }
-        
-        
-        /* Once we aren't stacking everything, photo caption comes last */
-        figcaption {
-            order: 100;
-        }        
-    }
-    /* END small screen sizes */
-    
-    @include media-breakpoint-up(lg) {  
-        gap: 1.5rem;
-    }
+        @include media-breakpoint-up(md) { 
+			max-width: 5rem;
+		}   
+	}
+	
+	// refer to mixin, adjusts margins for text inside text class
+	.content-text {
+		@include two-col-text;
+	}
 }
 
-/* Customisation options */
-.align-top {
-    align-items: flex-start;
+
+// img-text shows a small image (usually an icon) to the right of text on medium screens and above.
+.img-text  {
+	
+	//responsive margin top and bottom for the component
+	@include do-space(margin-top, lg); 
+    @include do-space(margin-bottom, lg);
+	
+	// Adjust margins for both text and image in stacked layout for small screens
+	.content-text {
+		& > *:first-child {
+			margin-top: 0;
+		}
+	}
+	
+	figure {  
+		margin-bottom: 1.5rem;
+	}
+	
+	// use flex to do two column layout on medium screens nd above
+	@include media-breakpoint-up(md) { 
+		display: flex;
+		align-items: center;
+		gap: 1.5rem;
+		
+		// refer to mixin, adjusts margins for text inside text class
+		.content-text {
+			@include two-col-text;
+		}
+		
+		// img is 296px at medium screens, set to the right
+		figure {  
+			margin: 0;
+			max-width: $img-width-sm;
+			order: 2;
+		}
+	} 
 }
 
-/* Swap image and content around, image is on the left */
-.img-left {
-    figure {
-        order: 1;
-    }
-    .content {
-        order: 2;
-    }
+.img-text-left {
+	@include media-breakpoint-up(md) {
+		figure {  
+			order: 0;
+		}
+	}
 }
 
-.my-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    
-    @include media-breakpoint-up(sm) { 
-        grid-template-columns: 1fr 1fr 1fr; 
-    }
-    
-    @include media-breakpoint-up(lg) { 
-        gap: 1.5rem;
-        grid-template-columns: 1fr 1fr 1fr 1fr; 
-    }
+//Use this in conjunction with img-text and icon-text
+.align-items-top {
+	align-items: flex-start;
 }
+
+
+// Card stuff
+.card {
+	border: 0;
+	background-color: $underlay-grey;
+	
+	max-width: $img-width-lg;
+	
+	&.my-border {
+		border: 1px solid $interface-grey;
+	}
+	
+	figure {
+		margin: 0;
+	}
+	
+	.card-body {
+		& > *:first-child {
+			margin-top: 0;
+		}
+		
+		& > *:last-child {
+			margin-bottom: 0px;
+		}
+		
+		@include type-small;
+		
+		p {
+			@include type-small;
+		}
+		
+		p.large {
+			@include type-default;
+		}
+		
+		
+	}
+}
+
+.card.float-right {
+  max-width: $img-width-sm;
+}
+
 
 // Striped list 
 // Mirrors functionality of a striped table
@@ -253,4 +295,42 @@ $img-width-sm: 18.5rem;     //296px*/
 			grid-column: span 2;
 		}
 	}
+}
+
+
+// Generic grid
+
+.my-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+	
+	padding: 0;
+	
+    
+    @include media-breakpoint-up(md) { 
+        grid-template-columns: 1fr 1fr; 
+    }
+    
+    @include media-breakpoint-up(lg) { 
+        gap: 1.5rem;
+    }
+	
+	li.grid-item {
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+	}
+}
+
+.my-grid-3up {
+	@include media-breakpoint-up(md) { 
+        grid-template-columns: 1fr 1fr 1fr; 
+    }
+}
+
+.my-grid-4up {
+	@include media-breakpoint-up(lg) { 
+        grid-template-columns: 1fr 1fr 1fr 1fr; 
+    }
 }

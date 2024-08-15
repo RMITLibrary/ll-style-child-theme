@@ -2,6 +2,7 @@ $img-width-xl: 100%;
 $img-width-lg: 40rem;       //640px
 $img-width-md: 25rem;       //400px
 $img-width-sm: 18.5rem;     //296px
+$img-width-xs: 10rem;		//128px;
 
 /*img {
     width: 100%;
@@ -21,8 +22,8 @@ figure {
 	//figcaption rules
 	figcaption {
 		@include type-small;
-		margin-top: 0.25rem;
-		margin-bottom: 0.5rem;
+		padding-top: 0.25rem;
+		padding-bottom: 0.5rem;
 	}
 	
 	img {
@@ -50,6 +51,10 @@ figure {
 		&sm {
 			max-width: $img-width-sm;
 		}
+		
+		&xs {
+			max-width: $img-width-xs;
+		}
 	}
 	// --- END #1 image sizing
 	
@@ -75,13 +80,13 @@ figure {
 				
                 //No margin required in this layout
 				figcaption {
-					margin: 0;
+					padding: 0;
 				}
 			}		
 		} 
 	}
 	
-	//portrait small - restict max with to be even smaller
+	//portrait small - restict max width to be even smaller
 	&.portrait-small {
 		@include media-breakpoint-up(md) { 
 			.image-caption-wrapper img {
@@ -142,7 +147,7 @@ figure {
 //increase border bottom on figcaption
 figure:has(figcaption):not(:has(.transcript)) {
 	figcaption {
-		margin-bottom: 1rem;
+		padding-bottom: 0.75rem;
 	}
 }
 
@@ -172,6 +177,72 @@ figure:has(.image-caption-wrapper):not(:has(.transcript)) {
 
 // --- END #4 styles dependent on presence of figcaption, transcript
 
+
+// remove margins from content nsted withing float classes
+.float-right, .float-left, .float-right-sm, .float-left-sm {
+    
+	& > *:first-child {
+		margin-top: 0px;
+	}
+
+	& > *:last-child {
+		margin-bottom: 0px;
+	}
+}
+
+//Set max-width to 296px on medium screens
+.float-right, .float-left {
+    margin: 1.5rem 0 1.5rem 0;
+    
+	@include media-breakpoint-up(md) { 
+		// Is this the right way to do this? In use to prevent card from displaying too wide if floated.
+		max-width: $img-width-sm
+	}
+}
+
+//Small class. set max-width to 128px on all screens
+.float-right-sm, .float-left-sm {
+     max-width: $img-width-xs;
+}
+
+//float right across all sizes
+.float-right-sm {
+    float: right;
+    margin: 0.5rem 0 0.5rem 1rem;
+}
+
+//float right and adjust margins on medium screens
+.float-right {
+    
+    @include media-breakpoint-up(md) { 
+        float: right;
+        margin: 0.5rem 0 1rem 2rem;
+	}
+}
+
+//float left across all sizes
+.float-left-sm {
+    float: left;
+    margin: 0.5rem 1rem 0.5rem 0;
+}
+
+
+//float left and adjust margins on medium screens
+.float-left {
+	@include media-breakpoint-up(md) { 
+        float: left;
+       margin: 0.5rem 2rem 1rem 0;
+	}
+}
+
+//apply to ul or li if you want to use these with a float left image.
+//prevents overlapping
+.list-overflow-hide {
+    overflow: hidden;
+}
+
+
+// --- START #4 video styles
 .video, .video-3-2, .video-4-3, .video-square, .video-portrait {
     border-bottom: 1px solid $interface-grey;
     

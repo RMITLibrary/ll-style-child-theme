@@ -80,8 +80,11 @@ h6, .h6 {
 //reduce indenting on lists
 ul, ol {
     @include do-space(margin-top, xs);          //should we have margin-top?
-    @include do-space(margin-bottom, sm, important);
+    @include do-space(margin-bottom, sm, important);		//important was here. Bootstrap seems to overwrite. Watch out for changes elsewhere
     @include do-space(padding-left, sm); 
+	
+	//use overflow hidden to prevent lists overlapping with float: left
+	//overflow: hidden;
 }
 
 li {
@@ -93,6 +96,7 @@ li {
 li > ul {
     margin-top: 0.5rem;
     margin-bottom: 1rem !important;
+	list-style-type: square;
 }
 
 //As we are using bootstrap default sizes for headings, it makes sense to go down here

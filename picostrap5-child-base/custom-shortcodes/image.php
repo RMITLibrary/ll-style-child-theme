@@ -67,6 +67,8 @@ function image_att ($atts, $content = null) {
         'portrait' => '',
         'size' => '',
         'caption' => '',
+		'float' => '',
+		'hide-sm' => '',
         'attribution-id' => '',
         'classes' => ''
     );
@@ -96,6 +98,22 @@ function image_att ($atts, $content = null) {
         $figureTag .= 'round-corners '; 
     } 
     
+	//check for floated
+    if($a['float'] == 'true' || $a['float'] == "right") {
+		if($a['size'] == 'sm')
+        {
+			$figureTag .= 'float-right-sm ';  
+        }
+        else
+        {
+            $figureTag .= 'float-right ';  
+        }   
+    } 
+	
+	//check for hide-sm
+    if($a['hide-sm'] == 'true') {
+		$figureTag .= 'hide-sm ';  
+    } 
             
     //if portrait is, add a class
     if($a['portrait'] == 'true') { 
@@ -109,8 +127,8 @@ function image_att ($atts, $content = null) {
             $figureTag .= 'portrait '; 
         } 
     }
-    //add size attribute if required and portrait not specified       
-    else if($a['size'] != '') { 
+    //add size attribute if required and portrait or float not specified       
+    else if($a['size'] != '' && $a['float'] == '') { 
 
         if($a['size'] == 'wide')
         {
