@@ -105,6 +105,7 @@ function doAccordion($type, $atts, $content = null) {
 		'size' => '',
         'open' => '',
         'id' => '',
+        'heading-tag' => '',
         'classes' => ''
     );
     
@@ -152,6 +153,16 @@ function doAccordion($type, $atts, $content = null) {
 		{
 			$extraClass .= ' transcript-full-width ';
 		}
+    }
+    
+    //if heading tag has a value, update $labelTag, otherwise it will retain h2 as default
+    if($a['heading-tag'] != '')
+    {
+        // Sanitize the heading level to prevent invalid HTML
+        $allowed_headings = array('h1', 'h2', 'h3', 'h4', 'h5', 'h6');
+        if (in_array($a['heading-tag'], $allowed_headings)) {
+            $labelTag = $a['heading-tag'];
+        }
     }
 	
 	//if there's anything in clesses, add it (don't document this, for web devs only)

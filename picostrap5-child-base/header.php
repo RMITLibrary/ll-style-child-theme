@@ -54,12 +54,22 @@ defined('ABSPATH') || exit;
         <div class="row">
             <div class="col-auto left-nav">
                 <div class="rmit-logo"><span class="visually-hidden">RMIT University logo</span></div>
-                <a href="/home" class="h2">Learning lab</a>
+                <h2>
+                    <!-- Explicitly turn off one bit of text and turn on the other to deal with JAWS bug  -->
+                    <a href="/home">
+                        <span aria-hidden="true">Learning lab</span>
+                        <span class="visually-hidden">Learning lab homepage</span>
+                    </a>
+                </h2>
             </div>
             <div class="col">       
                 <ul>
                     <li class="hide-sm">
-                        <a href="https://www.rmit.edu.au/library">Library<span class="visually-hidden"> homepage</span></a>
+                        <!-- Explicitly turn off one bit of text and turn on the other to deal with JAWS bug  -->
+                        <a href="https://www.rmit.edu.au/library">
+                            <span aria-hidden="true">Library</span>
+                            <span class="visually-hidden">Library homepage</span>                        
+                        </a>
                     </li>
                     <!--<li class="search">
                         <a id="search2">
