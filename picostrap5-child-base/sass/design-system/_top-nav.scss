@@ -154,15 +154,17 @@ html.nav-fixed {
         display: flex;
         align-items: center;
 		
-		a {
+        a {
+			color: $white;
+			text-decoration: none;			
+			&:hover { text-decoration: underline; }
+		}
+        
+        h2 {
 			color: $white;
 			font-size: 4.5vw;			//scale title depending on small screen width
-			text-decoration: none;
-			
 			margin: 0;
-			
-			&:hover { text-decoration: underline; }
-			
+           
 			@include media-breakpoint-up(sm) {
 				font-size: 1.25rem;		//Once we have enough space, fix the title
 			} 

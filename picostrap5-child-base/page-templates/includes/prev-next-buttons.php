@@ -16,16 +16,26 @@ $nextTitle = formatAfterTheColon(get_the_title($nextID));
 ?>
 <nav class="btn-nav-container" aria-label="Previous and next links">
 <?php if (!empty($prevID)) { ?>
-
-    <a class="btn btn-nav-prev" href="<?php echo get_permalink($prevID); ?>"><span class="visually-hidden">Previous: </span><?php echo $prevTitle; ?></a>
+<h2>
+    <a class="btn btn-nav-prev" href="<?php echo get_permalink($prevID); ?>">
+        <span aria-hidden="true"><?php echo $prevTitle ; ?></span>
+        <span class="visually-hidden">Previous page: <?php echo $prevTitle; ?></span>
+    </a>
+</h2>
+    
 
 <?php }
 $is_last_page = get_query_var('is_last_page');
 if (!empty($nextID && $is_last_page != 'true')) { 
 
 ?>
-	
-<a class="btn btn-nav-next" href="<?php echo get_permalink($nextID); ?>"><span class="visually-hidden">Next: </span><?php echo $nextTitle ; ?></a>
+
+<h2>
+    <a class="btn btn-nav-next" href="<?php echo get_permalink($nextID); ?>">
+        <span aria-hidden="true"><?php echo $nextTitle ; ?></span>
+        <span class="visually-hidden">Next page: <?php echo $nextTitle ; ?></span>
+    </a>
+</h2>
 	
 <?php } ?>
 </nav><!-- .navigation -->
