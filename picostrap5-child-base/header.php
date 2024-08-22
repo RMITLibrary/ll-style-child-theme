@@ -54,12 +54,21 @@ defined('ABSPATH') || exit;
         <div class="row">
             <div class="col-auto left-nav">
                 <div class="rmit-logo"><span class="visually-hidden">RMIT University logo</span></div>
-                <a href="/home" class="h2">Learning lab</a>
+				<h2>
+					<!-- Explicitly turn off one bit of text and turn on the other to deal with JAWS bug - https://github.com/alphagov/govuk-frontend/issues/1643 -->
+					<a href="/home">
+						<span aria-hidden="true">Learning lab</span>
+						<span class="visually-hidden">Learning lab homepage</span>
+					</a>
+				</h2>
             </div>
             <div class="col">       
                 <ul>
                     <li class="hide-sm">
-                        <a href="https://www.rmit.edu.au/library">Library<span class="visually-hidden"> homepage</span></a>
+                        <a href="https://www.rmit.edu.au/library">
+							<span aria-hidden="true">Library</span>
+							<span class="visually-hidden">Library homepage</span>
+						</a>
                     </li>
                     <!--<li class="search">
                         <a id="search2">
@@ -96,7 +105,7 @@ defined('ABSPATH') || exit;
                         special case. Effectively each of the child pages here is a section page. For the nav, however, we want toshow these under the banner of subject support. -->
 						<div class="accordion-item">
 							<h2 class="accordion-header" id="accordion-head-subject-support">
-								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-body-subject-support" aria-expanded="true" aria-controls="accordion-body-subject-support">
+								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-body-subject-support" aria-expanded="false" aria-controls="accordion-body-subject-support">
 								Subject support
 							  	</button>
 							</h2>
