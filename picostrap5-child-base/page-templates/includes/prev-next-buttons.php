@@ -16,8 +16,8 @@ $nextTitle = formatAfterTheColon(get_the_title($nextID));
 ?>
 <nav class="btn-nav-container" aria-label="Previous and next links">
 <?php if (!empty($prevID)) { ?>
-<h2>
-    <a class="btn btn-nav-prev" href="<?php echo get_permalink($prevID); ?>">
+<h2 class="btn-nav-prev">
+    <a href="<?php echo get_permalink($prevID); ?>">
         <span aria-hidden="true"><?php echo $prevTitle ; ?></span>
         <span class="visually-hidden">Previous page: <?php echo $prevTitle; ?></span>
     </a>
@@ -30,8 +30,8 @@ if (!empty($nextID && $is_last_page != 'true')) {
 
 ?>
 
-<h2>
-    <a class="btn btn-nav-next" href="<?php echo get_permalink($nextID); ?>">
+<h2 class="btn-nav-next">
+    <a href="<?php echo get_permalink($nextID); ?>">
         <span aria-hidden="true"><?php echo $nextTitle ; ?></span>
         <span class="visually-hidden">Next page: <?php echo $nextTitle ; ?></span>
     </a>
