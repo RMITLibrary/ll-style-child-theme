@@ -31,8 +31,10 @@ get_header();
             endif;
             ?>
 			<?php get_template_part( 'page-templates/includes/prev-next-buttons', 'page' ); ?>
+			<div id="additional-info">
 			<?php get_template_part( 'page-templates/includes/additional-resources', 'page' ); ?>
 			<?php get_template_part( 'page-templates/includes/taxonomy', 'page' ); ?>
+            </div>
         </div>
         <!-- END content --> 
     </div>
