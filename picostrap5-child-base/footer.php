@@ -221,7 +221,7 @@ function showHideMenu() {
  hide-intro - set to true to hid first <p class="lead">
  show-prev-next - set to true to show previous and next buttons
  
- Unlikely hide-title and hie-intro would be used in ceoncert with show-prev-next 
+ Unlikely hide-title and hide-intro would be used in concert with show-prev-next 
 */
 // ---------
     
@@ -239,9 +239,10 @@ const showPrevNext = urlParams.get('show-prev-next');
 	
 if(embedBool == 'true') {
 	embedThisPage();
+    handeEmbedLinks();
     
     // Get all the links on the page, append query string
-    const links = document.querySelectorAll('a');
+    /*const links = document.querySelectorAll('a');
 
     links.forEach(link => {
         const href = link.getAttribute('href');
@@ -251,10 +252,12 @@ if(embedBool == 'true') {
             // Append the query string to the link
             link.setAttribute('href', href + queryString);
         }
-    });
+    });*/
 
 }
-    
+
+// embedThisPage hides or removes markup to optimise the display of a page inside an iframe,
+// depending on additional query string values
 function embedThisPage()
 {
 	// pick up the relevant objects in the page
@@ -266,7 +269,6 @@ function embedThisPage()
     //These are layout divs, looking to remove bootstrap styling to go full width
     var containerDiv = document.getElementById("page-content");
     var contentDiv = document.querySelector('div.order-first');
-    
     
     //grab content below prev/next buttons
     var additionalInfo = document.getElementById('additional-info');
@@ -343,6 +345,43 @@ function embedThisPage()
         //console.log("Hid prev");
     }
 }
+
+// handeEmbedLinks either adds the query string or target="+top" depending on context
+    
+function handeEmbedLinks()
+{
+    //grab all the links
+    const links = document.querySelectorAll('a');
+    
+    links.forEach(link => {
+
+        const href = link.getAttribute('href');
+        
+        //if we have an href
+        if (href !== null) {
+            if(showPrevNext == 'true') {
+                //if prev next buttons are displayed
+                if(href.startsWith('http://') || href.startsWith('https://')) {
+                    //if external link, break from iframe
+                    addTargetTopToLink(link);
+                } 
+                else {
+                    //otherwise add the query string to the link
+                    link.setAttribute('href', href + queryString);
+                }
+            }
+            else {
+                //otherwise, add _top to break from iframe
+                addTargetTopToLink(link);
+            }
+        }
+    });
+}
+                  
+function addTargetTopToLink(link) {
+    link.setAttribute('target', '_top');
+}
+
 </script>
 <!-- adding requirements for embed mode start -->
 	</body>
