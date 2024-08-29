@@ -240,20 +240,6 @@ const showPrevNext = urlParams.get('show-prev-next');
 if(embedBool == 'true') {
 	embedThisPage();
     handeEmbedLinks();
-    
-    // Get all the links on the page, append query string
-    /*const links = document.querySelectorAll('a');
-
-    links.forEach(link => {
-        const href = link.getAttribute('href');
-
-        // Check if the link already has a query string
-        if (href && href.indexOf('?') === -1) {
-            // Append the query string to the link
-            link.setAttribute('href', href + queryString);
-        }
-    });*/
-
 }
 
 // embedThisPage hides or removes markup to optimise the display of a page inside an iframe,

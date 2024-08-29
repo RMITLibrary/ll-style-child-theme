@@ -1,7 +1,12 @@
 <?php
+// Grab the whole page list, put them in an array
+$pagelist = get_pages(array(
+    'sort_column' => 'menu_order,post_title',
+    'sort_order' => 'asc'
+));
+
 
 //grab the whole page list, put them in an array
-$pagelist = get_pages('sort_column=menu_order&sort_order=asc');
 $pages = array();
 foreach ($pagelist as $page) {
    $pages[] += $page->ID;
