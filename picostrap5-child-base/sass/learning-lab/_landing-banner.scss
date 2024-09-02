@@ -7,7 +7,7 @@
 	
 	img {
 		border-radius: 0.5rem 0.5rem 0 0;
-		border-bottom: 0.25rem solid $red;
+		border-bottom: 0.25rem solid $accent-color;
 	}
 	
 	h1 {
@@ -42,7 +42,7 @@
 		}
 		
 		.red-bar {
-			border-top: 4px solid $red;
+			border-top: 4px solid $accent-color;
 			max-width: 32rem;
 		}	
 	}
@@ -98,6 +98,32 @@
 		
 		.landing-list > *:last-child {
 			margin-bottom: 0px;
+		}
+	}
+}
+
+// Dark mode
+@include color-mode(dark) {
+    
+    .landing-banner {
+        
+        img {
+			border-radius: 0.5rem 0.5rem 0 0;
+			border-bottom: 0.25rem solid $accent-color-dark;
+		}
+    }
+	
+	@include media-breakpoint-up(lg) { 
+		.landing-banner {
+			img {
+				border-radius: 0.5rem;
+				border-bottom: 0;
+			}
+
+			.red-bar {
+				border-top: 4px solid $accent-color-dark;
+				max-width: 32rem;
+			}	
 		}
 	}
 }

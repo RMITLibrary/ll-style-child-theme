@@ -49,7 +49,7 @@ $utilities: (
 
 /* core design system colours */
 
-$dark-grey: #333;               //primary text colour
+/*$dark-grey: #333;               //primary text colour
 $interface-grey: #BFBFBF;
 $underlay-selected: #E6E6E6;    //use sparingly
 $underlay-grey: #f5f5f5;
@@ -61,7 +61,7 @@ $rmit-red: #E61E2A;
 $correct-green: #009969;
 
 
-/* map our colours to bootstrap variables - is it worth mapping all grey vars? */
+// map our colours to bootstrap variables - is it worth mapping all grey vars? 
 
 $gray-100: $underlay-grey;
 $gray-300: $interface-grey;
@@ -74,15 +74,15 @@ $green: $correct-green;
 $red: $rmit-red;
 
 
-/* link colours */
+// link colours 
 $link-hover-color: $blue-hover;
 $link-hover-decoration: none;
 
 $focus-color: rgba(13, 110, 253, 0.5);
 
 
-/* tables */
-$table-striped-bg: $underlay-grey;
+// tables
+$table-striped-bg: $underlay-grey;*/
 
 /* END COLOUR */
 
@@ -99,3 +99,5 @@ $font-family-serif: "Museo700", Museo700, serif;
 
 $lead-font-weight: 500;
 $enable-rfs: false;             //turn off responsive font scaling
+
+$accordion-border-radius: 0;

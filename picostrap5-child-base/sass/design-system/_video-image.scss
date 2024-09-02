@@ -10,6 +10,16 @@ $img-width-xs: 10rem;		//128px;
     height: auto;
 }*/
 
+// Dark mode
+@include color-mode(dark) {
+	img {
+        filter: brightness(0.9) contrast(0.9);	//drop the contrast in dark mode to reduce eye strain.
+		
+		//Add a background colour to mitigate transparent png images which are premonenetly dark.
+		//Alternative is to add this as a custom class?
+		background-color: $underlay-grey;		
+    }
+}
 
 figure {
     

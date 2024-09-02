@@ -1,21 +1,17 @@
 @mixin link-feature {
 	text-decoration: none;
-	color: $rmit-blue;
 }
 
 @mixin link-feature-hover {
 	text-decoration: underline;
-	color: $blue-hover;
 }
 
 @mixin link-normal {
 	text-decoration: underline;
-	color: $rmit-blue;
 }
 
 @mixin link-normal-hover {
 	text-decoration: none;
-	color: $blue-hover;
 }
 
 a {
@@ -27,7 +23,6 @@ a:hover {
 }
 
 a:not([href]):not([class]), a:not([href]):not([class]):hover {
-  color: $rmit-blue;
   text-decoration: none;
 }
 
@@ -82,10 +77,13 @@ p a:visited:hover {
     @include do-space(margin-top, xs);
 	@include do-space(margin-bottom, xs);
     
-    //ul {
+    /*ul {
         padding: 0;
         list-style-type: none;
-    //}
+    }*/
+
+    padding: 0;
+    list-style-type: none;
     
     li {
         display: flex;
@@ -151,4 +149,16 @@ p a:visited:hover {
 			 @include link-feature-hover;
 		}
 	}
+}
+
+// Dark mode
+@include color-mode(dark) {
+    
+    .link-large::after {
+        @include carat-dark;
+    }
+    
+	.link-list {
+        li:before { @include carat-dark; }
+    }
 }

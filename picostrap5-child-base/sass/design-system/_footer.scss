@@ -106,7 +106,7 @@ footer {
 		
 		font-size: 1rem;
         font-weight: 500;
-		color: aquamarine;
+		color: $white;
 		
 		list-style-type: none !important;
 		
@@ -140,7 +140,7 @@ footer * {
     padding: 3rem 0 4rem 0;
     @include media-breakpoint-up(md) { padding: 4rem 0 5rem 0; }
     
-    background-color: $underlay-grey;
+    background-color: var(--bs-primary-bg-subtle);
     
     .acknowledgement-container {
         display: flex;
@@ -154,6 +154,11 @@ footer * {
             max-width: 26rem;
             
             flex-shrink: 0; 
+			
+			img {
+				width: 100%;
+				height: auto;
+			}
         }
         
         .content img {
@@ -221,7 +226,7 @@ footer * {
 	}
 	
 	p {
-		color: $dark-grey;
+		color: var(--bs-body-color);
 	}
 	
 	@include media-breakpoint-up(md) {

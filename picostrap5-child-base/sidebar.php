@@ -195,6 +195,11 @@ function doNavHeading($myPost, $tag, $selected = null)
 
 ?>
 
+<div style="margin: 24px;">
+    <button type="button" class="btn btn-default" data-bs-theme-value="light" aria-pressed="false">Light</button>
+    <button type="button" class="btn btn-default" data-bs-theme-value="dark" aria-pressed="false">Dark</button>
+    <button type="button" class="btn btn-default" data-bs-theme-value="auto" aria-pressed="true">Auto</button>
+</div>
 
 
 <!--<script language="javascript">

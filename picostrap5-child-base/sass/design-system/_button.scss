@@ -19,12 +19,12 @@
 //overwrite bootstrap button styles
 .btn-outline-secondary, .btn-default {
     position: relative;
-    color: $rmit-blue;
-    background-color: $white;
+    color: var(--bs-link-color);
+    background-color: var(--bs-body-bg-color);
     
     border-style: solid;
     border-width: 1px;
-    border-color: $rmit-blue;
+    border-color: var(--bs-link-color);
     border-radius: 0.25rem;
     
     box-sizing: border-box;
@@ -40,8 +40,9 @@
     
     &:hover {
         @include link-feature-hover;
-		background-color: $white;
-        border-color: $blue-hover;
+        color: var(--bs-link-hover-color);
+		background-color: var(--bs-body-bg-color);
+        border-color: var(--bs-link-hover-color);
     }
 }
 
@@ -131,4 +132,21 @@
 //rotate prev carat to point left
 .btn-nav-prev a::before {
     transform: rotate(90deg);
+}
+
+
+// Dark mode
+@include color-mode(dark) {
+	// Couldn't get standard mapping working for primary colour
+	.btn-primary {
+		color: $body-bg-dark;
+		background-color: $link-color-dark;
+		&:hover {
+			background-color: $link-color-hover-dark;
+		}
+	}
+    
+    .btn-nav-prev a::before, .btn-nav-next a::after { 
+        @include carat-dark;
+    }
 }

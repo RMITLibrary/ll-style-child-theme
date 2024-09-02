@@ -1,5 +1,5 @@
 ul.breadcrumbs {
-	color: $dark-grey;
+    color: var(--bs-body-color);
 	@include type-small;
 	
 	//margin: 0;
@@ -25,7 +25,7 @@ ul.breadcrumbs {
 	}
 	
 	a {
-		color: $dark-grey;
+		color: var(--bs-body-color);
 	}
 	
 	/* At small and x-small breakpoints, only show the last breadcrumb due to space constraints */
@@ -44,4 +44,18 @@ ul.breadcrumbs {
 			padding-right: 0.5rem;
 		}
 	}
+}
+
+// Dark mode
+@include color-mode(dark) {
+    //make these yellow???
+	ul.breadcrumbs {
+	color: $link-color-dark;
+	
+		a {
+			color: $link-color-dark;
+		}
+		
+	}
+	
 }

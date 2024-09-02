@@ -1,3 +1,80 @@
+/* primitive colours */
+
+$dark-grey: #333;               //  primary text colour
+$interface-grey: #BFBFBF;       //  divider, borders. etc. 
+                                //  Currently used on both light and dark mode
+$underlay-grey: #f5f5f5;        //  used for boxes, panels etc.
+$underlay-selected: #E6E6E6;    //  use sparingly, selected nav items
+
+$rmit-blue: #000054;
+$blue-hover: #0051A8;
+$rmit-red: #E61E2A;
+$correct-green: #009969;
+
+
+// map our colours to bootstrap variables for form controls, basics
+
+$gray-100: $underlay-grey;
+$gray-300: $interface-grey;
+$gray-400: $interface-grey;
+$gray-600: $interface-grey;
+$gray-900: $dark-grey;
+
+$blue: $rmit-blue;
+$green: $correct-green;
+$red: $rmit-red;
+
+// Light mode colours
+
+$body-color: #333;				// text         maps to var(--bs-body-color);
+$body-bg: #fff;					// bg colour    maps to var(--bs-body-bg-color);
+
+$headings-color: $blue;         // headings
+
+$link-color: $rmit-blue; //#1F3D99; // link colours
+$link-hover-color: $blue-hover;     // could be different from headings?
+$accent-color: #E61E2A;
+
+// dark
+$body-color-dark: #dfe2e6;
+$body-bg-dark: #222529;
+
+$headings-color-dark: #dfe2e6; //#b6c2ce;
+
+$link-color-dark: #6FB7FF;          // link colours dark
+$link-color-hover-dark: #98c3fa;
+$accent-color-dark: #E6636A;
+
+$underlay-grey-dark: #1c1f21;       //  used for boxes, panels etc.
+$underlay-selected-dark: #15171a;
+
+
+// map colours to bootstrap vars for dark mode
+
+// Define your theme colours
+$theme-colors: (
+  "primary": $blue   
+);
+
+// Define subtle background colours for light mode
+$theme-colors-bg-subtle: map-merge(
+  $theme-colors,
+  (
+    "primary": $underlay-grey
+  )
+);
+
+// Define subtle background colours for dark mode
+$theme-colors-bg-subtle-dark: map-merge(
+  $theme-colors,
+  (
+    "primary": $underlay-grey-dark
+  )
+);
+
+
+$input-btn-focus-color: rgba(13, 110, 253, 0.5);    //default keyboard focus colour
+
 @mixin set-colours($text-col, $bg-col: $white) { 
 	color: $text-col;
 	background-color: $bg-col;

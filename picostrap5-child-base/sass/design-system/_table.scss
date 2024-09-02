@@ -58,5 +58,5 @@ table, .table {
 }
 
 .table-striped>tbody>tr:nth-of-type(odd) {
-    background-color: $underlay-grey;
+    background-color: var(--bs-primary-bg-subtle);
 }

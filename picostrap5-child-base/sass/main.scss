@@ -7,6 +7,8 @@
 /*
 Note theme_variables.scss is now loaded by bootstrap-loader but can be important for customisation.
 */
+@import "design-system/colour";
+
 @import "bootstrap-loader"; 
 
 
@@ -25,7 +27,7 @@ Note theme_variables.scss is now loaded by bootstrap-loader but can be important
 @import "design-system/typography";
 @import "design-system/links";
 @import "design-system/forms";
-@import "design-system/colour";
+
 
 //Simple components
 @import 'design-system/button';

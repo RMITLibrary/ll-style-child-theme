@@ -142,7 +142,7 @@ $img-width-sm: 18.5rem;     //296px*/
 // Card stuff
 .card {
 	border: 0;
-	background-color: $underlay-grey;
+	background-color: var(--bs-primary-bg-subtle);
 	
 	max-width: $img-width-lg;
 	
@@ -196,7 +196,7 @@ $img-width-sm: 18.5rem;     //296px*/
 	
 	//Alternate grey and white
 	li:nth-child(odd) {
-		background-color: $underlay-grey;
+		background-color: var(--bs-primary-bg-subtle);
 	}
 
 	//adjust padding on larger screens
@@ -218,13 +218,13 @@ $img-width-sm: 18.5rem;     //296px*/
 		//select the first and second items of every set of four items, apply a light grey bg
 		li:nth-child(4n+1),
 		li:nth-child(4n+2) {
-		  background-color: $underlay-grey;
+		  background-color: var(--bs-primary-bg-subtle);
 		}
 		
 		//select the third and second items of every set of four items, apply a white bg
 		li:nth-child(4n+3),
 		li:nth-child(4n+4) {
-		  background-color: $white;
+		  background-color: var(--bs-body-bg-color);
 		}
 		
 		// span across both columns if the number of items is odd
@@ -241,13 +241,13 @@ $img-width-sm: 18.5rem;     //296px*/
 		li:nth-child(6n+1),
 		li:nth-child(6n+2),
 		li:nth-child(6n+3) {
-		  background-color: $underlay-grey;
+            background-color: var(--bs-primary-bg-subtle);
 		}
 
 		li:nth-child(6n+4),
 		li:nth-child(6n+5),
 		li:nth-child(6n+6) {
-		  background-color: $white
+		  background-color: var(--bs-body-bg-color);
 		}
 		
 		//span last item all columns if the there's one item on last row
@@ -270,14 +270,14 @@ $img-width-sm: 18.5rem;     //296px*/
 		li:nth-child(8n+2),
 		li:nth-child(8n+3),
 		li:nth-child(8n+4) {
-		  background-color: $underlay-grey;
+            background-color: var(--bs-primary-bg-subtle);
 		}
 
 		li:nth-child(8n+5),
 		li:nth-child(8n+6),
 		li:nth-child(8n+7),
 		li:nth-child(8n+8){
-		  background-color: $white
+		  background-color: var(--bs-body-bg-color);
 		}
 		
 		//span last item all columns if the there's one item on last row

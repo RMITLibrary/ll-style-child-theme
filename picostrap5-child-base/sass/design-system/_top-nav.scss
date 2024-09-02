@@ -132,11 +132,11 @@ html.nav-fixed {
       
             text-indent: -10000px;
             
-            background-color: $rmit-blue;
+            background-color: $rmit-blue !important;
         }
         
         button:hover {
-           background-color: $rmit-blue; 
+           background-color: $rmit-blue !important; 
         }
         
         button:focus {

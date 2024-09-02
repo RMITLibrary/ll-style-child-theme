@@ -8,7 +8,7 @@
     
     padding: 0.5rem 0 1.25rem 0;
     border-radius: 0.5rem;
-    background-color: $underlay-grey;
+    background-color: var(--bs-primary-bg-subtle);
 	
     //Provide a gap while menu is sits underneath content
     @include do-space(margin-top, lg);
@@ -65,7 +65,7 @@
 
     
     a.selected {
-        border-left: 0.25rem solid $red;
+        border-left: 0.25rem solid $accent-color;
         padding: 0.75rem 1.5rem 0.75rem 2.75rem;	//less 0.25rem to account for border
         background-color: $underlay-selected;
         
@@ -112,9 +112,8 @@
     }
 	
 	h2.selected {
-        //border-left: 0.25rem solid $red;
-        padding: 0.25rem 1.5rem 0.75rem 1.5rem;	//less 0.25rem to account for border left, increase padding at top for select state
-        //background-color: $underlay-selected;
+        padding: 0.25rem 1.5rem 0.75rem 1.5rem;	
+        //less 0.25rem to account for border left, increase padding at top for select state
     }
     
     h3 {
@@ -135,8 +134,9 @@
     }
     
     h3.selected {
-        border-left: 0.25rem solid $red;
-        padding: 1rem 1.5rem 0.75rem 1.25rem;	//less 0.25rem to account for border left, increase padding at top for select state
+        border-left: 0.25rem solid  $accent-color;
+        padding: 1rem 1.5rem 0.75rem 1.25rem;	
+        //less 0.25rem to account for border left, increase padding at top for select state
         background-color: $underlay-selected;
     }
 }
@@ -169,13 +169,9 @@
 
     
     a.selected {
-        border-left: 0.25rem solid $red;
+        border-left: 0.25rem solid  $accent-color;
         padding: 0.75rem 1.5rem 0.75rem 1.75rem;	//less 0.25rem to account for border
         background-color: $underlay-selected;
-        
-        /*a {
-            padding: 0;
-        }*/
     }  
 }
 
@@ -183,20 +179,31 @@
     padding-top: 0rem;
 }
 
-//remove border radius
 .right-nav-accordion > *:first-child {
-	
-	border-top-left-radius: 0.5rem;
-	border-top-right-radius: 0.5rem;
-	
-	a { 
-		border-top-left-radius: 0.5rem;
-		border-top-right-radius: 0.5rem;
-		padding-top: 0.75rem; 
-	}
 	
 	h2 .accordion-button {
 		border-top-left-radius: 0.5rem !important;
 		border-top-right-radius: 0.5rem !important;
 	}
+}
+
+// Dark mode
+@include color-mode(dark) {
+	
+	.right-nav, .right-nav-simple {
+
+		h3.selected {
+			border-left: 0.25rem solid $accent-color-dark;
+			background-color: $underlay-selected-dark;
+		}
+	}
+   
+    .right-nav, .right-nav-accordion, .right-nav-simple {
+        
+        a.selected { 
+            color: $link-color-dark;
+            background-color: $underlay-selected-dark;  
+            border-left: 0.25rem solid  $accent-color-dark;
+        }
+    }
 }
