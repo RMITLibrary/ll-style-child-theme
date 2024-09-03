@@ -1,0 +1,45 @@
+#theme-switcher {
+	
+	h2 {
+		color: $white;
+		margin-top: 2rem;
+		margin-bottom: 0.75rem;
+	}
+	
+	.theme-bg {
+		display: inline-block;
+		color: var(--bs-body-color);
+		background-color: var(--bs-body-bg);
+		
+		
+		border-radius: 0.5rem;
+		padding: 1rem 1rem;
+		
+		//padding: 1rem 1.5rem;
+	}
+	
+	.form-check-inline {
+		//margin-right: 1.5rem;
+	}
+	
+	.form-check-inline:last-child {
+		margin-right: 0rem;
+		
+		//margin-right: 0.5rem;
+	}
+	
+	@include media-breakpoint-up(sm) {
+		
+		.theme-bg {
+			padding: 1rem 1.5rem;
+		}
+
+		.form-check-inline {
+			margin-right: 1.5rem;
+		}
+
+		.form-check-inline:last-child {
+			margin-right: 0.5rem;
+		}
+	}
+}

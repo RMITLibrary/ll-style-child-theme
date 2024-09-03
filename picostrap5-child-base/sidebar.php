@@ -194,38 +194,3 @@ function doNavHeading($myPost, $tag, $selected = null)
 }
 
 ?>
-
-<div style="margin: 24px;">
-    <button type="button" class="btn btn-default" data-bs-theme-value="light" aria-pressed="false">Light</button>
-    <button type="button" class="btn btn-default" data-bs-theme-value="dark" aria-pressed="false">Dark</button>
-    <button type="button" class="btn btn-default" data-bs-theme-value="auto" aria-pressed="true">Auto</button>
-</div>
-
-
-<!--<script language="javascript">
-//this script shortens strings for titles that repeat the section title at the start
-//it currently looks for the characters colon and space ": " in the page title
-//this requires strict naming conventions for the title that use a colon 
-//to separate the repeated section title from the descriptive page title
-//the regex pattern to look for - in this case, text that comes after these characters ": "
-const regex = /:\s(.*)/; 
-list.querySelectorAll('a').forEach(a => {
-  //get the text from inside all the <a> tags inside the div with the id "list"
-  const text = a.innerHTML; 
-  //find matches with the regex pattern
-  const match = text.match(regex); 
-  if(match) {
-	//replace what's in each <a> tag that matches the pattern and convert the first character to upper case
-	a.innerHTML = match[1].charAt(0).toUpperCase() + match[1].slice(1); 
-  }
-})
-//as above, but for Heading 6
-list.querySelectorAll('h4').forEach(h4 => {
-  const text = h4.innerHTML; 
-  const match = text.match(regex);
-  if(match) {
-	h4.innerHTML = match[1].charAt(0).toUpperCase() + match[1].slice(1);
-  }
-})
-</script>-->
-		

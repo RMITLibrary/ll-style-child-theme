@@ -44,6 +44,10 @@ Note theme_variables.scss is now loaded by bootstrap-loader but can be important
 
 @import 'design-system/layout';
 
+//Switcher from light to dark mode
+@import 'design-system/theme-switcher';
+
+
 
 //Replaces custom styles defined via customize / additonal styles
 @import "learning-lab/old-site-styles";

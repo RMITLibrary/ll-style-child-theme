@@ -370,81 +370,83 @@ function addTargetTopToLink(link) {
 	
 // Dark mode script
     
-    (() => {
-  'use strict'
+ (() => {
+  'use strict'  // Enforce strict mode to catch common coding errors
 
+  // Function to get the stored theme from local storage
   const getStoredTheme = () => localStorage.getItem('theme')
+
+  // Function to set the theme in local storage
   const setStoredTheme = theme => localStorage.setItem('theme', theme)
 
+  // Function to determine the preferred theme
   const getPreferredTheme = () => {
-    const storedTheme = getStoredTheme()
+    const storedTheme = getStoredTheme() // Retrieve the stored theme
     if (storedTheme) {
-      return storedTheme
+      return storedTheme // If a theme is stored, return it
     }
 
+    // If no theme is stored, check the system preference for dark mode
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
   }
 
+  // Function to apply the specified theme
   const setTheme = theme => {
     if (theme === 'auto') {
+      // If theme is 'auto', set it based on system preference
       document.documentElement.setAttribute('data-bs-theme', (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'))
     } else {
+      // Otherwise, set the theme explicitly
       document.documentElement.setAttribute('data-bs-theme', theme)
     }
   }
 
+  // Set the theme based on the preferred theme
   setTheme(getPreferredTheme())
 
-  const showActiveTheme = (theme, focus = false) => {
-    const themeSwitcher = document.querySelector('#bd-theme')
+  // Function to update the UI to reflect the active theme
+  const showActiveTheme = theme => {
+    const themeSwitcher = document.querySelector('#theme-switcher')
 
     if (!themeSwitcher) {
-      return
+      return // If no theme switcher element is found, exit
     }
 
-    const themeSwitcherText = document.querySelector('#bd-theme-text')
-    const activeThemeIcon = document.querySelector('.theme-icon-active use')
-    const btnToActive = document.querySelector(`[data-bs-theme-value="${theme}"]`)
-    const svgOfActiveBtn = btnToActive.querySelector('svg use').getAttribute('href')
-
+    // Remove 'checked' attribute from all radio buttons
     document.querySelectorAll('[data-bs-theme-value]').forEach(element => {
-      element.classList.remove('active')
-      element.setAttribute('aria-pressed', 'false')
+      element.checked = false
     })
 
-    btnToActive.classList.add('active')
-    btnToActive.setAttribute('aria-pressed', 'true')
-    activeThemeIcon.setAttribute('href', svgOfActiveBtn)
-    const themeSwitcherLabel = `${themeSwitcherText.textContent} (${btnToActive.dataset.bsThemeValue})`
-    themeSwitcher.setAttribute('aria-label', themeSwitcherLabel)
-
-    if (focus) {
-      themeSwitcher.focus()
+    // Add 'checked' attribute to the selected theme radio button
+    const btnToActive = document.querySelector(`[data-bs-theme-value="${theme}"]`)
+    if (btnToActive) {
+      btnToActive.checked = true
     }
   }
 
+  // Listen for changes to the system's dark mode preference
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
     const storedTheme = getStoredTheme()
     if (storedTheme !== 'light' && storedTheme !== 'dark') {
-      setTheme(getPreferredTheme())
+      setTheme(getPreferredTheme()) // Update the theme if it's set to 'auto'
     }
   })
 
+  // When the DOM content is loaded, initialise the theme switcher
   window.addEventListener('DOMContentLoaded', () => {
-    showActiveTheme(getPreferredTheme())
+    showActiveTheme(getPreferredTheme()) // Show the active theme
 
-    document.querySelectorAll('[data-bs-theme-value]')
-      .forEach(toggle => {
-        toggle.addEventListener('click', () => {
-          const theme = toggle.getAttribute('data-bs-theme-value')
-          setStoredTheme(theme)
-          setTheme(theme)
-          showActiveTheme(theme, true)
-        })
+    // Add click event listeners to all theme toggle radio buttons
+    document.querySelectorAll('[data-bs-theme-value]').forEach(toggle => {
+      toggle.addEventListener('change', () => {
+        const theme = toggle.getAttribute('data-bs-theme-value')
+        setStoredTheme(theme) // Store the selected theme
+        setTheme(theme) // Apply the selected theme
+        showActiveTheme(theme) // Update the UI
       })
+    })
   })
 })()
-
 </script>
 <!-- adding requirements for embed mode start -->
 	</body>

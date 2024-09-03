@@ -31,5 +31,27 @@
 
 .form-check-input {
 	margin-right: 1rem;
+	
+	&:focus {
+        @include element-focus;
+    }
+}
+
+// Dark mode
+@include color-mode(dark) {
+	.form-check-input {
+		border-color: $interface-grey;
+		
+		&:focus {
+			box-shadow: 0 0 0 .25rem rgba(250, 200, 0, 0.5);
+		}
+	}
+	
+	.form-check-input:checked {
+		background-color: #1250a1; //$link-color-dark;
+		border-color: $interface-grey;
+		
+		//--bs-form-check-bg-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%2333'/%3e%3c/svg%3e")
+	}
 }
 

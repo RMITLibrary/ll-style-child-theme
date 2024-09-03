@@ -90,10 +90,10 @@ defined('ABSPATH') || exit;
 <nav id="context-menu" class="collapse" aria-label="Main Menu">
     <div class="container nav-container not-wordpress">
         <div class="row">
-            <!-- START menu -->
+            <!-- START menu column -->
             <div class="col-xl-8">
 				<!-- START menu -->
-            <div class="accordion accordion-white" id="context-menu-accordion">	
+            	<div class="accordion accordion-white" id="context-menu-accordion">	
 						<div class="accordion-item">
 <h2 class="accordion-header" id="accordion-head-6823">
 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-body-6823" aria-expanded="false" aria-controls="accordion-body-6823">University essentials</button>
@@ -172,9 +172,28 @@ defined('ABSPATH') || exit;
 						</div>
 						<!-- END subject support - special case -->
                 </div>
-            <!-- END menu -->	
+            	<!-- END menu -->	
+				<!-- Start theme switcher -->
+				<div id="theme-switcher">
+					<h2 class="h5">Theme</h2>
+					<div class="theme-bg">
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" data-bs-theme-value="auto" value="option1">
+							<label class="form-check-label" for="inlineRadio1">System</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" data-bs-theme-value="light" value="option2">
+							<label class="form-check-label" for="inlineRadio2">Light</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" data-bs-theme-value="dark" value="option3">
+							<label class="form-check-label" for="inlineRadio3">Dark</label>
+						</div>
+					</div>
+				</div>
+				<!-- End theme switcher -->
             </div>
-            <!-- END menu -->
+            <!-- END menu column -->
         </div>
     </div>
 </nav>
