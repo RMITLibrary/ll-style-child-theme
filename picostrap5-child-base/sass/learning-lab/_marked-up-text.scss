@@ -21,18 +21,19 @@
     }
     
     ul, li {
-        margin: 0;
-        padding: 0;
+        margin: 0;	
     }
     
     li {
         display: inline-block;
         margin-right: 0.25rem;
+		padding: 0.25rem;
+		border-radius: 0.25rem;
     }
     
     label, span {
         display: inline;
-        padding: 2px;
+        padding: 4px;
     }
     
     @include media-breakpoint-up(md) { 
@@ -40,11 +41,34 @@
         grid-template-columns: 3fr 1fr;
         gap: 1.5rem;
         
-        p { margin: 0 }
+        p { 
+			margin: 0;
+			line-height: 2;
+			letter-spacing: 0.5px;
+		}
         
         li {
             display: block;
             margin-bottom: 1.75rem;
         }
     }
+}
+
+.highlight-1 { @include set-colours(#000000, #fac800); }	//yellow
+.highlight-2 { @include set-colours(#000000, #70cfff); }	//cyan
+.highlight-3 { @include set-colours(#000000, #eb7ab6); }	//pink
+.highlight-4 { @include set-colours(#000000, #81e996); }	//teal
+.highlight-5 { @include set-colours(#000000, #f5904d); }	//orange
+.highlight-6 { @include set-colours(#000000, #e66cef); }	//purple
+
+@include color-mode(dark) {
+
+	.highlight-grid {
+		filter: brightness(0.9) contrast(0.9);
+	}
+/*.hightlight-3 { @include set-colours($body-color, #C6F1E4); }
+.hightlight-4 { @include set-colours($body-color, #C6F1E4); }
+.hightlight-5 { @include set-colours($body-color, #C6F1E4); }*/
+	
+	
 }
