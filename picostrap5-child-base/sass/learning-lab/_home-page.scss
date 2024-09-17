@@ -6,7 +6,7 @@
         display: block;
         width: 100%;
         background-size: 0 0;
-        background-image:url('https://rmitlibrary.github.io/cdn/learninglab/illustration/home-default.png'); 
+        background-image:url('https://rmitlibrary.github.io/cdn/learninglab/illustration/landing/home-default.png'); 
     }
 	
 	
@@ -29,7 +29,7 @@
     @include media-breakpoint-up(lg) { 
 
         .background-image {
-            background-image:url('https://rmitlibrary.github.io/cdn/learninglab/illustration/home-wide.png');
+            background-image:url('https://rmitlibrary.github.io/cdn/learninglab/illustration/landing/home-wide.png');
         }
          
         /*Adjust image ratio to wide - 3:1 */

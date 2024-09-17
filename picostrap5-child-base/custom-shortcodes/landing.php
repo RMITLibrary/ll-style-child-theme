@@ -32,8 +32,8 @@
 function landing_banner_att($atts, $content = null) {
     $default = array(
         'caption' => 'Image by Digital Learning, RMIT Library',
-        'img' => 'https://rmitlibrary.github.io/cdn/learninglab/illustration/home-default.png',
-        'alt' => 'A vector illustration showing a desk featuring various items a student might need'
+        'img' => 'https://rmitlibrary.github.io/cdn/learninglab/illustration/landing/home-default.png',
+        'alt' => ''
     );
     $a = shortcode_atts($default, $atts);
     $content = do_shortcode($content);
