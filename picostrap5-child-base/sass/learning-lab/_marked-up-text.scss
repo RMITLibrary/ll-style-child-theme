@@ -13,7 +13,7 @@
 }
 
 
-//Used in stateichighlighted text examples
+//Used in static highlighted text examples
 .highlight-grid {
     
     ul {
@@ -54,21 +54,9 @@
     }
 }
 
-.highlight-1 { @include set-colours(#000000, #fac800); }	//yellow
-.highlight-2 { @include set-colours(#000000, #70cfff); }	//cyan
-.highlight-3 { @include set-colours(#000000, #eb7ab6); }	//pink
-.highlight-4 { @include set-colours(#000000, #81e996); }	//teal
-.highlight-5 { @include set-colours(#000000, #f5904d); }	//orange
-.highlight-6 { @include set-colours(#000000, #e66cef); }	//purple
-
 @include color-mode(dark) {
 
 	.highlight-grid {
-		filter: brightness(0.9) contrast(0.9);
+		filter: brightness(0.95) contrast(0.95);
 	}
-/*.hightlight-3 { @include set-colours($body-color, #C6F1E4); }
-.hightlight-4 { @include set-colours($body-color, #C6F1E4); }
-.hightlight-5 { @include set-colours($body-color, #C6F1E4); }*/
-	
-	
 }
