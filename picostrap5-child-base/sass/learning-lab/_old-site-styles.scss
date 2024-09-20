@@ -350,7 +350,8 @@ line-height:25px }
 
 /* === Maths =============================== */
 
-.sidenote img, .marginnote img { 
+// sidenote styled to resemble blockquote, look to phase this markup over time.
+/*.sidenote img, .marginnote img { 
     max-width: 300px !important;
 }
 
@@ -373,7 +374,7 @@ line-height:25px }
 
 .sidenote-number, .margin-toggle {
     display: none; 
-}
+}*/
 
 a:link.mathspdf, a:active.mathspdf, a:hover.mathspdf, a:visited.mathspdf, a:focus.mathspdf {
     color: #fff !important;

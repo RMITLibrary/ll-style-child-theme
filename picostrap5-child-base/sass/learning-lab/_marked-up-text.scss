@@ -13,7 +13,7 @@
 }
 
 
-//Used in stateichighlighted text examples
+//Used in static highlighted text examples
 .highlight-grid {
     
     ul {
@@ -21,18 +21,19 @@
     }
     
     ul, li {
-        margin: 0;
-        padding: 0;
+        margin: 0;	
     }
     
     li {
         display: inline-block;
         margin-right: 0.25rem;
+		padding: 0.25rem;
+		border-radius: 0.25rem;
     }
     
     label, span {
         display: inline;
-        padding: 2px;
+        padding: 4px;
     }
     
     @include media-breakpoint-up(md) { 
@@ -40,11 +41,22 @@
         grid-template-columns: 3fr 1fr;
         gap: 1.5rem;
         
-        p { margin: 0 }
+        p { 
+			margin: 0;
+			line-height: 2;
+			letter-spacing: 0.5px;
+		}
         
         li {
             display: block;
             margin-bottom: 1.75rem;
         }
     }
+}
+
+@include color-mode(dark) {
+
+	.highlight-grid {
+		filter: brightness(0.95) contrast(0.95);
+	}
 }

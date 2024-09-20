@@ -49,3 +49,48 @@ aside.visually-hidden-focusable div {
         margin-bottom: 0;
     }
 }
+
+//Style sidenote to resemble a blockquote
+
+.sidenote img, .marginnote img { 
+    max-width: 300px !important;
+}
+
+.sidenote {
+	display: block;
+	
+    //set responsive padding and margins for blockquote
+    @include do-space(margin-top, md); 
+    @include do-space(margin-bottom, md);
+    
+    @include do-space(padding-top, sm); 
+    @include do-space(padding-bottom, sm); 
+    
+    @include do-space(padding-left, md); 
+    @include do-space(padding-right, md); 
+    
+    border-radius: 0 0.5rem 0.5rem 0;
+    border-left: 0.25rem solid $accent-color;
+
+    background-color: var(--bs-primary-bg-subtle);
+	
+}
+
+.marginnote { 
+    float: right;
+    width: 300px;
+    font-size: 0.9em;
+    margin: 0 0 1em 2em;
+}
+
+.sidenote-number, .margin-toggle {
+    display: none; 
+}
+
+// Dark mode
+@include color-mode(dark) {
+	
+    .sidenote {
+		border-left: 0.25rem solid $accent-color-dark;
+	}
+}
