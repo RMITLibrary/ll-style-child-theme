@@ -40,7 +40,7 @@ get_header();
         <div class="home-panel-container">
             <a href="/university-essentials/" class="home-panel">
                 <img src="https://rmitlibrary.github.io/cdn/learninglab/illustration/landing/uni-essentials.png" alt="" />
-                <h2 class="link-large">University Essentials</h2>
+                <h2 class="link-large">University essentials</h2>
                 <p>New to uni? University essentials has you covered. Find out more about topics as diverse as group work, critical thinking and even artificial intelligence.</p>
             </a>
             
