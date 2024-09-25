@@ -22,7 +22,8 @@ $img-width-sm: 18.5rem;     //296px*/
 }
 */
 
-//text options used in both icont-text and img-text
+// text options used in both icon-text and img-text
+// set up as a mixin for reuse
 @mixin two-col-text {
 	//allow text to fill available space
 	flex: 1;
@@ -60,17 +61,19 @@ $img-width-sm: 18.5rem;     //296px*/
 }
 
 
-// icon-text shows a image (usually an icon) next to text across all sizes
+// icon-text shows a image (usually an icon) to the left of text across all sizes
 .icon-text  {
 	display: flex;
 	align-items: center;	//align to center
-	gap: 1.5rem;
+	gap: 0.75rem;
+
+	@include media-breakpoint-up(md) { gap: 1.5rem; }	// Adjust gap for larger screens
 	
 	//responsive margin top and bottom for the component
 	@include do-space(margin-top, lg); 
     @include do-space(margin-bottom, lg); 
 	
-	// img is 3rem at small screens, 5rem at leager screens
+	// img is 3rem (48px) at small screens, 5rem (80px) at leager screens
 	figure {
         margin: 0;
 		max-width: 3rem;
@@ -139,21 +142,24 @@ $img-width-sm: 18.5rem;     //296px*/
 }
 
 
-// Card stuff
+// Adjustments to card
 .card {
 	border: 0;
 	background-color: var(--bs-primary-bg-subtle);
+	border: 1px solid $interface-grey;					// border by default
+	max-width: $img-width-lg;							//max-width of 640px;
 	
-	max-width: $img-width-lg;
-	
-	&.my-border {
-		border: 1px solid $interface-grey;
+	// option to have no border
+	&.no-border {
+		border: 0px;
 	}
 	
+	// no margin for figures in this case, margins applied to surrounding card
 	figure {
 		margin: 0;
 	}
 	
+	// Adjust margins of text within card. Small text is used by default
 	.card-body {
 		& > *:first-child {
 			margin-top: 0;
@@ -169,14 +175,14 @@ $img-width-sm: 18.5rem;     //296px*/
 			@include type-small;
 		}
 		
+		//large card can be used by appyiong "large" clasd
 		p.large {
 			@include type-default;
-		}
-		
-		
+		}	
 	}
 }
 
+//If a card is floated right, it's max-width is further restrictied
 .card.float-right {
   max-width: $img-width-sm;
 }
@@ -298,9 +304,10 @@ $img-width-sm: 18.5rem;     //296px*/
 }
 
 
-// Generic grid
+// Generic grid. Use this rather than bootstrap columns and rows
 
 .my-grid {
+
     display: grid;
     grid-template-columns: 1fr;
     gap: 1rem;
@@ -333,4 +340,26 @@ $img-width-sm: 18.5rem;     //296px*/
 	@include media-breakpoint-up(lg) { 
         grid-template-columns: 1fr 1fr 1fr 1fr; 
     }
+}
+
+.gap-lg {
+	gap: 2rem;
+
+	@include media-breakpoint-up(lg) { 
+        gap: 2.5rem;
+    }
+}
+
+.grid-width- {
+	&lg {
+		max-width: $img-width-lg;
+	}
+
+	&md {
+		max-width: $img-width-md;
+	}
+
+	&sm {
+		max-width: $img-width-sm;
+	}
 }

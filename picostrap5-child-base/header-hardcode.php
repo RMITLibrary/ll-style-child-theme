@@ -7,7 +7,6 @@ defined('ABSPATH') || exit;
 <html <?php language_attributes(); ?> class="nav-fixed">
 
 <head>
-    <head>
   <!-- 
     DARK MODE
     This script is placed in the <head> to ensure the theme is set as early as possible,
