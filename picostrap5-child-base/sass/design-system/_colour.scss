@@ -87,10 +87,13 @@ $input-btn-focus-color: rgba(13, 110, 253, 0.4);    //default keyboard focus col
 
 @mixin highlight-1 { @include set-colours(#000000, #fac800); }	//yellow
 @mixin highlight-2 { @include set-colours(#000000, #70cfff); }	//cyan
-@mixin highlight-3 { @include set-colours(#000000, #81e996); }	//teal
+@mixin highlight-3 { @include set-colours(#000000, #81e996); }	//mint green
 @mixin highlight-4 { @include set-colours(#000000, #eb7ab6); }	//pink
 @mixin highlight-5 { @include set-colours(#000000, #f5904d); }	//orange
 @mixin highlight-6 { @include set-colours(#000000, #e66cef); }	//purple - try not to use
+@mixin highlight-7 { @include set-colours(#000000, #00F2B6); }	//teal - try not to use
+@mixin highlight-8 { @include set-colours(#000000, #99AFFF); }	//lavender - try not to use
+@mixin highlight-9 { @include set-colours(#000000, #CEF218); }	//tennis ball - try not to use
 
 .highlight-1 { @include highlight-1; }	//yellow
 .highlight-2 { @include highlight-2; }	//cyan
@@ -98,6 +101,9 @@ $input-btn-focus-color: rgba(13, 110, 253, 0.4);    //default keyboard focus col
 .highlight-4 { @include highlight-4; }	//pink
 .highlight-5 { @include highlight-5 }	//orange
 .highlight-6 { @include highlight-6 }	//purple
+.highlight-7 { @include highlight-7 }	//teal
+.highlight-8 { @include highlight-8 }	//lavender
+.highlight-9 { @include highlight-9 }	//tennis ball
 
 // Remap legacy colours to new highlights
 .color-teal { @include highlight-1; }

@@ -79,4 +79,10 @@ include('attribution.php');	       //handles external caption/attribution
 
 include('layout.php');               //handles grid, image-text and icon-text
 include('highlight-text.php');      //handles highlight text
+
+function custom_line_break() {
+    return '<br />';
+}
+add_shortcode('br', 'custom_line_break');
+
 ?>

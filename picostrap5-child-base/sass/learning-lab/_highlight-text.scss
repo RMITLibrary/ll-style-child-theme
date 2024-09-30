@@ -14,29 +14,32 @@
 
 
 //Used in static highlighted text examples
+
+// Styles for the key 
+.key {
+    ul {
+        // Remove default list styling, margin, and padding
+        list-style-type: none;
+        margin: 0 !important;
+        padding: 0;	
+    }
+    
+    li {
+        // Display list items inline with rounded corners
+        display: inline-block;
+        margin: 0 0.5rem 0.5rem 0;
+        padding: 0.25rem;
+        border-radius: 0.25rem;
+    }
+}
+
 .highlight-text {
 
     @include do-space(margin-top, md); 
     @include do-space(margin-bottom, md); 
 
 
-    // Styles for the key 
-    .key {
-        ul {
-            // Remove default list styling, margin, and padding
-            list-style-type: none;
-            margin: 0 !important;
-            padding: 0;	
-        }
-        
-        li {
-            // Display list items inline with rounded corners
-            display: inline-block;
-            margin: 0 0.5rem 0.5rem 0;
-            padding: 0.25rem;
-            border-radius: 0.25rem;
-        }
-    }
+    
 
     // Styles for the content 
     .content {
@@ -46,7 +49,7 @@
         letter-spacing: 0.5px;
         
         .highlight-1, .highlight-2, .highlight-3,
-        .highlight-4, .highlight-5, .highlight-6 {
+        .highlight-4, .highlight-5, .highlight-6, .highlight-7, .highlight-8, .highlight-9, .highlight-10 {
             // Increase padding for highlighted spans
             padding: 4px;
         }
