@@ -65,10 +65,80 @@ function ll_grid_att($atts, $content = null) {
     return $tag . $content . '</div>';
 }
 
+
+//-----------------------------
+//	img_text_att
+
+//	Outputs a a css grid, avoiding blank p and br tags. 
+//
+
+//	args:		$content - the html markup to be put into the grid
+//              $atts - attributes as follows:
+
+//  $atts:      align-top           true to align all items to the top (middle by default)
+//              icon                if true, image sized to 160px square, aligned left
+//              url                 Absolute path to image
+//              alt                 Alt tag for the above image
+//              attribution-id      No room for a caption so link to attribution, use this in conjuntion with [attribution[ shortcode. (ALL THIS NEEDS MORE DOCUMENTATION)]
+
+//  shortcode:  [img-text][/img-text]
+
+//	usage:		[img-text align-top="true" url="https://path.to/image.jpg" alt=""]Content goes here[/img-text] 
+
+//  Expected output
+// <div class="img-text align-items-top">
+// 	<figure>
+// 		<img src="my-image.jpg" alt="An example image" />
+// 	</figure>
+// 	<div class="content-text">
+// 		<h3>Heading</h3>
+// 		<p>Text to be placed alongside image.</p>
+// 		<p>Text to be placed alongside image.</p>
+// 	</div>
+// </div>
+
+function img_text_att($atts, $content = null) { 
+    $default = array(
+        'align-top' => '',
+        'icon' => '',
+        'url' => '',
+        'alt' => ''
+    );
+
+    $a = shortcode_atts($default, $atts);
+
+    // Ensure content is processed correctly
+    $content = do_shortcode(shortcode_unautop($content));
+
+    $tag = '<div class="img-text ';
+
+    if ($a['icon'] != '') {
+        $tag = '<div class="icon-text ';
+    }
+
+    if ($a['align-top'] != '') {
+        $tag .= 'align-items-top';
+    }
+
+    // Complete tag
+    $tag .= '">';
+
+    //call image_att to create figure and image tags
+    $imgOutput = image_att($atts);
+
+    //wrap html content in div
+    $content = '<div class="content-text">' . $content . '</div>';
+
+    // Return the complete output
+    return $tag . $imgOutput . $content . '</div>';
+}
+
 //add code to list (used in the_content_filter)
 add_shortcode_to_list("ll-grid");
+add_shortcode_to_list("img-text");
 
 //add code to wordpress itself
 add_shortcode('ll-grid', 'll_grid_att');
+add_shortcode('img-text', 'img_text_att');
 
 ?>
