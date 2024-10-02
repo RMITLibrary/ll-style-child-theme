@@ -165,9 +165,12 @@ function image_att ($atts, $content = null) {
     }
             
     $figCaptionTag = '';
-            
+    
     if($a['caption'] != '') { 
-        $figCaptionTag .= '<figcaption>' . $a['caption'] . '</figcaption>' . "\n"; 
+        //check to see if we want to add the default attribution
+        $caption = addAttribution($a['caption']);
+        
+        $figCaptionTag .= '<figcaption>' . $caption . '</figcaption>' . "\n"; 
     }       
              
             
@@ -204,6 +207,22 @@ function image_att ($atts, $content = null) {
     
     
     return $debug;*/
+}
+
+function addAttribution($input) {
+    // Define the attribution string
+    $attribution = ", by <a href='https://rmit.edu.au/'>RMIT</a>, licensed under <a href='https://creativecommons.org/licenses/by/4.0/'>CC BY-NC 4.0</a>";
+    
+    // Check if the input string contains "|attrib"
+    if (strpos($input, '|attrib') !== false) {
+        // Remove "|attrib" from the input string
+        $input = str_replace('|attrib', '', $input);
+        
+        // Append the attribution string
+        $input .= $attribution;
+    }
+    
+    return $input;
 }
 
 //add code to list (used in the_content_filter)

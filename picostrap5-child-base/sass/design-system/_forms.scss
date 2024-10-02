@@ -30,7 +30,8 @@
 }
 
 .form-check-input {
-	margin-right: 1rem;
+	margin: 6px 1rem 0 0;
+    border-color: $interface-grey;
 	
 	&:focus {
         @include element-focus;
@@ -53,5 +54,29 @@
 		
 		//--bs-form-check-bg-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%2333'/%3e%3c/svg%3e")
 	}
+}
+
+
+// Checklist option, expected mark-up is as follows:
+//<div class="checklist">
+//	<div><input class="form-check-input" type="checkbox" id="checkbox1"><label for="checkbox1">Label 1</label></div>
+//	<div>Label 2</div>
+//	<div><input class="form-check-input" type="checkbox" id="checkbox3"><label for="checkbox3">Label 3</label></div>
+//</div>
+
+.checklist {
+    
+    @include do-space(margin-top, sm); 
+    @include do-space(margin-bottom, sm);
+    
+    div {
+        display: flex;
+        align-items: top;
+        margin-bottom: 1.5rem;
+    }
+
+    .checklist label {
+        margin-left: 0.75rem;
+    }
 }
 
