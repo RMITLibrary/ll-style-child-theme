@@ -141,14 +141,10 @@ $img-width-sm: 18.5rem;     //296px*/
 
 // Card stuff
 .card {
-	border: 0;
+    border: 1px solid $interface-grey;
 	background-color: var(--bs-primary-bg-subtle);
 	
 	max-width: $img-width-lg;
-	
-	&.my-border {
-		border: 1px solid $interface-grey;
-	}
 	
 	figure {
 		margin: 0;
@@ -162,7 +158,14 @@ $img-width-sm: 18.5rem;     //296px*/
 		& > *:last-child {
 			margin-bottom: 0px;
 		}
-		
+	}
+}
+
+.card.float-right {
+    max-width: $img-width-sm;
+    
+    .card-body {
+
 		@include type-small;
 		
 		p {
@@ -171,14 +174,8 @@ $img-width-sm: 18.5rem;     //296px*/
 		
 		p.large {
 			@include type-default;
-		}
-		
-		
+		}	
 	}
-}
-
-.card.float-right {
-  max-width: $img-width-sm;
 }
 
 
