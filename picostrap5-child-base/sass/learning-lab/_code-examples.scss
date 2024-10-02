@@ -2,7 +2,7 @@
     @include do-space(margin-top, lg); 
     @include do-space(margin-bottom, lg); 
 	
-	background-color: $underlay-grey;
+    background-color: var(--bs-primary-bg-subtle);
 	
 	padding: 1rem;
 }

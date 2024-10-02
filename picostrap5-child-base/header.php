@@ -7,7 +7,44 @@ defined('ABSPATH') || exit;
 <html <?php language_attributes(); ?> class="nav-fixed">
 
 <head>
+<!-- 
+    DARK MODE
+    This script is placed in the <head> to ensure the theme is set as early as possible,
+    reducing the flash of unstyled content (FOUC). It determines the user's preferred
+    theme (either from local storage or system settings) and applies it immediately.
+  -->
+  <script>
+    (function() {
+      'use strict';
 
+      // Function to get the stored theme from local storage
+      const getStoredTheme = () => localStorage.getItem('theme');
+
+      // Function to determine the preferred theme
+      const getPreferredTheme = () => {
+        const storedTheme = getStoredTheme(); // Retrieve the stored theme
+        if (storedTheme) {
+          return storedTheme; // If a theme is stored, return it
+        }
+        // If no theme is stored, check the system preference for dark mode
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      };
+
+      // Function to apply the specified theme
+      const setTheme = theme => {
+        if (theme === 'auto') {
+          // If theme is 'auto', set it based on system preference
+          document.documentElement.setAttribute('data-bs-theme', (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+        } else {
+          // Otherwise, set the theme explicitly
+          document.documentElement.setAttribute('data-bs-theme', theme);
+        }
+      };
+
+      // Set the theme based on the preferred theme
+      setTheme(getPreferredTheme());
+    })();
+  </script>
 	<meta charset="<?php bloginfo('charset'); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 

@@ -51,11 +51,16 @@ Note theme_variables.scss is now loaded by bootstrap-loader but can be important
 
 //Replaces custom styles defined via customize / additonal styles
 @import "learning-lab/old-site-styles";
-@import "learning-lab/lightweight-accordion";
-@import "learning-lab/nav-additions";  //adds additional styles for right nav and breadcrumbs
+@import "learning-lab/lightweight-accordion";   //could be removed?
+
+@import "learning-lab/nav-additions";           //adds additional styles for right nav and breadcrumbs
+
 @import "learning-lab/landing-banner";
 @import "learning-lab/home-page";
-@import "learning-lab/marked-up-text";
+
+@import "learning-lab/marked-up-text";      //remove this once highlight shortcodes are in place
+@import "learning-lab/highlight-text";
+
 @import "learning-lab/code-examples";
 @import "learning-lab/other"  ;             //other styles that don't fit into a category
     

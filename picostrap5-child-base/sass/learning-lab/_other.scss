@@ -7,32 +7,6 @@
 }
 */
 
-// Develop this further to allow more control and options
-// Place in design system
-.my-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-	
-	padding: 0;
-	
-    
-    @include media-breakpoint-up(sm) { 
-        grid-template-columns: 1fr 1fr 1fr; 
-    }
-    
-    @include media-breakpoint-up(lg) { 
-        gap: 1.5rem;
-        grid-template-columns: 1fr 1fr 1fr 1fr; 
-    }
-	
-	li {
-		margin: 0;
-		padding: 0;
-		list-style-type: none;
-	}
-}
-
 aside.visually-hidden-focusable div {
     padding: 16px 24px;
     
