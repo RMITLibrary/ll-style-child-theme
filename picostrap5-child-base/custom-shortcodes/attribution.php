@@ -28,12 +28,10 @@ function attribution_att($atts, $content = null) {
     );
     
     if($content == null) {
-        $content = 'Images by Digital Learning, RMIT Library';
+        $content = 'Images on this page by <a href="https://rmit.edu.au/">RMIT</a>, licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY-NC 4.0</a>';
     }
     
     $a = shortcode_atts($default, $atts);
-    
-    //<p class="small" id="caption-text">Images by Digital Learning, RMIT Library</p>
     
     //grab content from within the two shortcode tags
     $content = do_shortcode($content);

@@ -102,7 +102,8 @@ function img_text_att($atts, $content = null) {
         'align-top' => '',
         'icon' => '',
         'url' => '',
-        'alt' => ''
+        'alt' => '',
+        'attribution-id' => ''
     );
 
     $a = shortcode_atts($default, $atts);
