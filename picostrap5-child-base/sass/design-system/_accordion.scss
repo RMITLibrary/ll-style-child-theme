@@ -88,7 +88,7 @@
 
 	//create padding withing the accordion.
     .accordion-body {
-        padding: 0.5rem 0 0 0;
+        padding: 1.5rem 0 0 0;
         @include do-space(margin-bottom, lg); 
 
 		//Remove the margin from the first item of content with the accordion body
@@ -212,7 +212,6 @@ add this additional class to stratch it 100% */
     
     .accordion-body {
         padding: 0 0 0.5rem 0;
-        margin: 0;
         //background-color: $underlay-grey;
         background-color: var(--bs-primary-bg-subtle);
     }

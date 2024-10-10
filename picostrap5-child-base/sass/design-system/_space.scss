@@ -119,7 +119,11 @@ offered. Append a bootstrap size unit on the end to get the desired spacing.
 }
 
 .margin-bot {
-    @include set-prop(".margin-bot", margin-bottom);
+    @include set-prop(".margin-bottom", margin-bottom);
+}
+
+.margin-bottom {
+    @include set-prop(".margin-bottom", margin-bottom);
 }
 
 .margin-left {
@@ -135,7 +139,11 @@ offered. Append a bootstrap size unit on the end to get the desired spacing.
 }
 
 .padding-bot {
-    @include set-prop(".padding-bot", padding-bottom);
+    @include set-prop(".padding-bottom", padding-bottom);
+}
+
+.padding-bottom {
+    @include set-prop(".padding-bottom", padding-bottom);
 }
 
 /*

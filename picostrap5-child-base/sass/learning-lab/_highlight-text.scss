@@ -17,6 +17,10 @@
 
 // Styles for the key 
 .key {
+    
+    // a bit of margin at bottom for eky on mobile. Desktop should be uneffected.
+    margin-bottom: 1.5rem;
+    
     ul {
         // Remove default list styling, margin, and padding
         list-style-type: none;
