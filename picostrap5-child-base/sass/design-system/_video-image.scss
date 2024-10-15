@@ -35,6 +35,12 @@ figure {
 		padding-top: 0.25rem;
 		padding-bottom: 0.5rem;
 	}
+
+	//class to give a bigger gap between imafge and caption
+	//(useful for diagram images on white backgrounds)
+	figcaption.gap-lg {
+		padding-top: 1.5rem;
+	}
 	
 	img {
 		width: 100%;

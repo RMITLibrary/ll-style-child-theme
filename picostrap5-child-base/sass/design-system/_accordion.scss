@@ -50,8 +50,9 @@
 
     .accordion-button:not(.collapsed) {
         //background-color: $white;
-        background-color: var(--bs-body-bg-color);
+        //background-color: var(--bs-body-bg-color);
         box-shadow: inset 0 0px;
+        color: $link-color;
     }
 
 	//create the red carat before the title
@@ -86,7 +87,7 @@
         box-shadow: 0 0 !important;
     }
 
-	//create padding withing the accordion.
+	//create padding within the accordion.
     .accordion-body {
         padding: 1.5rem 0 0 0;
         @include do-space(margin-bottom, lg); 
@@ -132,6 +133,7 @@
     
     .accordion-button:not(.collapsed) {
         background-color: $rmit-blue;
+        color: $white;
     }
     
     .accordion-body {
@@ -212,7 +214,7 @@ add this additional class to stratch it 100% */
     
     .accordion-body {
         padding: 0 0 0.5rem 0;
-        //background-color: $underlay-grey;
+        @include do-space(margin-bottom, zero); 
         background-color: var(--bs-primary-bg-subtle);
     }
 }

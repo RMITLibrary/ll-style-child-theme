@@ -3,13 +3,15 @@
     font-size: 0.8125rem;
     @include media-breakpoint-up(md) { font-size: 0.9375rem; }
     
+    text-wrap: pretty;
     letter-spacing: 0.02rem;    //to increase readability
 }
 
 @mixin type-default {
     font-size: 1rem;
     line-height: 1.5;
-    
+    text-wrap: pretty;
+
     @include media-breakpoint-up(md) {
         font-size: 1.125rem;
     }
@@ -18,7 +20,8 @@
 @mixin type-lead {
     font-size: 1.125rem;
     font-weight: 500;
-    
+    text-wrap: pretty;
+
     @include media-breakpoint-up(md) {
         font-size: 1.25rem;
     }
@@ -38,11 +41,7 @@ p, p.default {
     @include media-breakpoint-up(md) { font-size: 1.125rem; } 
     @include do-space(margin-top, xs);      //should we have margin-top?
     @include do-space(margin-bottom, xs);
-}
-
-// Target empty <p> tags and remove their margins
-p:empty {
-  margin: 0;
+    text-wrap: pretty;
 }
 
 small, .small {
@@ -53,6 +52,7 @@ small, .small {
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
     font-family: $font-family-serif;
+    text-wrap: balance;
     
     @include do-space(margin-top, lg); 
     
@@ -103,63 +103,6 @@ li > ul {
     margin-bottom: 1rem !important;
 	list-style-type: square;
 }
-
-//table-of-contents formatting for ol
-
-
-
-// Apply the mixin to class table-of-contents
-ol.table-of-contents {
-
-    counter-reset: section;
-    list-style-type: none;
-    padding-left: 0;
-
-    // Style for top-level list items 
-    & > li {
-        counter-increment: section;
-    }
-
-    // Add numbering before top-level list items 
-    & > li:before {
-        content: counter(section) ". ";
-    }
-
-    // Reset the counter for the second-level list 
-    & > li > ol {
-        counter-reset: subsection;
-        list-style-type: none;
-        margin-left: 2rem;
-    }
-
-    // Style for second-level list items 
-    & > li > ol > li {
-        counter-increment: subsection;
-    }
-
-    // Add numbering before second-level list items 
-    & > li > ol > li:before {
-        content: counter(section) "." counter(subsection) " ";
-    }
-
-    // Reset the counter for the third-level list
-    & > li > ol > li > ol {
-        counter-reset: subsubsection;
-        list-style-type: none;
-        margin-left: 2rem;
-    }
-
-    // Style for third-level list items 
-    & > li > ol > li > ol > li {
-        counter-increment: subsubsection;
-    }
-
-    // Add numbering before third-level list items 
-    & > li > ol > li > ol > li:before {
-        content: counter(section) "." counter(subsection) "." counter(subsubsection) " ";
-    }
-}
-
 
 //As we are using bootstrap default sizes for headings, it makes sense to go down here
 @include media-breakpoint-down(md) { 

@@ -70,6 +70,7 @@ function image_att ($atts, $content = null) {
 		'float' => '',
 		'hide-sm' => '',
         'attribution-id' => '',
+        'caption-gap' => '',
         'classes' => ''
     );
     $a = shortcode_atts($default, $atts);
@@ -169,8 +170,15 @@ function image_att ($atts, $content = null) {
     if($a['caption'] != '') { 
         //check to see if we want to add the default attribution
         $caption = addAttribution($a['caption']);
-        
-        $figCaptionTag .= '<figcaption>' . $caption . '</figcaption>' . "\n"; 
+
+        //add in classs to incresae gap if attribute is set
+        if($a['caption-gap'] != '') {
+            $figCaptionTag .= '<figcaption class="gap-lg">' . $caption . '</figcaption>' . "\n"; 
+        }
+        else
+        {
+            $figCaptionTag .= '<figcaption>' . $caption . '</figcaption>' . "\n"; 
+        }
     }       
              
             

@@ -77,6 +77,7 @@ include('landing.php');	          //handles landing-banner, landing-list
 include('code_example.php');	  //handles code example shortcode
 include('attribution.php');	       //handles external caption/attribution
 
+include('card.php');               //handles card
 include('layout.php');               //handles grid, image-text and icon-text
 include('highlight-text.php');      //handles highlight text
 
