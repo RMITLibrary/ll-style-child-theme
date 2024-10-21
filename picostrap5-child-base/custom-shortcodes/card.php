@@ -33,19 +33,50 @@
 function ll_card_att($atts, $content = null) {
     $default = array(
         'title' => '',
-        'heading-tag' => 'h3'
+        'heading-tag' => 'h3',
+        'heading-size' => '',
+        'float' => '',
+        'img' => '',
+        'attibution-id' => '',
+        'alt' => '',
+        'classes' => ''
     );
     $a = shortcode_atts($default, $atts);
 
-     //default state is h2
-     $labelTag = 'h2';
+     //default state is h3
+     $labelTag = 'h3';
 
     // Ensure content is processed correctly
     $content = do_shortcode(shortcode_unautop($content));
 
-    $output = '<div class="card"><div class="card-body">' . "\n";
+    $output = '<div class="card ';
 
-    //if heading tag has a value, update $labelTag, otherwise it will retain h2 as default
+    if($a['float'] == 'true') {
+        $output .= ' float-right ';
+    }
+
+     //if there's anything in clesses, add it (don't document this, for web devs only)
+     if($a['classes'] != '') { 
+        $output .= $a['classes'] . ' '; 
+    } 
+
+    $output .= '">' . "\n";
+
+    //if there's an img property
+    if($a['img'] != '') {  
+        $image_atts = array(
+            'url' => $a['img'],
+            'attribution-id' => $a['attibution-id'],
+            'alt' => $a['alt']
+        );
+
+        $output .= image_att($image_atts);
+    }
+
+    
+    $output .= '<div class="card-body">' . "\n";
+
+    //if heading tag has a value, update $labelTag, otherwise it will retain h3 as default
     if($a['heading-tag'] != '')
     {
         // Sanitize the heading level to prevent invalid HTML
@@ -55,9 +86,9 @@ function ll_card_att($atts, $content = null) {
         }
     }
 
-    // Apply optional title div
+    // Apply optional title div, allow to alter size via additional class
     if ($a['title'] != '') {
-        $output .= '<' . $labelTag .' class="card-title">';    
+        $output .= '<' . $labelTag .' class="card-title ' . $a['heading-size'] . '">';    
         $output .= $a['title'];
         $output .= '</' . $labelTag . '>' . "\n";
     }

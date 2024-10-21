@@ -158,6 +158,11 @@ $img-width-sm: 18.5rem;     //296px*/
 	figure {
 		margin: 0;
 	}
+
+	figure img {
+		border-top-left-radius: var(--bs-card-inner-border-radius);
+		border-top-right-radius: var(--bs-card-inner-border-radius);
+	}
 	
 	// Adjust margins of text within card. Small text is used by default
 	.card-body {
@@ -175,8 +180,8 @@ $img-width-sm: 18.5rem;     //296px*/
 			@include type-small;
 		}
 		
-		//large card can be used by appyiong "large" clasd
-		p.large {
+		//large card can be used by applying "large" clasd
+		.large {
 			@include type-default;
 		}	
 	}
