@@ -125,7 +125,8 @@ function highlight_text_att($atts, $content = null) {
 function highlight_att($atts, $content = null) {
     $default = array(
         'id' => '',
-        'screen-reader' => ''
+        'screen-reader' => '',
+        'superscript' => ''
     );
     $a = shortcode_atts($default, $atts);
     $content = do_shortcode($content);
@@ -145,7 +146,7 @@ function highlight_att($atts, $content = null) {
     $output .= $content;
 
     //if id is set, add the superscript
-    if ($a['id'] != '') {
+    if ($a['id'] != '' && $a['superscript'] != 'false') {
         //apply superscript if id is set
         $output .= '<sup aria-hidden="true">' . $a['id'] . '</sup>';
     }
