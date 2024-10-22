@@ -1,0 +1,87 @@
+.keyword-listing {
+    ul {
+        column-count: 4;
+
+        list-style-type: none;
+        padding: 0;
+
+        li { padding: 0; }
+    }
+
+    /* For less than 19 items */
+    @media (max-width: 18em) {
+        .keyword-listing ul {
+            column-count: 3;
+        }
+    }
+
+    /* For less than 13 items */
+    @media (max-width: 12em) {
+        .keyword-listing ul {
+            column-count: 2;
+        }
+    }
+
+    /* For less than 7 items */
+    @media (max-width: 6em) {
+        .keyword-listing ul {
+            column-count: 1;
+        }
+    }
+}
+
+.search-debug {
+    //display: none;
+
+    div {
+        display: flex;
+        margin-top: 1rem;
+        gap: 1rem;
+        
+        label {
+            width: 6rem;
+        }
+
+        input {
+            width: 6rem;
+        }
+    }
+}
+
+/*
+.search-box-container {
+    max-width: 34rem;
+}
+
+// Search box styles
+#___gcse_0 {
+    .gsc-control-cse, table, tr, td {
+        border: 0;
+        margin: 0;
+        padding: 0;
+    }
+
+    .gsc-input {
+        font-size: 18px;
+    }
+
+    .gsc-input-box {
+        padding: 0.5rem 1rem;
+    }
+
+    //hide clear search button, too small, too close to search button
+    .gsst_b {
+        width: 0;
+        height: 0;
+        overflow: hidden;
+    }
+
+    background-color: $red;
+}
+
+.blerghness {
+    height: 40px;
+    width: 40px;
+    background-color: aqua;
+}
+    */

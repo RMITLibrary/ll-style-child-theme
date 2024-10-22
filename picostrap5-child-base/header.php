@@ -107,12 +107,12 @@ defined('ABSPATH') || exit;
 							<span class="visually-hidden">Library homepage</span>
 						</a>
                     </li>
-                    <!--<li class="search">
-                        <a id="search2">
+                    <li class="search">
+                        <a href="/test-search/" id="search2">
                             <div class="search-label">Search</div>
                             <div class="mag-glass"></div>
                         </a>
-                    </li>-->
+                    </li>
                     <li class="menu">
                         <button id="menu-button" 
                         class="btn btn-primary collapsed" type="button" data-bs-toggle="collapse" 

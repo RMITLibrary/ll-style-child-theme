@@ -58,8 +58,8 @@ Note theme_variables.scss is now loaded by bootstrap-loader but can be important
 @import "learning-lab/landing-banner";
 @import "learning-lab/home-page";
 
-@import "learning-lab/marked-up-text";      //remove this once highlight shortcodes are in place
 @import "learning-lab/highlight-text";
+@import "learning-lab/search";
 
 @import "learning-lab/code-examples";
 @import "learning-lab/other"  ;             //other styles that don't fit into a category
