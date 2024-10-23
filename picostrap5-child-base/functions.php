@@ -515,6 +515,20 @@ function export_json_page() {
 }
 
 
+function picostrap_all_excerpts_get_more_link( $post_excerpt ) {
+    if ( ! is_admin() OR ( isset($_POST['action']) && $_POST['action'] == 'lc_process_dynamic_templating_shortcode') ) {
+        $post_excerpt = $post_excerpt . '...';
+    }
+    return $post_excerpt;
+}
+
+// Filter to change the excerpt length
+add_filter("excerpt_length", function($in){
+    // Return the desired number of words for the excerpt
+    return 50;
+    // The '999' sets a high priority to ensure this filter runs last
+}, 999);
+
 
 //-----------------------------
 //	All shortcode code is included and added below

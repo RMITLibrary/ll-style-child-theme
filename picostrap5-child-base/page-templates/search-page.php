@@ -27,7 +27,7 @@ get_header();
 <h1 class="margin-top-zero">Search the learning lab</h1>
 <!-- search input --> 
 <input type="text" id="searchInput" placeholder="Search..."><button id="searchButton">Search</button>
-<div class="search-debug">
+<div id="search-debug" class="search-debug">
     <div>
         <label for="threshold">
             <a href="https://www.fusejs.io/api/options.html#threshold" target="docs">Threshold:</a>
@@ -62,7 +62,7 @@ get_header();
 </div>
 <p>
 Data set lives here: <a href="/wp-content/uploads/pages.json" target="_blank" rel="noopener">/wp-content/uploads/pages.json</a>
-<ul id="results"></ul>
+<ul class="list-link-extended" id="results"></ul>
 <hr>
 <h2>Browse keywords</h2>
             <p>These pages of similar topics aim to make it quicker and easier to find the content you need. Select any keyword to see all pages linked to that specific term.</p>

@@ -27,7 +27,6 @@
     }
 }
 
-
 //keep default font-size at 1rem, adjust default p and body style here
 body { 
     @include media-breakpoint-up(md) { font-size: 1.125rem; } 
@@ -48,6 +47,10 @@ small, .small {
     @include type-small;
 }
 
+@include media-breakpoint-down(md) { 
+    .lead {  font-size: 1.125rem;  }  
+} 
+
 
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
@@ -60,26 +63,68 @@ h1, h2, h3, h4, h5, h6,
 	@include media-breakpoint-up(md) { margin-bottom: 1rem; }
 }
 
+/* Headings - using bootstrap default sizes for h1 and h2*/
 
-//h1 has a slightly increased margin bottom
+// Mixin for h1
+@mixin type-h1 {
+    font-size: 2.5rem; // Default size
+    @include media-breakpoint-down(md) {
+        font-size: 2rem;
+    }
+    @include do-space(margin-bottom, sm);
+}
+
+// Mixin for h2
+@mixin type-h2 {
+    font-size: 2rem; // Default size
+    @include media-breakpoint-down(md) {
+        font-size: 1.75rem;
+    }
+}
+
+// Mixin for h3
+@mixin type-h3 {
+    font-size: 1.56rem; // 25px
+    @include media-breakpoint-down(md) {
+        font-size: 1.25rem;
+    }
+}
+
+// Mixin for h4
+@mixin type-h4 {
+    font-size: 1.25rem; // 20px
+    @include media-breakpoint-down(md) {
+        font-size: 1.125rem;
+    }
+}
+
+// Mixin for h5 and h6
+@mixin type-h5-6 {
+    font-size: 1.125rem; // 18px
+    @include media-breakpoint-down(md) {
+        font-size: 1rem;
+    }
+}
+
+// Applying mixins to headings
 h1, .h1 {
-    @include do-space(margin-bottom, sm); 
+    @include type-h1;
+}
+
+h2, .h2 {
+    @include type-h2;
 }
 
 h3, .h3 {
-    font-size: 1.56rem; //25px
-    //font-size: 1.63rem; //26px
+    @include type-h3;
 }
 
 h4, .h4 {
-    font-size: 1.25rem; //20px
+    @include type-h4;
 }
 
-//h6 and h5 are the same size, use h6 sparingly
-h5, .h5,
-h6, .h6 {
-    //font-size: 1.25rem;   //20px
-    font-size: 1.125rem;    //18px
+h5, .h5, h6, .h6 {
+    @include type-h5-6;
 }
 
 //reduce indenting on lists
@@ -104,18 +149,6 @@ li > ul {
 	list-style-type: square;
 }
 
-//As we are using bootstrap default sizes for headings, it makes sense to go down here
-@include media-breakpoint-down(md) { 
-    
-    h1, .h1 { font-size: 2rem; }
-    h2, .h2 { font-size: 1.56rem; }
-    h3, .h3 { font-size: 1.25rem; }
-    h4, .h4 { font-size: 1.125rem; }
-    h5, .h5 { font-size: 1rem; }
-    h6, .h6 { font-size: 1rem; }
-    
-    .lead {  font-size: 1.125rem;  }  
-} 
 
 /*@include media-breakpoint-down(md) { 
     

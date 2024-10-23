@@ -44,6 +44,39 @@ p a:visited:hover {
 	color: $blue-hover;
 }*/
 
+@mixin link-large-base {
+    display: flex;
+    align-items: center;
+    
+    @include link-feature;
+    
+    padding: 0;
+    border: 0;
+	width: fit-content;
+
+    &::after {
+        @include carat;
+        flex-shrink: 0;
+        width: 2rem;
+        height: 2rem;
+        margin-left: 0.25rem;
+        transform: rotate(-90deg);
+    }   
+}
+
+.link-large {
+    @include link-large-base;
+    @include type-lead;
+    margin-top: 1.25rem;
+}
+
+.link-large:hover {
+    @include link-feature-hover;
+}
+
+
+//
+/*
 .link-large {
     display: flex;
     align-items: center;
@@ -70,7 +103,7 @@ p a:visited:hover {
     height: 2rem;
     margin-left: 0.25rem;
     transform: rotate(-90deg);
-}
+}*/
 
 @mixin link-list-base {
     
@@ -151,6 +184,32 @@ p a:visited:hover {
 	}
 }
 
+
+.list-link-expanded {
+    list-style-type: none;
+    padding: 0;
+
+    li { 
+        padding: 0;
+        @include do-space(margin-top, lg);
+    }
+    
+    a { 
+        @include link-large-base;
+    }
+    
+    a:hover {
+        @include link-feature-hover;
+    }
+    
+    h2, h3, h4, h5, h6 {
+        @include type-h3;   /*Should this be here? Or use class="h3" to control? */
+        margin: 0;
+        
+        &:hover { color: $link-hover-color; }
+    }
+}
+
 // Dark mode
 @include color-mode(dark) {
     
@@ -160,5 +219,12 @@ p a:visited:hover {
     
 	.link-list {
         li:before { @include carat-dark; }
+    }
+    
+    .list-link-expanded {
+        h2, h3, h4, h5, h6 {
+            color: $link-color-dark;
+            &:hover { color: $link-hover-color-dark; }
+        }
     }
 }
