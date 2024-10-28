@@ -25,44 +25,58 @@ get_header();
 </nav>
 <a id="main-content"></a>
 <h1 class="margin-top-zero">Search the learning lab</h1>
-<!-- search input --> 
-<input type="text" id="searchInput" placeholder="Search..."><button id="searchButton">Search</button>
-<div id="search-debug" class="search-debug">
+<!-- START search input --> 
+<div class="search-container">
+    <input type="text" id="searchInput" placeholder="Search..."><button class="wbtn wbtn-primary" id="searchButton"><span class="icon"></span> <span class="visually-hidden">Search</span></button>
+</div> 
+<!-- END search input --> 
+<!-- START debug -->
+        <div id="search-debug" class="search-debug">
+            <div>            
+                <!-- START debug -->
+                <label for="threshold">
+                    <a href="https://www.fusejs.io/api/options.html#threshold" target="docs">Threshold:</a>
+                </label>
+                <input type="number" id="threshold" min="0" max="1" step="0.05" value="0.4">
+                </div>
+                <div>
+                    <label for="distance">
+                        <a href="https://www.fusejs.io/api/options.html#distance" target="docs">Distance:</a>
+                    </label>
+                    <input type="number" id="distance" min="0" max="10000" step="50" value="1200">
+                </div>
+                <div>
+                    <label for="location">
+                        <a href="https://www.fusejs.io/api/options.html#location" target="docs">Location:</a>
+                    </label>
+                    <input type="number" id="location" min="0" max="10000" step="50" value="0">
+                </div>
+                <div>
+                    <label for="minMatchCharLength" class="small">
+                        <a href="https://www.fusejs.io/api/options.html#minmatchcharlength" target="docs">Min Match Char Length:</a>
+                    </label>
+                    <input type="number" id="minMatchCharLength" min="1" max="100" step="1" value="4">
+                </div>
+                <div>
+                <label for="useExtendedSearch" class="small">
+                    <a href="https://www.fusejs.io/api/options.html#useextendedsearch" target="_blank">Use Extended Search:</a>
+                </label>
+                <input type="checkbox" id="useExtendedSearch">
+            </div>
+        </div>
+<!-- END debug -->
+<!-- START results div -->
+<div id="results-container" class="collapse">
     <div>
-        <label for="threshold">
-            <a href="https://www.fusejs.io/api/options.html#threshold" target="docs">Threshold:</a>
-        </label>
-        <input type="number" id="threshold" min="0" max="1" step="0.05" value="0.4">
-    </div>
-    <div>
-        <label for="distance">
-            <a href="https://www.fusejs.io/api/options.html#distance" target="docs">Distance:</a>
-        </label>
-        <input type="number" id="distance" min="0" max="10000" step="50" value="800">
-    </div>
-    <div>
-        <label for="location">
-            <a href="https://www.fusejs.io/api/options.html#location" target="docs">Location:</a>
-        </label>
-        <input type="number" id="location" min="0" max="10000" step="50" value="0">
-    </div>
-    <div>
-        <label for="minMatchCharLength" class="small">
-            <a href="https://www.fusejs.io/api/options.html#minmatchcharlength" target="docs">Min Match Char Length:</a>
-        </label>
-        <input type="number" id="minMatchCharLength" min="1" max="100" step="1" value="2">
-    </div>
-    <div>
-        <label for="useExtendedSearch" class="small">
-            <a href="https://www.fusejs.io/api/options.html#useextendedsearch" target="_blank">Use Extended Search:</a>
-        </label>
-        <input type="checkbox" id="useExtendedSearch">
-    </div>
-
+        <h2 id="results-title" tabindex="0">Search results</h2>
+        <p id="results-counter" class="small"></p>
+        <ul class="list-link-expanded" id="results"></ul> 
+        <p>
+            <a href="#searchInput">Search again</a>
+        </p> 
+    </div>   
 </div>
-<p>
-Data set lives here: <a href="/wp-content/uploads/pages.json" target="_blank" rel="noopener">/wp-content/uploads/pages.json</a>
-<ul class="list-link-extended" id="results"></ul>
+<!-- END results div -->
 <hr>
 <h2>Browse keywords</h2>
             <p>These pages of similar topics aim to make it quicker and easier to find the content you need. Select any keyword to see all pages linked to that specific term.</p>
@@ -103,8 +117,12 @@ if (!empty($keywords) && !is_wp_error($keywords)) {
         // Get the link for the current keyword
         $link = get_term_link($keyword);
 
-        // Output the keyword as a list item with a link
-        echo '<li><a href="' . esc_url($link) . '">' . esc_html($keyword->name) . '</a></li>';
+
+        // Output the keyword as a list item with a link, exclude "Documentation" and "Archive"
+        if ($keyword->name != "Documentation" && $keyword->name != "Archive") {
+            echo '<li><a href="' . esc_url($link) . '">' . esc_html($keyword->name) . '</a></li>';
+        }
+       
     }
 
     // Close the last section
@@ -114,24 +132,52 @@ if (!empty($keywords) && !is_wp_error($keywords)) {
     echo 'No keywords found.';
 }
 ?>
+            <p>
+    Data set lives here: <a href="/wp-content/uploads/pages.json" target="_blank" rel="noopener">/wp-content/uploads/pages.json</a></p>
     </div>
 </div>
 <!-- END col-xs-12 -->
+</div>
 
 <script>
-    var debug = true;
-
+    var dataURL = '/wp-content/uploads/pages.json';
+    var debug = false;
+    
+    //Check query string for debug=true. If it is there, show debug interface
+    const queryStringSearch = window.location.search;
+    const urlParams = new URLSearchParams(queryStringSearch);
+    const debugBool = urlParams.get('debug');
+    
+    if(debugBool == 'true') {
+        debug = true;
+        
+        var debugInterface = document.getElementById("search-debug");
+        debugInterface.style.display = "block";
+    }
+    
+    console.log("debugBool: "+ debugBool);
+    
     // Fetch the JSON data
-    fetch('/wp-content/uploads/pages.json')
+    fetch(dataURL)
         .then(response => response.json())
         .then(data => {
             function performSearch() {
-                const query = document.getElementById('searchInput').value;
-                const threshold = parseFloat(document.getElementById('threshold').value);
-                const distance = parseInt(document.getElementById('distance').value, 10);
-                const location = parseInt(document.getElementById('location').value, 10);
-                const useExtendedSearch = document.getElementById('useExtendedSearch').checked;
-                const minMatchCharLength = parseInt(document.getElementById('minMatchCharLength').value, 10);
+                
+                var query = document.getElementById('searchInput').value;
+                var threshold = 0.4;
+                var distance = 1200;
+                var location = 0;
+                var useExtendedSearch = false;
+                var minMatchCharLength = 4;
+                
+                if(debug == true)
+                {
+                    threshold = parseFloat(document.getElementById('threshold').value);
+                    distance = parseInt(document.getElementById('distance').value, 10);
+                    location = parseInt(document.getElementById('location').value, 10);
+                    useExtendedSearch = document.getElementById('useExtendedSearch').checked;
+                    minMatchCharLength = parseInt(document.getElementById('minMatchCharLength').value, 10);
+                }
 
                 const options = {
                     keys: ['title', 'content'], // Specify the fields to search
@@ -143,32 +189,63 @@ if (!empty($keywords) && !is_wp_error($keywords)) {
                     includeMatches: true,
                 };
 
-                const fuse = new Fuse(data, options);
-                const results = fuse.search(query);
-                const resultsList = document.getElementById('results');
-                resultsList.innerHTML = '';
+                // START if to avoid blank queries
+                if(query != "")
+                {
+                    const fuse = new Fuse(data, options);
+                    const results = fuse.search(query);
+                    const resultsList = document.getElementById('results');
+                    resultsList.innerHTML = '';
 
-                results.forEach(function(result) {
-                    var title = result.item.title;
-                    var content = result.item.content;
-                    var link = result.item.link;
-                    var snippet = getSnippet(content, query);
-                    var score = result.score.toFixed(2); // Get format the score
-                    var matches = result.matches; // Get matches
-                    var keywords = result.item.keywords;
-                    
-                    //only output result if keywords doesn't contain "documentation"
-                    if (keywords && !keywords.includes("documentation")) {
-                        var li = document.createElement('li');
+                    const resultsCounter = document.getElementById('results-counter');
 
-                        var itemOutput = '<a href="' + link + '"><h3>' + title + '</h3></a><p>' + snippet + '</p>';
-                        if(debug == true) itemOutput += '<p class="small">Score: ' + score +" &nbsp;&nbsp;&nbsp;&nbsp;Matches: " + matches +"</p>";
-
-                        li.innerHTML = itemOutput;
+                    if(results.length == 0) {
+                        resultsCounter.innerHTML = 'No results found.';
+                    }
+                    else if(results.length == 1) {
+                        resultsCounter.innerHTML = results.length +' result found.'; 
+                    }
+                    else {
+                        resultsCounter.innerHTML = results.length +' results found.';
                     }
                     
-                    resultsList.appendChild(li);
-                });
+                    results.forEach(function(result) {
+                        var title = result.item.title;
+                        var content = result.item.content;
+                        var link = result.item.link;
+                        var snippet = getSnippet(content, query);
+                        var score = result.score.toFixed(2); // Get format the score
+                        var matches = result.matches; // Get matches
+                        var keywords = result.item.keywords;
+                        
+                        // Only output result if keywords don't contain "documentation", "archive", or "redirect"
+                        if (keywords && !keywords.some(keyword => {
+                            const lowerKeyword = keyword.toLowerCase();
+                            return ["documentation", "archive", "redirect"].includes(lowerKeyword);
+                        })) {
+                            var li = document.createElement('li');
+
+                            var itemOutput = '<a href="' + link + '"><h3 class="text">' + title + '</h3></a><p>' + snippet + '</p>';
+                            if (debug === true) itemOutput += '<p class="small">Score: ' + score + " &nbsp;&nbsp;&nbsp;&nbsp;Matches: " + matches + "</p>";
+
+                            li.innerHTML = itemOutput;
+                            resultsList.appendChild(li);
+                        }
+                    });
+                    
+                    // Select the element
+                    var collapseElement = document.getElementById('results-container');
+
+                    // Create a new Bootstrap Collapse instance
+                    var collapseInstance = new bootstrap.Collapse(collapseElement, {
+                        toggle: false // Prevents automatic toggle
+                    });
+
+                    // Use the show method to expand
+                    collapseInstance.show();
+                    document.getElementById("results-title").focus();
+                }
+                //END if to avoid blank queries
             }
 
             function getSnippet(content, query) {
@@ -227,6 +304,4 @@ if (!empty($keywords) && !is_wp_error($keywords)) {
             console.error('Error fetching JSON:', error);
         });
 </script>
-</div>
-
 <?php get_footer();
