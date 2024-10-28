@@ -433,7 +433,23 @@ function export_content_to_json() {
         while ($query->have_posts()) {
             $query->the_post();
             $content = get_the_content();
-            $content = strip_tags(strip_shortcodes($content)); // Remove shortcodes and HTML tags
+            //$content = strip_tags(strip_shortcodes($content)); // Remove shortcodes and HTML tags
+
+            $content = strip_tags($content); // Remove HTML tags
+
+            // Extract content from specific shortcodes
+            $shortcodes = array('ll-accordion', 'transcript', 'transcript-accordion', 'lightweight-accordion', 'hl', 'highlight-text');
+            foreach ($shortcodes as $shortcode) {
+                $pattern = sprintf('/\[%1$s\](.*?)\[\/%1$s\]/s', preg_quote($shortcode, '/'));
+                if (preg_match_all($pattern, get_the_content(), $matches)) {
+                    foreach ($matches[1] as $match) {
+                        $content .= ' ' . strip_tags($match);
+                    }
+                }
+            }
+            
+            // Remove remaining shortcodes
+            $content = strip_shortcodes($content);
 
             // Get taxonomy terms using ACF
             $llkeywords = get_field('field_6527440d6f9a2');
