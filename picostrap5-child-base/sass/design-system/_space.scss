@@ -159,3 +159,29 @@ hr.xl {
     @include do-space(margin-top, xl); 
     @include do-space(margin-bottom, xl);
 }
+
+$width-xl: 100%;
+$width-lg: 40rem;       //640px
+$width-md: 25rem;       //400px
+$width-sm: 18.5rem;     //296px
+$width-xs: 10rem;		//128px;
+
+.width-100-perc {
+    width: $width-xl;
+}
+
+.min-width-lg {
+    min-width: $width-lg;
+}
+
+.min-width-md {
+    width: $width-md;
+}
+
+.min-width-sm {
+    width: $width-sm;
+}
+
+.min-width-xs {
+    width: $width-xs;
+}
