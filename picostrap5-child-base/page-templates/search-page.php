@@ -24,12 +24,15 @@ get_header();
 </ul>
 </nav>
 <a id="main-content"></a>
-<h1 class="margin-top-zero">Search the learning lab</h1>
-<!-- START search input --> 
+<!-- START search -->
 <div class="search-container">
-    <input type="text" id="searchInput" placeholder="Search..."><button class="wbtn wbtn-primary" id="searchButton"><span class="icon"></span> <span class="visually-hidden">Search</span></button>
-</div> 
-<!-- END search input --> 
+    <label for="search"><h1 class="margin-top-zero">Search the learning lab</h1></label>
+    <div class="input-group">
+        <input type="search" id="searchInput" class="form-control">
+        <button type="submit"  id="searchButton" class="btn btn-primary"><div class="mag-glass"></div><span class="visually-hidden">Search</span></button>
+    </div>
+</div>
+<!-- END search -->
 <!-- START debug -->
         <div id="search-debug" class="search-debug">
             <div>            
@@ -147,6 +150,7 @@ if (!empty($keywords) && !is_wp_error($keywords)) {
     const queryStringSearch = window.location.search;
     const urlParams = new URLSearchParams(queryStringSearch);
     const debugBool = urlParams.get('debug');
+    const searchString = urlParams.get('query');
     
     if(debugBool == 'true') {
         debug = true;
@@ -154,8 +158,9 @@ if (!empty($keywords) && !is_wp_error($keywords)) {
         var debugInterface = document.getElementById("search-debug");
         debugInterface.style.display = "block";
     }
-    
-    console.log("debugBool: "+ debugBool);
+
+    console.log("searchString: "+ searchString);
+    //console.log("debugBool: "+ debugBool);
     
     // Fetch the JSON data
     fetch(dataURL)
@@ -288,6 +293,14 @@ if (!empty($keywords) && !is_wp_error($keywords)) {
 
                 // If the query is not found, return the first 160 characters
                 return content.substring(0, 160);
+            }
+
+            //If queryString has query=something then do the search. Used to make home screen search work.
+            if(searchString != null)
+            {
+                //place searchString into input and then execute search
+                document.getElementById('searchInput').value = searchString;
+                performSearch();
             }
 
             // Listen for button click

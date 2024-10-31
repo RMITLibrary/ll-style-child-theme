@@ -38,6 +38,10 @@
     }
 }
 
+.form-control:focus {
+    @include element-focus;
+}
+
 // Dark mode
 @include color-mode(dark) {
 	.form-check-input {

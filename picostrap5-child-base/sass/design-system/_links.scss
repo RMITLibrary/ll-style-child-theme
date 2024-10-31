@@ -45,7 +45,7 @@ p a:visited:hover {
 }*/
 
 @mixin link-large-base {
-    display: flex;
+    display: inline-flex; /* Use inline-flex */
     align-items: center;
     
     @include link-feature;
@@ -205,7 +205,7 @@ p a:visited:hover {
     h2, h3, h4, h5, h6 {
         @include type-h3;   /*Should this be here? Or use class="h3" to control? */
         margin: 0;
-        
+        text-wrap-style: auto;
         &:hover { color: $link-hover-color; }
     }
 }

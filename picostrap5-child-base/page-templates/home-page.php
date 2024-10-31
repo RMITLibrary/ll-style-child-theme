@@ -25,15 +25,19 @@ get_header();
             <p class="lead">The Learning Lab provides foundation skills and study support materials for writing, assessments, referencing, health sciences, physics, chemistry, maths and much more.</p>
             <p class="small" id="caption-text">Image by Digital Learning, RMIT Library</p>
             
-            <form role="search" action="/search/">
-                <label class="h4" for="search">
+            <!-- START search -->
+            <div class="search-container label-side">
+                <label for="search">
+                <h2 class="h4">
                     Search <span class="visually-hidden">this website:</span>
+                </h2>
                 </label>
                 <div class="input-group">
-                    <input type="search" id="search" class="form-control">
-                    <button type="submit" class="btn btn-primary"><div class="mag-glass"></div><span class="visually-hidden">Search</span></button>
+                    <input type="search" id="searchInput" class="form-control">
+                    <button type="submit"  id="searchButton" class="btn btn-primary"><div class="mag-glass"></div><span class="visually-hidden">Search</span></button>
                 </div>
-            </form>
+            </div>
+            <!-- END search -->
         </div>
         <!-- END home intro -->
         <!-- START home panels -->
@@ -66,7 +70,32 @@ get_header();
             </a>
         </div>
         <!-- END home panels -->
-	
 </div>
+<!-- script to punt search input to /search via query string -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
 
+        // Function to perform the search
+        function goToSearch() {
+            const query = searchInput.value.trim();
+            if (query) {
+                window.location.href = `/search/?query=${encodeURIComponent(query)}`;
+            }
+        }
+
+        // Listen for the Enter key press on the search input
+        searchInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                goToSearch();
+            }
+        });
+
+        // Listen for the button click
+        searchButton.addEventListener('click', function() {
+            goToSearch();
+        });
+    });
+</script>
 <?php get_footer();

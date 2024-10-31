@@ -158,11 +158,6 @@ $img-width-sm: 18.5rem;     //296px*/
 	figure {
 		margin: 0;
 	}
-
-	figure img {
-		border-top-left-radius: var(--bs-card-inner-border-radius);
-		border-top-right-radius: var(--bs-card-inner-border-radius);
-	}
 	
 	// Adjust margins of text within card. Small text is used by default
 	.card-body {
@@ -180,8 +175,8 @@ $img-width-sm: 18.5rem;     //296px*/
 			@include type-small;
 		}
 		
-		//large card can be used by applying "large" clasd
-		.large {
+		//large card can be used by appyiong "large" clasd
+		p.large {
 			@include type-default;
 		}	
 	}
@@ -321,7 +316,7 @@ $img-width-sm: 18.5rem;     //296px*/
     @include do-space(margin-bottom, lg);
 	
 	padding: 0;
-	
+
     
     @include media-breakpoint-up(md) { 
         grid-template-columns: 1fr 1fr; 
@@ -336,6 +331,15 @@ $img-width-sm: 18.5rem;     //296px*/
 		padding: 0;
 		list-style-type: none;
 	}
+}
+
+// using this to prevent wordpress from adding in stray br tags between elements
+br {
+	display: none;
+  }
+.my-grid > * {
+	display: block;
+	margin: 0;
 }
 
 .my-grid-3up {

@@ -33,6 +33,7 @@ blockquote {
             h3 {
                 display: flex;
                 align-items: center;
+				text-wrap-style: auto;
                 
                 /* h4 fontsize */
                 font-size: 1.25rem;
@@ -46,6 +47,8 @@ blockquote {
 				height: 2rem;
 				margin-left: 0.25rem;
 				transform: rotate(-90deg);
+				flex-shrink: 0; /* Prevents shrinking */
+				flex-basis: 2rem; /* Ensures a fixed size */
 			}
 
 			p, small {
@@ -121,6 +124,7 @@ blockquote.complex {
 			.icon-wrap {
 				width: 6rem;
 				display: block;
+				flex-shrink: 0;
 			}
 		}
 		

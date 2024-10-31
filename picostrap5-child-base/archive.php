@@ -13,7 +13,7 @@ get_header();
             <nav aria-label="breadcrumbs">
                 <ul class="breadcrumbs">
                 <li><a href="/">Home</a></li>
-                <li><a href="/test-search">Search</a></li>
+                <li><a href="/search">Search</a></li>
                 <!-- UPDATE THIS -->
                 </ul>
             </nav>
@@ -25,10 +25,26 @@ get_header();
             <?php if ( have_posts() ) : ?>
                 <div>
                     <ul class="list-link-expanded">
+
                     <?php while ( have_posts() ) : the_post(); 
-                        
-                        
-                        
+
+                        // Retrieve the terms associated with the post
+                        $terms = get_field('field_6527440d6f9a2');
+                        $has_archive_term = false;
+
+                        if ( $terms ) {
+                            foreach ( $terms as $term ) {
+                                if ( stripos( $term->name, 'Archive' ) !== false ) {
+                                    $has_archive_term = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        // Skip the post if it has a term with the keyword "Archive"
+                        if ( $has_archive_term ) {
+                            continue;
+                        }
                     ?>
                         <li>
                             <h2 class="h3">

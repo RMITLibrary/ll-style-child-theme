@@ -108,7 +108,7 @@ defined('ABSPATH') || exit;
 						</a>
                     </li>
                     <li class="search">
-                        <a href="/test-search/" id="search2">
+                        <a href="/search/" id="search2">
                             <div class="search-label">Search</div>
                             <div class="mag-glass"></div>
                         </a>
