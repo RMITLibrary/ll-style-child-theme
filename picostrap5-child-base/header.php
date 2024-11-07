@@ -164,6 +164,26 @@ defined('ABSPATH') || exit;
                 </div>	
             </div>
             <!-- END menu -->
+
+            <!-- Start theme switcher -->
+				<div id="theme-switcher">
+					<h2 class="h5">Theme</h2>
+					<div class="theme-bg">
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" data-bs-theme-value="auto" value="option1">
+							<label class="form-check-label" for="inlineRadio1">System</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" data-bs-theme-value="light" value="option2">
+							<label class="form-check-label" for="inlineRadio2">Light</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" data-bs-theme-value="dark" value="option3">
+							<label class="form-check-label" for="inlineRadio3">Dark</label>
+						</div>
+					</div>
+				</div>
+				<!-- End theme switcher -->
         </div>
     </div>
 </nav>

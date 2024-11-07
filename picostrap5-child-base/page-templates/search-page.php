@@ -26,7 +26,7 @@ get_header();
 <a id="main-content"></a>
 <!-- START search -->
 <div class="search-container">
-    <label for="search"><h1 class="margin-top-zero">Search the learning lab</h1></label>
+    <label for="searchInput"><h1 class="margin-top-zero">Search the learning lab</h1></label>
     <div class="input-group">
         <input type="search" id="searchInput" class="form-control">
         <button type="submit"  id="searchButton" class="btn btn-primary"><div class="mag-glass"></div><span class="visually-hidden">Search</span></button>
@@ -81,6 +81,7 @@ get_header();
 </div>
 <!-- END results div -->
 <hr>
+<a name="keywords"></a>
 <h2>Browse keywords</h2>
             <p>These pages of similar topics aim to make it quicker and easier to find the content you need. Select any keyword to see all pages linked to that specific term.</p>
 </div>
@@ -120,10 +121,13 @@ if (!empty($keywords) && !is_wp_error($keywords)) {
         // Get the link for the current keyword
         $link = get_term_link($keyword);
 
+        // Parse the URL to extract the path component
+        $parsed_url = wp_parse_url($link);
+        $relative_link = isset($parsed_url['path']) ? $parsed_url['path'] : '';
 
         // Output the keyword as a list item with a link, exclude "Documentation" and "Archive"
         if ($keyword->name != "Documentation" && $keyword->name != "Archive") {
-            echo '<li><a href="' . esc_url($link) . '">' . esc_html($keyword->name) . '</a></li>';
+            echo '<li><a href="..' . esc_url($relative_link) . '">' . esc_html($keyword->name) . '</a></li>';
         }
        
     }
@@ -135,186 +139,11 @@ if (!empty($keywords) && !is_wp_error($keywords)) {
     echo 'No keywords found.';
 }
 ?>
-            <p>
-    Data set lives here: <a href="/wp-content/uploads/pages.json" target="_blank" rel="noopener">/wp-content/uploads/pages.json</a></p>
+    <p class="visually-hidden">Data set lives here: <a href="/wp-content/uploads/pages.json" target="_blank" rel="noopener">/wp-content/uploads/pages.json</a></p>
     </div>
 </div>
 <!-- END col-xs-12 -->
 </div>
 
-<script>
-    var dataURL = '/wp-content/uploads/pages.json';
-    var debug = false;
-    
-    //Check query string for debug=true. If it is there, show debug interface
-    const queryStringSearch = window.location.search;
-    const urlParams = new URLSearchParams(queryStringSearch);
-    const debugBool = urlParams.get('debug');
-    const searchString = urlParams.get('query');
-    
-    if(debugBool == 'true') {
-        debug = true;
-        
-        var debugInterface = document.getElementById("search-debug");
-        debugInterface.style.display = "block";
-    }
-
-    console.log("searchString: "+ searchString);
-    //console.log("debugBool: "+ debugBool);
-    
-    // Fetch the JSON data
-    fetch(dataURL)
-        .then(response => response.json())
-        .then(data => {
-            function performSearch() {
-                
-                var query = document.getElementById('searchInput').value;
-                var threshold = 0.4;
-                var distance = 1200;
-                var location = 0;
-                var useExtendedSearch = false;
-                var minMatchCharLength = 4;
-                
-                if(debug == true)
-                {
-                    threshold = parseFloat(document.getElementById('threshold').value);
-                    distance = parseInt(document.getElementById('distance').value, 10);
-                    location = parseInt(document.getElementById('location').value, 10);
-                    useExtendedSearch = document.getElementById('useExtendedSearch').checked;
-                    minMatchCharLength = parseInt(document.getElementById('minMatchCharLength').value, 10);
-                }
-
-                const options = {
-                    keys: ['title', 'content'], // Specify the fields to search
-                    threshold: threshold,
-                    distance: distance,
-                    location: location,
-                    minMatchCharLength: minMatchCharLength,
-                    includeScore: true,
-                    includeMatches: true,
-                };
-
-                // START if to avoid blank queries
-                if(query != "")
-                {
-                    const fuse = new Fuse(data, options);
-                    const results = fuse.search(query);
-                    const resultsList = document.getElementById('results');
-                    resultsList.innerHTML = '';
-
-                    const resultsCounter = document.getElementById('results-counter');
-
-                    if(results.length == 0) {
-                        resultsCounter.innerHTML = 'No results found.';
-                    }
-                    else if(results.length == 1) {
-                        resultsCounter.innerHTML = results.length +' result found.'; 
-                    }
-                    else {
-                        resultsCounter.innerHTML = results.length +' results found.';
-                    }
-                    
-                    results.forEach(function(result) {
-                        var title = result.item.title;
-                        var content = result.item.content;
-                        var link = result.item.link;
-                        var snippet = getSnippet(content, query);
-                        var score = result.score.toFixed(2); // Get format the score
-                        var matches = result.matches; // Get matches
-                        var keywords = result.item.keywords;
-                        
-                        // Only output result if keywords don't contain "documentation", "archive", or "redirect"
-                        if (keywords && !keywords.some(keyword => {
-                            const lowerKeyword = keyword.toLowerCase();
-                            return ["documentation", "archive", "redirect"].includes(lowerKeyword);
-                        })) {
-                            var li = document.createElement('li');
-
-                            var itemOutput = '<a href="' + link + '"><h3 class="text">' + title + '</h3></a><p>' + snippet + '</p>';
-                            if (debug === true) itemOutput += '<p class="small">Score: ' + score + " &nbsp;&nbsp;&nbsp;&nbsp;Matches: " + matches + "</p>";
-
-                            li.innerHTML = itemOutput;
-                            resultsList.appendChild(li);
-                        }
-                    });
-                    
-                    // Select the element
-                    var collapseElement = document.getElementById('results-container');
-
-                    // Create a new Bootstrap Collapse instance
-                    var collapseInstance = new bootstrap.Collapse(collapseElement, {
-                        toggle: false // Prevents automatic toggle
-                    });
-
-                    // Use the show method to expand
-                    collapseInstance.show();
-                    document.getElementById("results-title").focus();
-                }
-                //END if to avoid blank queries
-            }
-
-            function getSnippet(content, query) {
-                // Return the first 160 characters if the query is empty
-                if (!query) return content.substring(0, 160);
-
-                // Find the index of the query in the content, case-insensitive
-                var index = content.toLowerCase().indexOf(query.toLowerCase());
-
-                // If the query is found
-                if (index !== -1) {
-                    // Determine the start position for the snippet
-                    var start = Math.max(0, index - 80);
-
-                    // Try to find the start of a sentence or a space
-                    var sentenceStart = content.lastIndexOf('.', start) + 1;
-                    var spaceStart = content.lastIndexOf(' ', start) + 1;
-
-                    // Choose the maximum of sentenceStart or spaceStart if they are within limits
-                    if (sentenceStart > start - 80) start = sentenceStart;
-                    else if (spaceStart > start - 80) start = spaceStart;
-
-                    // Determine the end position for the snippet
-                    var end = Math.min(content.length, index + 80);
-
-                    // Extract the snippet from the content
-                    var snippet = content.substring(start, end).trim();
-
-                    // Escape special characters in the query for regex
-                    var escapedQuery = query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-
-                    // Create a regex to highlight the query in the snippet
-                    var regex = new RegExp('(' + escapedQuery + ')', 'gi');
-
-                    // Highlight the query in the snippet
-                    snippet = snippet.replace(regex, '<span class="highlight-1">$1</span>');
-
-                    return snippet;
-                }
-
-                // If the query is not found, return the first 160 characters
-                return content.substring(0, 160);
-            }
-
-            //If queryString has query=something then do the search. Used to make home screen search work.
-            if(searchString != null)
-            {
-                //place searchString into input and then execute search
-                document.getElementById('searchInput').value = searchString;
-                performSearch();
-            }
-
-            // Listen for button click
-            document.getElementById('searchButton').addEventListener('click', performSearch);
-
-            // Listen for enter key
-            document.getElementById('searchInput').addEventListener('keypress', function(event) {
-                if (event.key === 'Enter') {
-                    performSearch();
-                }
-            });
-        })
-        .catch(function(error) {
-            console.error('Error fetching JSON:', error);
-        });
-</script>
+<script type="text/javascript" src="/wp-content/themes/picostrap5-child-base/js/search.js?v=1.0.4"></script>
 <?php get_footer();

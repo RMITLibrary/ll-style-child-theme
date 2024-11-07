@@ -72,30 +72,5 @@ get_header();
         <!-- END home panels -->
 </div>
 <!-- script to punt search input to /search via query string -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchInput = document.getElementById('searchInput');
-        const searchButton = document.getElementById('searchButton');
-
-        // Function to perform the search
-        function goToSearch() {
-            const query = searchInput.value.trim();
-            if (query) {
-                window.location.href = `/search/?query=${encodeURIComponent(query)}`;
-            }
-        }
-
-        // Listen for the Enter key press on the search input
-        searchInput.addEventListener('keydown', function(event) {
-            if (event.key === 'Enter') {
-                goToSearch();
-            }
-        });
-
-        // Listen for the button click
-        searchButton.addEventListener('click', function() {
-            goToSearch();
-        });
-    });
-</script>
+<script type="text/javascript" src="/wp-content/themes/picostrap5-child-base/js/search-home.js?v=1.0.0"></script>
 <?php get_footer();

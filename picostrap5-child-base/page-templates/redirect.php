@@ -21,19 +21,13 @@ get_header();
             <h1 class="margin-top-zero">Archived Page</h1>
             <p>This content has been updated or relocated. You will be redirected shortly to the latest version. Please update your links if necessary.</p>
 
+            
             <script>
-                // JavaScript variable with the slug to redirect to
-                var redirectSlug = '<?php echo esc_js(get_field('redirect_slug')); ?>';
-
-                // Get the site URL
-                var siteUrl = '<?php echo esc_url(home_url()); ?>';
-
-                // Redirect after 5 seconds
-                setTimeout(function() {
-                    window.location.href = siteUrl + '/' + redirectSlug;
-                }, 5000);
+                //Get redirect path
+                var redirectPath = '<?php echo esc_js(get_field('redirect_slug')); ?>';
+                console.log("redirectPath: " +redirectPath);
             </script>
-
+            <script type="text/javascript" src="/wp-content/themes/picostrap5-child-base/js/redirect.js?v=1.0.2"></script>
         </div>
         <!-- END content --> 
     </div>

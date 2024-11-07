@@ -466,7 +466,7 @@ function export_content_to_json() {
                 'content' => $content,
                 'excerpt' => strip_tags(strip_shortcodes(get_the_excerpt())), // Remove shortcodes and HTML tags
                 'date' => get_the_date(),
-                'link' => get_permalink(),
+                'link' => wp_parse_url(get_permalink(), PHP_URL_PATH), // Extract the path from the URL
                 'keywords' => $keywords,
             );
         }
