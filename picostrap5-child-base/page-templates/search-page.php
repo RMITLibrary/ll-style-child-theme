@@ -126,10 +126,77 @@ if (!empty($keywords) && !is_wp_error($keywords)) {
         $relative_link = isset($parsed_url['path']) ? $parsed_url['path'] : '';
 
         // Output the keyword as a list item with a link, exclude "Documentation" and "Archive"
-        if ($keyword->name != "Documentation" && $keyword->name != "Archive") {
+        /* if ($keyword->name != "Documentation" && $keyword->name != "Archive") {
             echo '<li><a href="..' . esc_url($relative_link) . '">' . esc_html($keyword->name) . '</a></li>';
+        }   */     
+
+        // Output the keyword as a list item with a link, exclude "Documentation" and "Archive"
+        /* if ($keyword->name != "Documentation" && $keyword->name != "Archive") {
+            // Query posts associated with the current keyword that do not have the "Archive" term
+            $query_args = array(
+                'post_type' => 'page', // Adjust post type if needed
+                'tax_query' => array(
+                    'relation' => 'AND',
+                    array(
+                        'taxonomy' => 'keyword',
+                        'field'    => 'slug',
+                        'terms'    => $keyword->slug,
+                    ),
+                    array(
+                        'taxonomy' => 'keyword',
+                        'field'    => 'name',
+                        'terms'    => 'Archive',
+                        'operator' => 'NOT IN',
+                    ),
+                ),
+                'posts_per_page' => 1, // We only need to check if at least one post exists
+            );
+
+            $posts = get_posts($query_args);
+
+            // Output the keyword link if at least one post is found
+            if (!empty($posts)) {
+                echo '<li><a href="..' . esc_url($relative_link) . '">' . esc_html($keyword->name) . '</a></li>';
+            }
+        } */
+
+        // Output the keyword as a list item with a link, exclude "Documentation" and "Archive"
+        if ($keyword->name != "Documentation" && $keyword->name != "Archive") {
+            // Query posts associated with the current keyword
+            $query_args = array(
+                'post_type' => 'page', // Adjust post type if needed
+                'tax_query' => array(
+                    array(
+                        'taxonomy' => 'keyword',
+                        'field'    => 'slug',
+                        'terms'    => $keyword->slug,
+                    ),
+                ),
+                'fields' => 'ids', // Only retrieve post IDs for efficiency
+            );
+
+            $posts = get_posts($query_args);
+            $has_valid_post = false;
+
+            // Check if there's at least one post without the "Archive" term
+            foreach ($posts as $post_id) {
+                $post_terms = get_the_terms($post_id, 'keyword');
+                if ($post_terms) {
+                    foreach ($post_terms as $term) {
+                        if ($term->name == "Archive") {
+                            continue 2; // Skip this post if it has the "Archive" term
+                        }
+                    }
+                }
+                $has_valid_post = true;
+                break; // Exit loop if a valid post is found
+            }
+
+            // Output the keyword link if a valid post is found
+            if ($has_valid_post) {
+                echo '<li><a href="..' . esc_url($relative_link) . '">' . esc_html($keyword->name) . '</a></li>';
+            }
         }
-       
     }
 
     // Close the last section

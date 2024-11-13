@@ -32,6 +32,13 @@ get_header();
                         $terms = get_field('field_6527440d6f9a2');
                         $has_archive_term = false;
 
+
+                    ?>
+                   <script>
+                        console.log("title: " + "<?php echo esc_html( get_the_title() ); ?>");
+                    </script>
+                    <?php
+                        
                         if ( $terms ) {
                             foreach ( $terms as $term ) {
                                 if ( stripos( $term->name, 'Archive' ) !== false ) {

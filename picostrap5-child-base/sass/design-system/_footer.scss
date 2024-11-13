@@ -141,52 +141,39 @@ footer * {
     @include media-breakpoint-up(md) { padding: 4rem 0 5rem 0; }
     
     background-color: var(--bs-primary-bg-subtle);
-    
+
     .acknowledgement-container {
         display: flex;
-        flex-direction: column;
         align-items: center;
-        align-self: stretch;
-        
-        
-        .acknowledgement-image {
-            margin: 0 1.5rem 2rem 1.5rem;
-            max-width: 26rem;
-            
-            flex-shrink: 0; 
-			
-			img {
-				width: 100%;
-				height: auto;
-			}
-        }
-        
+        gap: 3rem;
+
+        font-size: 1rem;
+
         .content img {
             width: 3rem;
             height: 2rem;
             display: inline-block;
             margin: 0 1rem 2rem 0;
         }
-        
-        
-        @include media-breakpoint-up(lg) {
-            flex-direction: row-reverse;
-            
-            .acknowledgement-image {
-                margin: 3.5rem 0 0 2rem;
-                width: 23.5rem;
+
+        .content p { margin-bottom: 0; }
+
+        .content .img-credit {
+            display: none;
+            @include media-breakpoint-up(lg) {
+                display: inline;
             }
         }
-        
-        @include media-breakpoint-up(xl) {
-            .acknowledgement-image { margin-top: 1.5rem; }
-        }
-        
-        @include media-breakpoint-up(xxl) {
-            .acknowledgement-image { margin-top: 3rem; }
+
+        .acknowledgement-image {
+            display: none;
+            @include media-breakpoint-up(lg) {
+                display: block;
+                width: 25rem;
+                flex-shrink: 0;
+            }
         }
     }
-  
 }
 
 //border at the top

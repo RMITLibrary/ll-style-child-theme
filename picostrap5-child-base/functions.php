@@ -410,6 +410,53 @@ remove_filter('the_title', 'wptexturize');
 remove_filter('comment_text', 'wptexturize');
 
 
+
+
+// Modify the main WordPress query to remove the pagination limit.
+
+// This function sets the 'posts_per_page' parameter to -1 to display all posts
+// without pagination for certain conditions.
+
+ // @param WP_Query $query The WP_Query instance (passed by reference).
+
+function custom_remove_pagination_limit($query) {
+    // Check if this is the main query and not in the admin dashboard
+    if ($query->is_main_query() && !is_admin()) {
+        // Check if the current query is for the home page, an archive, or a page post type archive
+        if ($query->is_home() || $query->is_archive() || $query->is_post_type_archive('page')) {
+            // Set 'posts_per_page' to -1 to retrieve all posts/pages without pagination
+            $query->set('posts_per_page', -1);
+        }
+    }
+}
+
+// Hook the function to 'pre_get_posts' to modify the query before it is executed
+add_action('pre_get_posts', 'custom_remove_pagination_limit');
+
+
+// Modify the main query for archive pages to order posts alphabetically by title.
+
+// This function hooks into the 'pre_get_posts' action to adjust the query parameters
+// before WordPress executes the query on archive pages.
+
+// @param WP_Query $query The WP_Query instance (passed by reference).
+
+function custom_order_archives_by_title($query) {
+    // Ensure this runs only on the main query and not in the admin dashboard
+    if ($query->is_main_query() && !is_admin() && $query->is_archive()) {
+        // Set the query to order posts by title in ascending order
+        $query->set('orderby', 'title');
+        $query->set('order', 'ASC');
+
+        // Optionally, uncomment the next line to display all posts without pagination
+        // $query->set('posts_per_page', -1);
+    }
+}
+
+// Hook the function to 'pre_get_posts' to modify the query before it is executed
+add_action('pre_get_posts', 'custom_order_archives_by_title');
+
+
 //-----------------------------
 //	export_content_to_json
 

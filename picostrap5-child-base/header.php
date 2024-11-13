@@ -7,82 +7,143 @@ defined('ABSPATH') || exit;
 <html <?php language_attributes(); ?> class="nav-fixed">
 
 <head>
-<!-- 
-    DARK MODE
-    This script is placed in the <head> to ensure the theme is set as early as possible,
-    reducing the flash of unstyled content (FOUC). It determines the user's preferred
-    theme (either from local storage or system settings) and applies it immediately.
-  -->
-  <script>
-    (function() {
-      'use strict';
-
-      // Function to get the stored theme from local storage
-      const getStoredTheme = () => localStorage.getItem('theme');
-
-      // Function to determine the preferred theme
-      const getPreferredTheme = () => {
-        const storedTheme = getStoredTheme(); // Retrieve the stored theme
-        if (storedTheme) {
-          return storedTheme; // If a theme is stored, return it
-        }
-        // If no theme is stored, check the system preference for dark mode
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      };
-
-      // Function to apply the specified theme
-      const setTheme = theme => {
-        if (theme === 'auto') {
-          // If theme is 'auto', set it based on system preference
-          document.documentElement.setAttribute('data-bs-theme', (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
-        } else {
-          // Otherwise, set the theme explicitly
-          document.documentElement.setAttribute('data-bs-theme', theme);
-        }
-      };
-
-      // Set the theme based on the preferred theme
-      setTheme(getPreferredTheme());
-    })();
-  </script>
-	<meta charset="<?php bloginfo('charset'); ?>">
+    <meta charset="<?php bloginfo('charset'); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<!-- wp_head -->
-	<?php wp_head(); ?>
+	<?php 
+        // wp_head() outputs the following: 
+        //      1. title attribute
+        //
+        // Via All in One SEO Plugin
+        //      1. Meta tags, generic, OpenGraph and twitter
+        //      2. JSON schema
+        //
+        // A Python script is deployed to change https://lab.bitm.app to
+        // https://learninglab.rmit.edu.au/ before upload to prod
+        //
+        // Via other plug-ins
+        // 1. MathJax script and link to jsdeliver.net
+        // 2. Styles related to WordPress editor and plugins
+        // 3. Site Stylesheets
+        //
+        // A Python script is deployed to remove some of these styles
+        wp_head(); 
+    ?>
 	<!-- /wp_head -->
+
+    <!-- START Additional meta tags not covered by wp_head -->
+    <?php
+        // A Python script is deployed to change https://lab.bitm.app to
+        // https://learninglab.rmit.edu.au/ in the tags below before upload to prod
+    ?>
+    <!--  remove this once python script is done
+      <link href="https://www.rmit.edu.au/etc.clientlibs/rmit/clientlibs/clientlib-site/resources/favicon.png" rel="icon" type="image/x-icon"/>
+    <link href="https://www.rmit.edu.au/etc.clientlibs/rmit/clientlibs/clientlib-site/resources/favicon.png" rel="shortcut icon" type="image/x-icon"/>-->
+
+    <link href="https://rmitlibrary.github.io/cdn/learninglab/illustration/dev-fav-icon.png" rel="icon" type="image/x-icon"/>
+    <link href="https://rmitlibrary.github.io/cdn/learninglab/illustration/dev-fav-icon.png" rel="shortcut icon" type="image/x-icon"/>
+
+    <meta name="author" content="RMIT Library">
+    <link rel="author" href="humans.txt">
+
+    <meta name="geo.position" content="-37.807778, 144.963333">
+    <meta name="geo.placename" content="Melbourne">
+    <meta name="geo.region" content="AU">
+
+    <meta name="dcterms.title" content="Learning Lab">
     
+    <?php 
+    if (is_singular()) { // Check if it's a single post or page
+        $excerpt = get_the_excerpt();
+        if($excerpt == "...") {
+            echo '<meta name="dcterms.description" content="The Learning Lab provides foundation skills and study support materials for writing, science and more.">';
+        }
+        else
+        {
+            echo '<meta name="dcterms.description" content="' . esc_attr($excerpt) . '">';
+        }
+
+        echo "\n";
+    }
+    ?>
+    <meta name="dcterms.type" content="Text">
+    <?php echo '<meta name="dcterms.identifier" content="' . esc_url(get_permalink()) . '">'; echo "\n"; ?>
+    <meta name="dcterms.format" content="text/html">
+    <!-- END Additional meta tags not covered by wp_head -->
+
+
+    <!-- START Additional scripts for tracking -->
+
+    <!-- Microsoft Clarity - does hotspot tracking of pages -->
+    <script async="" src="https://www.clarity.ms/tag/ku7m575lss"></script>
+
+    <!-- Google tag - (gtag.js) --> 
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-VLHPB23GYR"></script> 
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-VLHPB23GYR');
+    </script>
+
+    <!-- Microsoft Bing - Not sure how useful this is? --> 
+    <meta name="msvalidate.01" content="8E4954E1DFAB7E2F8A92DD0A0BD6ED09">
+
+    <!-- END Additional scripts for tracking -->
+
     <style>
     <?php 
-      // Fix menu overlap bug..
+      // Fix menu overlap bug in WordPress dev environment.
       if ( is_admin_bar_showing() ) {
           echo '#wp-admin-bar-root-default { top: -1.5rem !important; }'; 
           echo '#wp-admin-bar-top-secondary { top: -1.5rem !important; }'; 
       }
     ?>
     </style>
+
+    <!-- 
+    DARK MODE javascript
+    This script is placed in the <head> to ensure the theme is set as early as possible,
+    reducing the flash of unstyled content (FOUC). It determines the user's preferred
+    theme (either from local storage or system settings) and applies it immediately.
+    -->
+    <script>
+    (function() {
+        'use strict';
+
+        // Function to get the stored theme from local storage
+        const getStoredTheme = () => localStorage.getItem('theme');
+
+        // Function to determine the preferred theme
+        const getPreferredTheme = () => {
+        const storedTheme = getStoredTheme(); // Retrieve the stored theme
+        if (storedTheme) {
+            return storedTheme; // If a theme is stored, return it
+        }
+        // If no theme is stored, check the system preference for dark mode
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        };
+
+        // Function to apply the specified theme
+        const setTheme = theme => {
+        if (theme === 'auto') {
+            // If theme is 'auto', set it based on system preference
+            document.documentElement.setAttribute('data-bs-theme', (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+        } else {
+            // Otherwise, set the theme explicitly
+            document.documentElement.setAttribute('data-bs-theme', theme);
+        }
+        };
+
+        // Set the theme based on the preferred theme
+        setTheme(getPreferredTheme());
+    })();
+    </script>
 </head>
 
 <body <?php body_class(); ?>>
 	<?php wp_body_open(); ?>
-
-	<?php 
-    // Custom filter to check if header elements should be displayed. To disable, use: add_filter('picostrap_enable_header_elements', '__return_false');
-    /*if (apply_filters('picostrap_enable_header_elements', true)):
-
-        //check if LC option is set to "Handle Header"    
-        if (!function_exists('lc_custom_header')) {
-            //use the built-in theme header elements 
-            get_template_part( 'partials/header', 'optional-topbar' ); 
-            get_template_part( 'partials/header', 'navbar' );
-        } else {
-            //use the LiveCanvas Custom Header
-            lc_custom_header(); 
-        }
-
-    endif;*/
-    
-	?>
 	
 <header>
 <a href="#main-content" class="visually-hidden-focusable">Skip to main content</a>
