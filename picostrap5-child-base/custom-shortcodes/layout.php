@@ -28,14 +28,15 @@ function ll_grid_att($atts, $content = null) {
     $default = array(
         'columns' => '',
         'gap' => '',
-        'size' => ''
+        'size' => '',
+        'classes' => ''
     );
     $a = shortcode_atts($default, $atts);
 
     // Ensure content is processed correctly
     $content = do_shortcode(shortcode_unautop($content));
 
-    $tag = '<div class="my-grid';
+    $tag = '<div class="my-grid ';
 
     // Apply optional class for 3 or 4 columns
     if ($a['columns'] == '3') {
@@ -51,12 +52,17 @@ function ll_grid_att($atts, $content = null) {
 
     // Apply optional class for width classes
     if ($a['size'] == 'lg') {
-        $tag .= ' grid-width-lg';
+        $tag .= ' grid-width-lg ';
     } elseif ($a['size'] == 'md') {
-        $tag .= ' grid-width-md';
+        $tag .= ' grid-width-md ';
     } elseif ($a['size'] == 'sm') {
-        $tag .= ' grid-width-sm';
+        $tag .= ' grid-width-sm ';
     }
+
+    //if there's anything in clesses, add it (don't document this, for web devs only)
+    if($a['classes'] != '') { 
+        $tag .= $a['classes']; 
+    } 
 
     // Complete tag
     $tag .= '">';

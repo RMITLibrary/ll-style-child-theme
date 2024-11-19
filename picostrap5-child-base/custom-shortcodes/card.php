@@ -39,6 +39,8 @@ function ll_card_att($atts, $content = null) {
         'img' => '',
         'attibution-id' => '',
         'alt' => '',
+        'trim' => '',
+        'purpose' => '',
         'classes' => ''
     );
     $a = shortcode_atts($default, $atts);
@@ -73,8 +75,24 @@ function ll_card_att($atts, $content = null) {
         $output .= image_att($image_atts);
     }
 
-    
-    $output .= '<div class="card-body">' . "\n";
+    $output .= '<div class="card-body ';
+
+    //if trim isn't blank, then add trim-top or vairant to the card-body class
+    if ($a['trim'] != '') {
+        $output .= 'trim-top';
+
+        if($a['trim'] == 'incorrect') {
+            $output .= '-wrong';
+        }
+        else if($a['trim'] == 'correct') {
+            $output .= '-right';
+        }
+        else if($a['trim'] == 'neutral') {
+            $output .= '-neutral';
+        }
+    }
+
+    $output .= '">' . "\n";
 
     //if heading tag has a value, update $labelTag, otherwise it will retain h3 as default
     if($a['heading-tag'] != '')
@@ -86,11 +104,26 @@ function ll_card_att($atts, $content = null) {
         }
     }
 
+    $purpose = '';
+    //if purpose attrib isn't blank, create a visually hidden tag
+    if ($a['purpose'] != '') {
+        $purpose  = '<span class="visually-hidden">' . $a['purpose'] . '&nbsp;</span>';
+    }
+
     // Apply optional title div, allow to alter size via additional class
     if ($a['title'] != '') {
-        $output .= '<' . $labelTag .' class="card-title ' . $a['heading-size'] . '">';    
+        $output .= '<' . $labelTag .' class="card-title ' . $a['heading-size'] . '">';  
+
+        //if purpose isn't blank, add purpose visually hidden tag to title
+        if ($a['purpose'] != '') {
+            $output .= $purpose;
+        }
         $output .= $a['title'];
         $output .= '</' . $labelTag . '>' . "\n";
+    }
+    else if ($a['purpose'] != '') {
+        //no title, just add purpose visually hidden tag to body
+        $output .= $purpose;
     }
 
     //add the content itself

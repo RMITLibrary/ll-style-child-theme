@@ -81,6 +81,8 @@ include('card.php');               //handles card
 include('layout.php');               //handles grid, image-text and icon-text
 include('highlight-text.php');      //handles highlight text
 
+include('redirect-listing.php');    //allows us to list every redirect via a shortcode
+
 function custom_line_break() {
     return '<br />';
 }

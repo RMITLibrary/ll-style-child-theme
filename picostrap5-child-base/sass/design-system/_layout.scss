@@ -169,25 +169,44 @@ $img-width-sm: 18.5rem;     //296px*/
 			margin-bottom: 0px;
 		}
 		
-		@include type-small;
+		//@include type-small;
 		
 		p {
-			@include type-small;
+			//@include type-small;
 		}
 		
-		//large card can be used by appyiong "large" clasd
+		//large card can be used by applying "large" class
 		p.large {
 			@include type-default;
 		}	
 	}
-}
 
-//If a card is floated right, it's max-width is further restrictied
+	//trim-top to add visual punch, indicate right and wrong
+	.trim-top, .trim-top-wrong, .trim-top-right, .trim-top-neutral {
+		border-top: 0.25rem solid $red;
+	}
+
+	.trim-top-right, {
+		border-color: $green;
+	}
+
+	.trim-top-neutral {
+		border-color: $yellow;
+	}
+}
+// If a card is floated right, it's max-width is further restrictied/. Also default type to small
 .card.float-right {
-  max-width: $img-width-sm;
+	max-width: $img-width-sm;
+	@include type-small;
+
+	p {
+		@include type-small;
+	}
+
+	.large {
+		@include type-default;
+	}	
 }
-
-
 // Striped list 
 // Mirrors functionality of a striped table
 .striped-list {
@@ -266,8 +285,7 @@ $img-width-sm: 18.5rem;     //296px*/
 			grid-column: span 2;
 		}
 	}
-	
-	
+
 	.striped-list-col-4 {
 		display: grid;
     	grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -331,12 +349,19 @@ $img-width-sm: 18.5rem;     //296px*/
 		padding: 0;
 		list-style-type: none;
 	}
-}
 
-// using this to prevent wordpress from adding in stray br tags between elements
-br {
-	display: none;
-  }
+	// style to stop table double border bug
+	table {
+		border: 0;	
+	}
+
+	td { width: 100%; }
+
+	// using this to prevent wordpress from adding in stray br tags between elements
+	br {
+		display: none;
+	}
+}
 .my-grid > * {
 	display: block;
 	margin: 0;
