@@ -206,7 +206,7 @@ if (!empty($keywords) && !is_wp_error($keywords)) {
     echo 'No keywords found.';
 }
 ?>
-    <p class="visually-hidden">Data set lives here: <a href="/wp-content/uploads/pages.json" target="_blank" rel="noopener">/wp-content/uploads/pages.json</a></p>
+    <!-- <p class="visually-hidden">Data set lives here: <a href="/wp-content/uploads/pages.json" target="_blank" rel="noopener">/wp-content/uploads/pages.json</a></p>-->
     </div>
 </div>
 <!-- END col-xs-12 -->

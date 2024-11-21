@@ -37,15 +37,11 @@ defined('ABSPATH') || exit;
         // A Python script is deployed to change https://lab.bitm.app to
         // https://learninglab.rmit.edu.au/ in the tags below before upload to prod
     ?>
-    <!--  remove this once python script is done
-      <link href="https://www.rmit.edu.au/etc.clientlibs/rmit/clientlibs/clientlib-site/resources/favicon.png" rel="icon" type="image/x-icon"/>
-    <link href="https://www.rmit.edu.au/etc.clientlibs/rmit/clientlibs/clientlib-site/resources/favicon.png" rel="shortcut icon" type="image/x-icon"/>-->
 
     <link href="https://rmitlibrary.github.io/cdn/learninglab/illustration/dev-fav-icon.png" rel="icon" type="image/x-icon"/>
     <link href="https://rmitlibrary.github.io/cdn/learninglab/illustration/dev-fav-icon.png" rel="shortcut icon" type="image/x-icon"/>
 
     <meta name="author" content="RMIT Library">
-    <link rel="author" href="humans.txt">
 
     <meta name="geo.position" content="-37.807778, 144.963333">
     <meta name="geo.placename" content="Melbourne">
