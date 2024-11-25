@@ -593,6 +593,122 @@ add_filter("excerpt_length", function($in){
 }, 999);
 
 
+//-------------------------------------------
+//	my_redirects_page
+
+//	Generates the admin page for managing redirects with fields for old and new URLs
+
+//	Called from:	my_redirects_menu
+
+//	Calls:			None directly, but handles form submissions to update redirects
+
+//	Usage:			Triggered by form submission on the admin page to save redirects
+//-------------------------------------------
+
+function my_redirects_menu() {
+    add_menu_page(
+        'Manage Redirects',
+        'Redirects',
+        'manage_options',
+        'my-redirects',
+        'my_redirects_page'
+    );
+}
+add_action('admin_menu', 'my_redirects_menu');
+
+
+
+
+function my_redirects_page() {
+    if (!current_user_can('manage_options')) {
+        return;
+    }
+
+    // Handle form submission
+    if (isset($_POST['redirects'])) {
+        check_admin_referer('save_redirects');
+        $redirects = [];
+
+        foreach ($_POST['redirects']['old'] as $key => $old_url) {
+            $new_url = $_POST['redirects']['new'][$key];
+            if (!empty($old_url) && !empty($new_url)) {
+                $redirects[] = [
+                    'old' => sanitize_text_field($old_url),
+                    'new' => sanitize_text_field($new_url),
+                ];
+            }
+        }
+
+        update_option('my_redirects', $redirects);
+        echo '<div class="updated"><p>Redirects saved.</p></div>';
+    }
+
+    // Get existing redirects
+    $redirects = get_option('my_redirects', array());
+
+    // Display form
+    ?>
+    <style>
+        .admin-redirect {   
+             width: 100%; 
+             max-width: 1200px;
+        }
+
+        .admin-redirect input {
+            width: 100%;
+        }
+    </style>
+    <div class="wrap">
+        <h1>Manage Redirects</h1>
+        <p id="row-count"></p>
+        <form method="post">
+        <div class="buttons"><button type="button" class="button-default" onclick="addRow()">Add new redirect</button>
+        <input type="submit" value="Save Redirects" class="button-primary" /></div>
+            <?php wp_nonce_field('save_redirects'); ?>
+            <table cellpadding="5" class="admin-redirect">
+                <thead>
+                    <tr>
+                        <th>Old Path</th>
+                        <th>New Path</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($redirects as $redirect): ?>
+                        <tr>
+                            <td><input type="text" name="redirects[old][]" value="<?php echo esc_attr($redirect['old']); ?>" /></td>
+                            <td><input type="text" name="redirects[new][]" value="<?php echo esc_attr($redirect['new']); ?>" /></td>
+                        </tr>
+                    <?php endforeach; ?>
+                    <tr>
+                        <td><input type="text" name="redirects[old][]" /></td>
+                        <td><input type="text" name="redirects[new][]" /></td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <script>
+        function addRow() {
+            var table = document.querySelector('table tbody');
+            var newRow = document.createElement('tr');
+            newRow.innerHTML = '<td><input type="text" name="redirects[old][]" /></td><td><input type="text" name="redirects[new][]" /></td>';
+            table.insertBefore(newRow, table.firstChild);
+            updateRowCount();
+        }
+
+        function updateRowCount() {
+            var table = document.querySelector('table tbody');
+            var rowCount = table.children.length;
+            document.getElementById('row-count').textContent = 'Number of redirects: ' + rowCount;
+        }
+
+        // Call the function to update the row count display
+        updateRowCount();
+
+    </script>
+    <?php
+}
+
 //-----------------------------
 //	All shortcode code is included and added below
 
