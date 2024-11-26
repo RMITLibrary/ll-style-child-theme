@@ -73,41 +73,6 @@ add_action( 'admin_notices', function  () {
 add_filter( 'wp_is_application_passwords_available', '__return_false' );
 
 // ADD YOUR CUSTOM PHP CODE DOWN BELOW /////////////////////////
-// 
-//if( function_exists( 'aioseo_breadcrumbs' ) ) aioseo_breadcrumbs();
-
-// Breadcrumb
-//get_template_part( 'template-parts/header/site-header' );
-// 
-if (!function_exists('aioseo_breadcrumbs')) :
-  function aioseo_breadcrumbs() {
-	  //not in use
-    /*if (!is_home()) {
-	
-      echo '<nav class="breadcrumb mb-4 mt-2 bg-light py-2 px-3 small rounded">';
-      echo '<a href="' . home_url('/') . '">' . ('<i class="fas fa-home"></i>') . '</a><span class="divider">&nbsp;/&nbsp;</span>';
-      if (is_category() || is_single()) {
-        the_category(' <span class="divider">&nbsp;/&nbsp;</span> ');
-        if (is_single()) {
-          echo ' <span class="divider">&nbsp;/&nbsp;</span> ';
-          the_title();
-        }
-      } elseif (is_page()) {
-        echo the_title();
-      }
-      echo '</nav>';
-    }*/
-  }
-  //add_filter('breadcrumbs', 'breadcrumbs');
-endif;
-// Breadcrumb END
-
-
-
-/*<?php
-		get_template_part( 'template-parts/header/site-header' );
-		if ( function_exists( 'aioseo_breadcrumbs' ) ) aioseo_breadcrumbs(); 
-?>*/
 
 /**
  * This function modifies the main WordPress query to include an array of 
@@ -198,34 +163,6 @@ add_filter('tiny_mce_before_init', 'tags_tinymce_fix');
 //
 //
 //-----------------------------------------------------------------------------------
-
-
-//Allowing HTML and Shortcodes:
-//Update the Meta Box Display Function:
-//Ensure that the textarea allows HTML content and shortcodes.
-
-function display_additional_resources_meta_box( $post ) {
-    $additional_resources = get_post_meta( $post->ID, 'additional_resources', true );
-    wp_nonce_field( 'save_additional_resources_meta_box', 'additional_resources_meta_box_nonce' );
-    echo '<textarea style="width:100%;height:100px;" id="additional_resources" name="additional_resources">' . esc_textarea( $additional_resources ) . '</textarea>';
-}
-
-//Update the Save Function:
-//Ensure that the content is saved without stripping HTML tags.
-function save_additional_resources_meta_box( $post_id ) {
-    if ( ! isset( $_POST['additional_resources_meta_box_nonce'] ) || ! wp_verify_nonce( $_POST['additional_resources_meta_box_nonce'], 'save_additional_resources_meta_box' ) ) {
-        return;
-    }
-    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-        return;
-    }
-    if ( ! current_user_can( 'edit_post', $post_id ) ) {
-        return;
-    }
-    if ( isset( $_POST['additional_resources'] ) ) {
-        update_post_meta( $post_id, 'additional_resources', wp_kses_post( $_POST['additional_resources'] ) );
-    }
-}
 
 //-----------------------------
 //	createBreadcrumbs
@@ -457,125 +394,7 @@ function custom_order_archives_by_title($query) {
 add_action('pre_get_posts', 'custom_order_archives_by_title');
 
 
-//-----------------------------
-//	export_content_to_json
 
-//	Creates a json file of all page data. Intended for use as a dataset for search functionality
-
-//	Called from:	export_json_page()
-
-//	Expected output
-
-function export_content_to_json() {
-    // Query WordPress content
-    $args = array(
-        'post_type' => 'page',
-        'posts_per_page' => -1, // Get all pages
-    );
-
-    $query = new WP_Query($args);
-    $posts_data = array();
-
-    if ($query->have_posts()) {
-        while ($query->have_posts()) {
-            $query->the_post();
-            $content = get_the_content();
-            //$content = strip_tags(strip_shortcodes($content)); // Remove shortcodes and HTML tags
-
-            $content = strip_tags($content); // Remove HTML tags
-
-            // Extract content from specific shortcodes
-            $shortcodes = array('ll-accordion', 'transcript', 'transcript-accordion', 'lightweight-accordion', 'hl', 'highlight-text');
-            foreach ($shortcodes as $shortcode) {
-                $pattern = sprintf('/\[%1$s\](.*?)\[\/%1$s\]/s', preg_quote($shortcode, '/'));
-                if (preg_match_all($pattern, get_the_content(), $matches)) {
-                    foreach ($matches[1] as $match) {
-                        $content .= ' ' . strip_tags($match);
-                    }
-                }
-            }
-            
-            // Remove remaining shortcodes
-            $content = strip_shortcodes($content);
-
-            // Get taxonomy terms using ACF
-            $llkeywords = get_field('field_6527440d6f9a2');
-            $keywords = [];
-            if ($llkeywords) {
-                foreach ($llkeywords as $term) {
-                    $keywords[] = $term->name;
-                }
-            }
-
-            $posts_data[] = array(
-                'id' => get_the_ID(),
-                'title' => get_the_title(),
-                'content' => $content,
-                'excerpt' => strip_tags(strip_shortcodes(get_the_excerpt())), // Remove shortcodes and HTML tags
-                'date' => get_the_date(),
-                'link' => wp_parse_url(get_permalink(), PHP_URL_PATH), // Extract the path from the URL
-                'keywords' => $keywords,
-            );
-        }
-        wp_reset_postdata();
-    }
-
-    // Convert to JSON
-    $json_data = json_encode($posts_data);
-
-    // Save to a file
-    $file = fopen(ABSPATH . '/wp-content/uploads/pages.json', 'w');
-    fwrite($file, $json_data);
-    fclose($file);
-}
-
-//-----------------------------
-//	register_export_page
-
-//	Creates a new admin menu page for exporting content to JSON
-
-//	Called from:	add_action('admin_menu', 'register_export_page');
-
-//	calls:			add_menu_page() - WordPress function
-
-//	usage:			Automatically called by WordPress when admin menu is built
-
-function register_export_page() {
-    add_menu_page(
-        'Export Content to JSON',
-        'Export JSON',
-        'manage_options',
-        'export-json',
-        'export_json_page'
-    );
-}
-add_action('admin_menu', 'register_export_page');
-
-//-----------------------------
-//	export_json_page
-
-//	Generates the admin page with a button to export content to JSON
-
-//	Called from:	register_export_page
-
-//	calls:			export_content_to_json() - custom function
-
-//	usage:			Triggered by form submission on the admin page
-
-function export_json_page() {
-    if (isset($_POST['export_json'])) {
-        export_content_to_json();
-        echo '<div class="updated"><p>Content exported to JSON successfully!</p></div>';
-    }
-    ?>
-    <div class="wrap">
-        <h1>Export Content to JSON</h1>
-        <form method="post">
-            <input type="submit" name="export_json" class="button-primary" value="Export Now">
-        </form>
-    </div>
-    <?php
-}
 
 
 function picostrap_all_excerpts_get_more_link( $post_excerpt ) {
@@ -593,123 +412,10 @@ add_filter("excerpt_length", function($in){
 }, 999);
 
 
-//-------------------------------------------
-//	my_redirects_page
 
-//	Generates the admin page for managing redirects with fields for old and new URLs
-
-//	Called from:	my_redirects_menu
-
-//	Calls:			None directly, but handles form submissions to update redirects
-
-//	Usage:			Triggered by form submission on the admin page to save redirects
-//-------------------------------------------
-
-function my_redirects_menu() {
-    add_menu_page(
-        'Manage Redirects',
-        'Redirects',
-        'manage_options',
-        'my-redirects',
-        'my_redirects_page'
-    );
-}
-add_action('admin_menu', 'my_redirects_menu');
-
-
-
-
-function my_redirects_page() {
-    if (!current_user_can('manage_options')) {
-        return;
-    }
-
-    // Handle form submission
-    if (isset($_POST['redirects'])) {
-        check_admin_referer('save_redirects');
-        $redirects = [];
-
-        foreach ($_POST['redirects']['old'] as $key => $old_url) {
-            $new_url = $_POST['redirects']['new'][$key];
-            if (!empty($old_url) && !empty($new_url)) {
-                $redirects[] = [
-                    'old' => sanitize_text_field($old_url),
-                    'new' => sanitize_text_field($new_url),
-                ];
-            }
-        }
-
-        update_option('my_redirects', $redirects);
-        echo '<div class="updated"><p>Redirects saved.</p></div>';
-    }
-
-    // Get existing redirects
-    $redirects = get_option('my_redirects', array());
-
-    // Display form
-    ?>
-    <style>
-        .admin-redirect {   
-             width: 100%; 
-             max-width: 1200px;
-        }
-
-        .admin-redirect input {
-            width: 100%;
-        }
-    </style>
-    <div class="wrap">
-        <h1>Manage Redirects</h1>
-        <p id="row-count"></p>
-        <form method="post">
-        <div class="buttons"><button type="button" class="button-default" onclick="addRow()">Add new redirect</button>
-        <input type="submit" value="Save Redirects" class="button-primary" /></div>
-            <?php wp_nonce_field('save_redirects'); ?>
-            <table cellpadding="5" class="admin-redirect">
-                <thead>
-                    <tr>
-                        <th>Old Path</th>
-                        <th>New Path</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($redirects as $redirect): ?>
-                        <tr>
-                            <td><input type="text" name="redirects[old][]" value="<?php echo esc_attr($redirect['old']); ?>" /></td>
-                            <td><input type="text" name="redirects[new][]" value="<?php echo esc_attr($redirect['new']); ?>" /></td>
-                        </tr>
-                    <?php endforeach; ?>
-                    <tr>
-                        <td><input type="text" name="redirects[old][]" /></td>
-                        <td><input type="text" name="redirects[new][]" /></td>
-                    </tr>
-                </tbody>
-            </table>
-        </form>
-    </div>
-    <script>
-        function addRow() {
-            var table = document.querySelector('table tbody');
-            var newRow = document.createElement('tr');
-            newRow.innerHTML = '<td><input type="text" name="redirects[old][]" /></td><td><input type="text" name="redirects[new][]" /></td>';
-            table.insertBefore(newRow, table.firstChild);
-            updateRowCount();
-        }
-
-        function updateRowCount() {
-            var table = document.querySelector('table tbody');
-            var rowCount = table.children.length;
-            document.getElementById('row-count').textContent = 'Number of redirects: ' + rowCount;
-        }
-
-        // Call the function to update the row count display
-        updateRowCount();
-
-    </script>
-    <?php
-}
 
 //-----------------------------
-//	All shortcode code is included and added below
 
-include('custom-shortcodes/_main.php');
+include('includes/json-export.php');        // exports the site date to json. Required for search to function
+include('includes/redirect.php');           // redirect and 404 code for both admin and client side
+include('custom-shortcodes/_main.php');     // All shortcode code is included and added below

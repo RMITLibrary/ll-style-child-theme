@@ -40,8 +40,10 @@ function doRelativeURL($myId)
 }
 
 ?>
-<nav class="btn-nav-container" aria-label="Previous and next links">
-<?php if (!empty($prevID)) { ?>
+<nav class="btn-nav-container <?php if($is_first_page == 'true') { echo 'no-prev-button'; } ?>" aria-label="Previous and next links">
+<?php 
+$is_first_page = get_query_var('is_first_page');
+if (!empty($prevID && $is_first_page != 'true')) { ?>
 <h2 class="btn-nav-prev">
     <a href="<?php echo $prevURL; ?>">
         <span aria-hidden="true"><?php echo $prevTitle ; ?></span>

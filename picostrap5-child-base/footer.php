@@ -74,9 +74,9 @@
                 <!-- END logo -->
                 <!-- START links -->
 				<ul class="footer-links">
-					<li><a href="">About Learning Lab</a></li>
-					<li><a href="">For educators</a></li>
-					<li><a href="">Contribute</a></li>
+					<li><a href="/about-the-learning-lab/">About Learning Lab</a></li>
+					<li><a href="/about-the-learning-lab/accessibility/">Accessibility</a></li>
+					<li><a href="/about-the-learning-lab/whats-new/">What's new</a></li>
 					<li><a href="">Contact us</a></li>
 				</ul>
                 <!-- END links -->
@@ -88,7 +88,7 @@
                         <li>Copyright © 2024 RMIT University<span> | </span></li>
                         <li><a href="https://www.rmit.edu.au/utilities/terms"><span class="no-focus" tabindex="-1">Terms</span></a><span> | </span></li>
                         <li><a href="https://www.rmit.edu.au/utilities/privacy"><span class="no-focus" tabindex="-1">Privacy</span></a><span> | </span></li>
-                        <li><a href="https://www.rmit.edu.au/utilities/accessibility"><span class="no-focus" tabindex="-1">Accessibility</span></a> <span> | </span></li>
+                        <!--<li><a href="https://www.rmit.edu.au/utilities/accessibility"><span class="no-focus" tabindex="-1">Accessibility</span></a> <span> | </span></li>-->
                         <li><a data-analytics-type="footerlink" data-analytics-value="Website feedback" href="https://www.rmit.edu.au/utilities/website-feedback"><span class="no-focus" tabindex="-1">Website feedback</span></a><span> | </span></li>
                         <li><a data-analytics-type="footerlink" data-analytics-value="Complaints" href="https://www.rmit.edu.au/utilities/complaints"><span class="no-focus" tabindex="-1">Complaints</span></a><span> | </span></li>
                         <li>ABN 49 781 030 034<span> | </span></li>

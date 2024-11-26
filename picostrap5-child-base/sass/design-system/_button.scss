@@ -55,7 +55,11 @@
 	//At medium breakpoint use flex to align buttons left and right
 	@include media-breakpoint-up(md) {
     	display: flex;
-    	justify-content: space-between;
+		justify-content: space-between;
+
+		&.no-prev-button {
+			justify-content: flex-end;
+		}
     }
 
 	//At a large breakpoint, add in a seperator line
@@ -64,7 +68,7 @@
         border-bottom: solid 1px $interface-grey;
     }
 }
-
+ 
 .btn-nav-prev, .btn-nav-next  {
 	
 	//remove h2 margins
