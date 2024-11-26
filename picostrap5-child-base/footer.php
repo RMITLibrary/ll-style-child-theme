@@ -77,7 +77,7 @@
 					<li><a href="/about-the-learning-lab/">About Learning Lab</a></li>
 					<li><a href="/about-the-learning-lab/accessibility/">Accessibility</a></li>
 					<li><a href="/about-the-learning-lab/whats-new/">What's new</a></li>
-					<li><a href="">Contact us</a></li>
+					<!--<li><a href="">Contact us</a></li>-->
 				</ul>
                 <!-- END links -->
                 <!-- START legal-social -->
