@@ -1,5 +1,42 @@
 <?php
 
+
+function list_slugs() {
+    $page_slugs = get_all_page_slugs();
+    sort($page_slugs); // Sort the slugs alphabetically
+
+    $output = '<ul style="width: 100%; column-count: 3;">';
+
+    foreach ($page_slugs as $slug) {
+        $permalink = home_url($slug); // Construct the full URL for the page
+        $output .= '<li><a href="' . esc_url($permalink) . '">' . esc_html($slug) . '</a></li>';
+    }
+
+    $output .= '</ul>';
+    return $output; // Return the output instead of echoing it
+}
+
+function get_all_page_slugs() {
+    $args = array(
+        'post_type' => 'page', // Retrieves only pages
+        'posts_per_page' => -1 // Retrieves all pages
+    );
+
+    $all_pages = get_posts($args);
+    $slugs = array();
+
+    foreach ($all_pages as $page) {
+        $slug = $page->post_name; // This will give you the slug
+        $slugs[] = '/' . $slug . '/';
+    }
+
+    return $slugs;
+}
+
+add_shortcode('all-slugs', 'list_slugs');
+
+
+
 //-----------------------------
 //	list_redirects_shortcode
 

@@ -83,9 +83,28 @@ function my_redirects_page() {
         }
     }
 
+    // Function to remove fragment from URL - removes #if it's there
+    function remove_url_fragment($url) {
+        $parsed_url = parse_url($url);
+        $clean_url = $parsed_url['scheme'] . '://' . $parsed_url['host'] . $parsed_url['path'];
+
+        if (isset($parsed_url['query'])) {
+            $clean_url .= '?' . $parsed_url['query'];
+        }
+
+        return $clean_url;
+    }
+
 
     // Get existing redirects
     $redirects = get_option('my_redirects', array());
+
+    // Sort the redirects by the 'old' path, ignoring '/'
+    usort($redirects, function($a, $b) {
+        $aOld = str_replace('/', '', $a['old']);
+        $bOld = str_replace('/', '', $b['old']);
+        return strcmp($aOld, $bOld);
+    });
 
     // Display form
     ?>
@@ -110,11 +129,13 @@ function my_redirects_page() {
     </style>
     <div class="wrap">
         <h1>Manage Redirects</h1>
-        <p>To delete a redirect, clear both fields in the table row and click "Save Redirects"</p>
+        <!-- <p>To delete a redirect, clear both fields in the table row and click "Save Redirects"</p> -->
         <p id="row-count"></p>
         <form method="post" enctype="multipart/form-data">
         <div class="buttons"><button type="button" class="button-secondary add-button" onclick="addRow()">Add new redirect</button>
-        <input type="submit" value="Save Redirects" class="button-primary" /></div>
+        <input type="submit" value="Save Redirects" class="button-primary" />
+        <a href="#bulk-upload-anchor">Bulk upload</a>
+        </div>
         <hr />
             <?php wp_nonce_field('save_redirects'); ?>
             <table cellpadding="5" class="admin-redirect">
@@ -122,6 +143,7 @@ function my_redirects_page() {
                     <tr>
                         <th>Old Path</th>
                         <th>New Path</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -129,12 +151,14 @@ function my_redirects_page() {
                         <tr>
                             <td><input type="text" name="redirects[old][]" value="<?php echo esc_attr($redirect['old']); ?>" /></td>
                             <td><input type="text" name="redirects[new][]" value="<?php echo esc_attr($redirect['new']); ?>" /></td>
+                            <td style="width: 45px;"><a href="#" class="delete-row">Delete</a></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
         </form>
         <hr />
+        <a id="bulk-upload-anchor"></a>
         <h2>Bulk Upload Redirects</h2>
         <p>Upload a CSV file. Duplicates will be ignored. Format as follows:<br />
         Old and new paths divided by a comma, each entry has a new line:</p>
@@ -163,6 +187,26 @@ function my_redirects_page() {
             var rowCount = table.children.length;
             document.getElementById('row-count').textContent = 'Number of redirects: ' + rowCount;
         }
+
+        // state delete function
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all delete links
+            const deleteLinks = document.querySelectorAll('.delete-row');
+
+            // Add click event listener to each delete link
+            deleteLinks.forEach(function(link) {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault(); // Prevent default link behavior
+
+                    // Find the parent row and remove it
+                    const row = this.closest('tr');
+                    if (row) {
+                        row.remove();
+                    }
+                });
+            });
+        });
+        //end delete function
 
         // Call the function to update the row count display
         updateRowCount();
@@ -222,7 +266,7 @@ function output_redirect_404_script_and_html() {
                 
                 <!-- START redirect container -->
                 <div id="redirect-container">
-                    <h1 class="margin-top-zero">Archived Page</h1>
+                    <h1 class="margin-top-zero">Archived page</h1>
                     <p>This content has been updated or relocated. You will be redirected shortly to the latest version. Please update your links if necessary.</p>  
                 </div>
                 <!-- END redirect container -->
@@ -281,38 +325,67 @@ const extractedPath = normalizePath(extractPathAfterDomain(currentURL));
 // Log the extracted path for debugging
 console.log("Extracted Path: " + extractedPath);
 
-// Compare the normalized extracted path with the normalized oldPath in the list
-const mapping = urlMappings.find(function(mapping) {
-    const normalizedOldPath = normalizePath(mapping.oldPath);
-    // Log each comparison for debugging
-    console.log("Comparing: " + normalizedOldPath + " with " + extractedPath);
-    return normalizedOldPath === extractedPath;
-});
+//check for /content and .html, legacy from the old site
+//remove if present and redirect to that url
+var contentBool = processOldSiteLinksAndRedirect(extractedPath);
+console.log("Path contains /content: " + contentBool);
 
-if (mapping) {
-    // Construct the new URL using the newPath from the mapping
-    // Show the redirect info
-    const newUrl = replaceUrlPath(currentURL, mapping.newPath);
-    console.log("Match found! New URL: " + newUrl);
-    redirectInfo.style.display = "block";
-    doRedirect(newUrl);
-} else {
-    // No match, show the 404 info
-    console.log("No match found.");
-    fourOhInfo.style.display = "block";
+if(!contentBool)
+{
+    // Compare the normalized extracted path with the normalized oldPath in the list
+    const mapping = urlMappings.find(function(mapping) {
+        const normalizedOldPath = normalizePath(mapping.oldPath);
+        // Log each comparison for debugging
+        console.log("Comparing: " + normalizedOldPath + " with " + extractedPath);
+        return normalizedOldPath === extractedPath;
+    });
+
+    if (mapping) {
+        // Construct the new URL using the newPath from the mapping
+        // Show the redirect info
+        const newUrl = replaceUrlPath(currentURL, mapping.newPath);
+        console.log("Match found! New URL: " + newUrl);
+        redirectInfo.style.display = "block";
+        doRedirect(newUrl);
+    } else {
+        // No match, show the 404 info
+        console.log("No match found.");
+        fourOhInfo.style.display = "block";
+    }
 }
 
-function doRedirect(redirectUrl) {
+function processOldSiteLinksAndRedirect(path) {
+    // Remove ".html" if present
+    if (path.endsWith('.html')) {
+        path = path.slice(0, -5);
+    }
+
+    // Replace "/content/" with "/"
+    if (path.startsWith('content/')) {
+        path = path.replace('content/', '/');
+
+        newPath = pathPrefix + path;
+
+        // Redirect using the existing function
+        doRedirect(newPath, 0);
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+function doRedirect(redirectUrl, delay = 5000) {
     // Redirect after 5 seconds
     setTimeout(function() {
         console.log('Redirecting to: ' + redirectUrl);
         window.location.href = redirectUrl;
-    }, 5000);
+    }, delay);
 }
 
 </script>
 
     <?php
-}
+}   //end myRedirectspage
 
 ?>

@@ -171,6 +171,11 @@ footer * {
                 display: block;
                 width: 25rem;
                 flex-shrink: 0;
+
+                img {
+                    max-width: 100%;
+                    height: auto;
+                }
             }
         }
     }
@@ -189,44 +194,40 @@ footer * {
 	}
 }
 
-.ask-the-library {
-	@include do-space(margin-top, xl);
+.ask-the-library a {
+    @include do-space(margin-top, xl);
 	@include do-space(margin-bottom, xl);
-	
-	max-width: 728px;
-	margin-left: auto;
+
+    display: flex;
+    max-width: 544px;
+    align-items: center;
+    margin-left: auto;
 	margin-right: auto;
-	padding: 2rem 1rem;
-	border: 1px solid $interface-grey;
-	border-radius: 0.5rem;
-	
-	.ask-logo {
-		width: 177px;
-		height: 104px;
+    gap: 1.5rem;
+
+    @media (min-width: 420px) {
+        padding: 1.5rem;
+        border: 1px solid $interface-grey;
+	    border-radius: 0.5rem;
+    }
+
+    @include media-breakpoint-up(md) {
 		
-		margin-bottom: 16px;
+        display: flex;
+        padding: 2rem;
+        justify-content: center;
+        align-items: center;
+        gap: 1.5rem;
+		
 	}
-	
-	p.lead, p {
+
+    h2, p {
 		margin-top: 0.5rem;
 		margin-bottom: 0.5rem;
 	}
 	
 	p {
 		color: var(--bs-body-color);
-	}
-	
-	@include media-breakpoint-up(md) {
-		a {
-			display: flex;
-			max-width: 728px;
-			padding: 40px 48px;
-			justify-content: center;
-			align-items: center;
-			gap: 32px;
-
-			.ask-logo { margin: 0; }
-		}
 	}
 }
 

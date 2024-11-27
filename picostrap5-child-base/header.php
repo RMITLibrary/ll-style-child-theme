@@ -208,9 +208,9 @@ defined('ABSPATH') || exit;
 									<ul>
 										<li><a href="/art-and-design/">Art and design</a></li>
 										<li><a href="/chemistry/">Chemistry</a></li>
-										<li><a href="/law-resources/">Legal studies</a></li>
+										<li><a href="/law/">Law</a></li>
 										<li><a href="/maths-statistics/">Mathematics and statistics</a></li>
-										<li><a href="/resources-nursing/">Nursing</a></li>
+										<li><a href="/nursing/">Nursing</a></li>
 										<li><a href="/physics/">Physics</a></li>
 										<!-- <li><a href="//">Life sciences</a></li> -->
 									</ul>
