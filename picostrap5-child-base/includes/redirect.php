@@ -274,7 +274,23 @@ function output_redirect_404_script_and_html() {
                 <!-- START 404 container -->
                 <div id="four-oh-container">
                     <h1 class="margin-top-zero">Page not found</h1>
-                    <p>We're sorry, but the page you're looking for doesn't exist.</p>
+                    <p class="lead">We're sorry, but the page you're looking for doesn't exist. <br />It might have been moved or deleted.</p>
+
+                    <p>Use the search bar below to find what you're looking for or <a href="search/#keywords">browse keywords</a> to find related content.</p>
+
+                     <!-- START search -->
+                    <div class="search-container label-side" style="max-width: 592px;">
+                        <label for="searchInput">
+                        <h2 class="h4">
+                            Search <span class="visually-hidden">this website:</span>
+                        </h2>
+                        </label>
+                        <div class="input-group">
+                            <input type="search" id="searchInput" class="form-control">
+                            <button type="submit"  id="searchButton" class="btn btn-primary"><div class="mag-glass"></div><span class="visually-hidden">Search</span></button>
+                        </div>
+                    </div>
+                    <!-- END search -->
                 </div>
                 <!-- END 404 container -->
             </div>
@@ -304,6 +320,19 @@ function extractPathAfterDomain(url) {
     return path;
 }
 
+// Function to extract the path after the domain, considering the prefix for the environment
+function extractPathAfterDomain(url) {
+    const urlObj = new URL(url);
+    let path = urlObj.pathname;
+
+    // Remove the path prefix if present
+    if (path.startsWith(pathPrefix)) {
+        path = path.substring(pathPrefix.length);
+    }
+
+    return path;
+}
+
 // Function to normalize a path by trimming leading and trailing slashes
 function normalizePath(path) {
     return path.replace(/^\/|\/$/g, '');
@@ -314,6 +343,48 @@ function replaceUrlPath(url, newPath) {
     const urlObj = new URL(url);
     urlObj.pathname = pathPrefix + newPath;
     return urlObj.toString();
+}
+
+// This function looks for links to the old drupal site in the style of "/content/maths.html"
+// Redirects to /maths/
+function processOldSiteLinksAndRedirect(path) {
+    // Remove ".html" if present
+    if (path.endsWith('.html')) {
+        path = path.slice(0, -5);
+    }
+
+    // Replace "/content/" with "/"
+    if (path.startsWith('content/')) {
+        path = path.replace('content/', '/');
+
+        newPath = pathPrefix + path;
+
+        // Redirect using the existing function
+        doRedirect(newPath, 0);
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+// Function to do the redirect after all the checks and url processing
+function doRedirect(redirectUrl, delay = 5000) {
+    // Redirect after 5 seconds
+    setTimeout(function() {
+        console.log('Redirecting to: ' + redirectUrl);
+        window.location.href = redirectUrl;
+    }, delay);
+}
+
+// Check if the URL has a trailing slash (but not .html), ad it if not present
+// this is required due to poor routing options current on learninglab.rmit.edu.au. Remove if resolved
+let myPath = window.location.pathname;
+
+// Check if the path does not end with a slash and does not end with ".html"
+if (!myPath.endsWith("/") && !myPath.endsWith(".html")) {
+    // Redirect to the same path with a trailing slash
+    let newPath = myPath + "/";
+    window.location.replace(newPath + window.location.search + window.location.hash);
 }
 
 // Use window.location to get the current URL
@@ -354,36 +425,10 @@ if(!contentBool)
     }
 }
 
-function processOldSiteLinksAndRedirect(path) {
-    // Remove ".html" if present
-    if (path.endsWith('.html')) {
-        path = path.slice(0, -5);
-    }
-
-    // Replace "/content/" with "/"
-    if (path.startsWith('content/')) {
-        path = path.replace('content/', '/');
-
-        newPath = pathPrefix + path;
-
-        // Redirect using the existing function
-        doRedirect(newPath, 0);
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-
-function doRedirect(redirectUrl, delay = 5000) {
-    // Redirect after 5 seconds
-    setTimeout(function() {
-        console.log('Redirecting to: ' + redirectUrl);
-        window.location.href = redirectUrl;
-    }, delay);
-}
 
 </script>
+<!-- script to punt search input to /search via query string -->
+<script type="text/javascript" src="/wp-content/themes/picostrap5-child-base/js/search-home.js?v=1.0.0"></script>
 
     <?php
 }   //end myRedirectspage
