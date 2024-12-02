@@ -300,15 +300,14 @@ function output_redirect_404_script_and_html() {
 
 <script>
 // References to DOM objects
-var fourOhInfo = document.getElementById("four-oh-container");
-var redirectInfo = document.getElementById("redirect-container");
+const fourOhInfo = document.getElementById("four-oh-container");
+const redirectInfo = document.getElementById("redirect-container");
 
 // Prefix for the environment; set to '' for live and '/preview' for test
-//const pathPrefix = '/preview';
 const pathPrefix = '';
 
-// Function to extract the path after the domain, considering the prefix for the environment
-function extractPathAfterDomain(url) {
+// Function to extract and normalise the path after the domain
+function extractAndNormalisePath(url) {
     const urlObj = new URL(url);
     let path = urlObj.pathname;
 
@@ -317,24 +316,12 @@ function extractPathAfterDomain(url) {
         path = path.substring(pathPrefix.length);
     }
 
-    return path;
+    // Normalise the path by trimming leading and trailing slashes
+    return path.replace(/^\/|\/$/g, '');
 }
 
-// Function to extract the path after the domain, considering the prefix for the environment
-function extractPathAfterDomain(url) {
-    const urlObj = new URL(url);
-    let path = urlObj.pathname;
-
-    // Remove the path prefix if present
-    if (path.startsWith(pathPrefix)) {
-        path = path.substring(pathPrefix.length);
-    }
-
-    return path;
-}
-
-// Function to normalize a path by trimming leading and trailing slashes
-function normalizePath(path) {
+// Function to normalise a path by trimming leading and trailing slashes
+function normalisePath(path) {
     return path.replace(/^\/|\/$/g, '');
 }
 
@@ -345,8 +332,7 @@ function replaceUrlPath(url, newPath) {
     return urlObj.toString();
 }
 
-// This function looks for links to the old drupal site in the style of "/content/maths.html"
-// Redirects to /maths/
+// Function to process old site links and redirect if necessary
 function processOldSiteLinksAndRedirect(path) {
     // Remove ".html" if present
     if (path.endsWith('.html')) {
@@ -355,75 +341,71 @@ function processOldSiteLinksAndRedirect(path) {
 
     // Replace "/content/" with "/"
     if (path.startsWith('content/')) {
-        path = path.replace('content/', '/');
-
-        newPath = pathPrefix + path;
-
-        // Redirect using the existing function
-        doRedirect(newPath, 0);
+        const newPath = path.replace('content/', '/');
+        doRedirect(pathPrefix + newPath, 0);
         return true;
     }
-    else {
-        return false;
-    }
+    return false;
 }
-// Function to do the redirect after all the checks and url processing
+
+// Function to perform the redirect after all checks and URL processing
 function doRedirect(redirectUrl, delay = 5000) {
-    // Redirect after 5 seconds
-    setTimeout(function() {
+    setTimeout(() => {
         console.log('Redirecting to: ' + redirectUrl);
         window.location.href = redirectUrl;
     }, delay);
 }
 
-// Check if the URL has a trailing slash (but not .html), ad it if not present
-// this is required due to poor routing options current on learninglab.rmit.edu.au. Remove if resolved
-let myPath = window.location.pathname;
-
-// Check if the path does not end with a slash and does not end with ".html"
-if (!myPath.endsWith("/") && !myPath.endsWith(".html")) {
-    // Redirect to the same path with a trailing slash
-    let newPath = myPath + "/";
-    window.location.replace(newPath + window.location.search + window.location.hash);
-}
-
-// Use window.location to get the current URL
-const currentURL = window.location.href;
-
-// Extract and normalize the path after the domain
-const extractedPath = normalizePath(extractPathAfterDomain(currentURL));
-
-// Log the extracted path for debugging
-console.log("Extracted Path: " + extractedPath);
-
-//check for /content and .html, legacy from the old site
-//remove if present and redirect to that url
-var contentBool = processOldSiteLinksAndRedirect(extractedPath);
-console.log("Path contains /content: " + contentBool);
-
-if(!contentBool)
-{
-    // Compare the normalized extracted path with the normalized oldPath in the list
-    const mapping = urlMappings.find(function(mapping) {
-        const normalizedOldPath = normalizePath(mapping.oldPath);
-        // Log each comparison for debugging
-        console.log("Comparing: " + normalizedOldPath + " with " + extractedPath);
-        return normalizedOldPath === extractedPath;
-    });
-
-    if (mapping) {
-        // Construct the new URL using the newPath from the mapping
-        // Show the redirect info
-        const newUrl = replaceUrlPath(currentURL, mapping.newPath);
-        console.log("Match found! New URL: " + newUrl);
-        redirectInfo.style.display = "block";
-        doRedirect(newUrl);
-    } else {
-        // No match, show the 404 info
-        console.log("No match found.");
-        fourOhInfo.style.display = "block";
+// Ensure URL has a trailing slash if necessary
+function ensureTrailingSlash() {
+    const myPath = window.location.pathname;
+    if (!myPath.endsWith("/") && !myPath.endsWith(".html")) {
+        const newPath = myPath + "/";
+        window.location.replace(newPath + window.location.search + window.location.hash);
     }
 }
+
+// Main execution
+function main() {
+    // Ensure the current URL has a trailing slash if no .html is present
+    ensureTrailingSlash();
+
+    // Get the current URL
+    const currentURL = window.location.href;
+
+    // Extract and normalise the path from the current URL
+    const extractedPath = extractAndNormalisePath(currentURL);
+
+    // Debugging log to check the extracted path
+    console.log("Extracted Path: " + extractedPath);
+
+    // Process old site links and redirect if applicable
+    const contentBool = processOldSiteLinksAndRedirect(extractedPath);
+
+    // If no redirect occurred from old site links
+    if (!contentBool) {
+        // Find a URL mapping that matches the extracted path
+        const mapping = urlMappings.find(mapping => normalisePath(mapping.oldPath) === extractedPath);
+
+        // If a matching mapping is found, redirect to the new URL
+        if (mapping) {
+            const newUrl = replaceUrlPath(currentURL, mapping.newPath);
+            console.log("Match found! Redirecting to: " + newUrl);
+
+            // Display redirect information
+            redirectInfo.style.display = "block";
+
+            // Perform the redirect
+            doRedirect(newUrl);
+        } else {
+            // If no mapping is found, display 404 information
+            console.log("No match found. Displaying 404 info.");
+            fourOhInfo.style.display = "block";
+        }
+    }
+}
+
+main();
 
 
 </script>

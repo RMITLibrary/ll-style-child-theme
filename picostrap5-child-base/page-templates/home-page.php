@@ -17,7 +17,7 @@ get_header();
    <!-- START home banner -->
 		<div class="home-banner">
             <span class="background-image" role="img" aria-label="A desk with a laptop, a house plant, a mug filled with pencils, an open book and a hot cup of coffee. Book shelves are shown in the background. There’s a cat on the lower shelf."></span>
-            <h1>Learning lab</h1>
+            <h1>Learning Lab</h1>
         </div>
         <!-- END home banner -->
          <!-- START home intro -->

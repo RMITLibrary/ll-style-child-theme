@@ -151,8 +151,8 @@ defined('ABSPATH') || exit;
 				<h2>
 					<!-- Explicitly turn off one bit of text and turn on the other to deal with JAWS bug - https://github.com/alphagov/govuk-frontend/issues/1643 -->
 					<a href="/home">
-						<span aria-hidden="true">Learning lab</span>
-						<span class="visually-hidden">Learning lab homepage</span>
+						<span aria-hidden="true">Learning Lab</span>
+						<span class="visually-hidden">Learning Lab homepage</span>
 					</a>
 				</h2>
             </div>
