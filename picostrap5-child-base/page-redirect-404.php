@@ -1,9 +1,4 @@
 <?php
-/**
- * Template Name: Redirect 404
- *
-
- */
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 

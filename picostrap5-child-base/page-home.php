@@ -1,10 +1,8 @@
 <?php
 /**
- * Template Name: Home page
  *
- * Template for displaying the home page.
+ * Template for displaying the home page. - This is only applied to the page with slug "home"
  *
- * @package UnderStrap
  */
 
 // Exit if accessed directly.
