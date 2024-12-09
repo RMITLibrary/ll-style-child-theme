@@ -320,7 +320,7 @@ function extractAndNormalisePath(url) {
     return path.replace(/^\/|\/$/g, '');
 }
 
-// Function to normalise a path by trimming leading and trailing slashes
+// Function to normalize a path by trimming leading and trailing slashes
 function normalisePath(path) {
     return path.replace(/^\/|\/$/g, '');
 }
@@ -332,20 +332,16 @@ function replaceUrlPath(url, newPath) {
     return urlObj.toString();
 }
 
-// Function to process old site links and redirect if necessary
-function processOldSiteLinksAndRedirect(path) {
-    // Remove ".html" if present
+// Function to process old site links and potentially transform the path
+// content/page.html to page
+function processOldSiteLinks(path) {
     if (path.endsWith('.html')) {
         path = path.slice(0, -5);
     }
-
-    // Replace "/content/" with "/"
     if (path.startsWith('content/')) {
-        const newPath = path.replace('content/', '/');
-        doRedirect(pathPrefix + newPath, 0);
-        return true;
+        path = path.replace('content/', '');
     }
-    return false;
+    return path;
 }
 
 // Function to perform the redirect after all checks and URL processing
@@ -374,35 +370,36 @@ function main() {
     const currentURL = window.location.href;
 
     // Extract and normalise the path from the current URL
-    const extractedPath = extractAndNormalisePath(currentURL);
+    let extractedPath = extractAndNormalisePath(currentURL);
+
+    // Process old site links and redirect if applicable
+    extractedPath = processOldSiteLinks(extractedPath);
 
     // Debugging log to check the extracted path
     console.log("Extracted Path: " + extractedPath);
 
-    // Process old site links and redirect if applicable
-    const contentBool = processOldSiteLinksAndRedirect(extractedPath);
+    const mapping = urlMappings.find(mapping => normalisePath(mapping.oldPath) === extractedPath);
 
-    // If no redirect occurred from old site links
-    if (!contentBool) {
-        // Find a URL mapping that matches the extracted path
-        const mapping = urlMappings.find(mapping => normalisePath(mapping.oldPath) === extractedPath);
+    // If a matching mapping is found, redirect to the new URL
+    if (mapping) {
+        console.log("Comparing: " + mapping.oldPath + " with " + extractedPath);
+        
+        const newUrl = replaceUrlPath(currentURL, mapping.newPath);
+        console.log("Match found! Redirecting to: " + newUrl);
 
-        // If a matching mapping is found, redirect to the new URL
-        if (mapping) {
-            const newUrl = replaceUrlPath(currentURL, mapping.newPath);
-            console.log("Match found! Redirecting to: " + newUrl);
+        // Update the page title
+        document.title = "Archived page - redirecting you";
 
-            // Display redirect information
-            redirectInfo.style.display = "block";
+        // Display redirect information
+        redirectInfo.style.display = "block";
 
-            // Perform the redirect
-            doRedirect(newUrl);
-        } else {
-            // If no mapping is found, display 404 information
-            console.log("No match found. Displaying 404 info.");
-            fourOhInfo.style.display = "block";
-        }
-    }
+        // Perform the redirect
+        doRedirect(newUrl);
+    } else {
+        // If no mapping is found, display 404 information
+        console.log("No match found. Displaying 404 info.");
+        fourOhInfo.style.display = "block";
+    }  
 }
 
 main();

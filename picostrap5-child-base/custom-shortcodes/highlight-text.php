@@ -37,6 +37,7 @@ function highlight_text_att($atts, $content = null) {
     $default = array(
         'key' => '',
         'screen-reader' => '',
+        'one-column' => '',
         'classes' => ''
     );
  
@@ -52,6 +53,11 @@ function highlight_text_att($atts, $content = null) {
     }
 
     $tag = '<div class="highlight-text ';
+
+    //if one column equals 'true', the add class hl-one-column
+    if($a['one-column'] == 'true') { 
+        $tag .= 'hl-one-column '; 
+    } 
 
     //if there's anything in clesses, add it (don't document this, for web devs only)
     if($a['classes'] != '') { 

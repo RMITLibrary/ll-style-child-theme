@@ -7,86 +7,143 @@ defined('ABSPATH') || exit;
 <html <?php language_attributes(); ?> class="nav-fixed">
 
 <head>
-  <!-- 
-    DARK MODE
-    This script is placed in the <head> to ensure the theme is set as early as possible,
-    reducing the flash of unstyled content (FOUC). It determines the user's preferred
-    theme (either from local storage or system settings) and applies it immediately.
-  -->
-  <script>
-    (function() {
-      'use strict';
-
-      // Function to get the stored theme from local storage
-      const getStoredTheme = () => localStorage.getItem('theme');
-
-      // Function to determine the preferred theme
-      const getPreferredTheme = () => {
-        const storedTheme = getStoredTheme(); // Retrieve the stored theme
-        if (storedTheme) {
-          return storedTheme; // If a theme is stored, return it
-        }
-        // If no theme is stored, check the system preference for dark mode
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      };
-
-      // Function to apply the specified theme
-      const setTheme = theme => {
-        if (theme === 'auto') {
-          // If theme is 'auto', set it based on system preference
-          document.documentElement.setAttribute('data-bs-theme', (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
-        } else {
-          // Otherwise, set the theme explicitly
-          document.documentElement.setAttribute('data-bs-theme', theme);
-        }
-      };
-
-      // Set the theme based on the preferred theme
-      setTheme(getPreferredTheme());
-    })();
-  </script>
-	<meta charset="<?php bloginfo('charset'); ?>">
+    <meta charset="<?php bloginfo('charset'); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<!-- wp_head -->
-	<?php wp_head(); ?>
+	<?php 
+        // wp_head() outputs the following: 
+        //      1. title attribute
+        //
+        // Via All in One SEO Plugin
+        //      1. Meta tags, generic, OpenGraph and twitter
+        //      2. JSON schema
+        //
+        // A Python script is deployed to change https://lab.bitm.app to
+        // https://learninglab.rmit.edu.au/ before upload to prod
+        //
+        // Via other plug-ins
+        // 1. MathJax script and link to jsdeliver.net
+        // 2. Styles related to WordPress editor and plugins
+        // 3. Site Stylesheets
+        //
+        // A Python script is deployed to remove some of these styles
+        wp_head(); 
+    ?>
 	<!-- /wp_head -->
+
+    <!-- START Additional meta tags not covered by wp_head -->
+    <?php
+        // A Python script is deployed to change https://lab.bitm.app to
+        // https://learninglab.rmit.edu.au/ in the tags below before upload to prod
+    ?>
+
+    <link href="https://rmitlibrary.github.io/cdn/learninglab/illustration/dev-fav-icon-style.png" rel="icon" type="image/x-icon"/>
+    <link href="https://rmitlibrary.github.io/cdn/learninglab/illustration/dev-fav-icon-style.png" rel="shortcut icon" type="image/x-icon"/>
+
+    <meta name="author" content="RMIT Library">
+
+    <meta name="geo.position" content="-37.807778, 144.963333">
+    <meta name="geo.placename" content="Melbourne">
+    <meta name="geo.region" content="AU">
+
+    <meta name="dcterms.title" content="Learning Lab">
     
+    <?php 
+    if (is_singular()) { // Check if it's a single post or page
+        $excerpt = get_the_excerpt();
+        if($excerpt == "...") {
+            echo '<meta name="dcterms.description" content="The Learning Lab provides foundation skills and study support materials for writing, science and more.">';
+        }
+        else
+        {
+            echo '<meta name="dcterms.description" content="' . esc_attr($excerpt) . '">';
+        }
+
+        echo "\n";
+    }
+    ?>
+    <meta name="dcterms.type" content="Text">
+    <?php echo '<meta name="dcterms.identifier" content="' . esc_url(get_permalink()) . '">'; echo "\n"; ?>
+    <meta name="dcterms.format" content="text/html">
+    <!-- END Additional meta tags not covered by wp_head -->
+
+
+    <!-- START Additional scripts for tracking -->
+
+    <!-- Microsoft Clarity - does hotspot tracking of pages -->
+    <script async="" src="https://www.clarity.ms/tag/ku7m575lss"></script>
+
+    <!-- Google tag - (gtag.js) --> 
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-VLHPB23GYR"></script> 
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-VLHPB23GYR');
+    </script>
+
+    <!-- Microsoft Bing - Not sure how useful this is? --> 
+    <meta name="msvalidate.01" content="8E4954E1DFAB7E2F8A92DD0A0BD6ED09">
+
+    <!-- END Additional scripts for tracking -->
+
     <style>
     <?php 
-      // Fix menu overlap bug..
+      // Fix menu overlap bug in WordPress dev environment.
       if ( is_admin_bar_showing() ) {
           echo '#wp-admin-bar-root-default { top: -1.5rem !important; }'; 
           echo '#wp-admin-bar-top-secondary { top: -1.5rem !important; }'; 
       }
     ?>
     </style>
+
+    <!-- 
+    DARK MODE javascript
+    This script is placed in the <head> to ensure the theme is set as early as possible,
+    reducing the flash of unstyled content (FOUC). It determines the user's preferred
+    theme (either from local storage or system settings) and applies it immediately.
+    -->
+    <script>
+    (function() {
+        'use strict';
+
+        // Function to get the stored theme from local storage
+        const getStoredTheme = () => localStorage.getItem('theme');
+
+        // Function to determine the preferred theme
+        const getPreferredTheme = () => {
+        const storedTheme = getStoredTheme(); // Retrieve the stored theme
+        if (storedTheme) {
+            return storedTheme; // If a theme is stored, return it
+        }
+        // If no theme is stored, check the system preference for dark mode
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        };
+
+        // Function to apply the specified theme
+        const setTheme = theme => {
+        if (theme === 'auto') {
+            // If theme is 'auto', set it based on system preference
+            document.documentElement.setAttribute('data-bs-theme', (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+        } else {
+            // Otherwise, set the theme explicitly
+            document.documentElement.setAttribute('data-bs-theme', theme);
+        }
+        };
+
+        // Set the theme based on the preferred theme
+        setTheme(getPreferredTheme());
+    })();
+    </script>
 </head>
 
 <body <?php body_class(); ?>>
 	<?php wp_body_open(); ?>
-
-	<?php 
-    // Custom filter to check if header elements should be displayed. To disable, use: add_filter('picostrap_enable_header_elements', '__return_false');
-    /*if (apply_filters('picostrap_enable_header_elements', true)):
-
-        //check if LC option is set to "Handle Header"    
-        if (!function_exists('lc_custom_header')) {
-            //use the built-in theme header elements 
-            get_template_part( 'partials/header', 'optional-topbar' ); 
-            get_template_part( 'partials/header', 'navbar' );
-        } else {
-            //use the LiveCanvas Custom Header
-            lc_custom_header(); 
-        }
-
-    endif;*/
-    
-	?>
 	
 <header>
 <a href="#main-content" class="visually-hidden-focusable">Skip to main content</a>
-<div class="top-navigation">
+<div class="top-navigation" style="background-color: #005435">
     <div class="container">
         <div class="row">
             <div class="col-auto left-nav">
@@ -94,8 +151,8 @@ defined('ABSPATH') || exit;
 				<h2>
 					<!-- Explicitly turn off one bit of text and turn on the other to deal with JAWS bug - https://github.com/alphagov/govuk-frontend/issues/1643 -->
 					<a href="/home">
-						<span aria-hidden="true">Learning lab</span>
-						<span class="visually-hidden">Learning lab homepage</span>
+						<span aria-hidden="true">Learning Lab</span>
+						<span class="visually-hidden">Learning Lab homepage</span>
 					</a>
 				</h2>
             </div>
@@ -107,17 +164,17 @@ defined('ABSPATH') || exit;
 							<span class="visually-hidden">Library homepage</span>
 						</a>
                     </li>
-                    <!--<li class="search">
-                        <a id="search2">
+                    <li class="search">
+                        <a href="/search/" id="search2">
                             <div class="search-label">Search</div>
                             <div class="mag-glass"></div>
                         </a>
-                    </li>-->
+                    </li>
                     <li class="menu">
                         <button id="menu-button" 
                         class="btn btn-primary collapsed" type="button" data-bs-toggle="collapse" 
                         data-bs-target="#context-menu" data-bs-display="static" aria-expanded="false" 
-                        aria-controls="context-menu">Click for main menu</button>
+                        aria-controls="context-menu" style="background-color: #005435">Click for main menu</button>
                     </li>
                 </ul> 
             </div>   
@@ -127,65 +184,18 @@ defined('ABSPATH') || exit;
 <nav id="context-menu" class="collapse" aria-label="Main Menu">
     <div class="container nav-container not-wordpress">
         <div class="row">
-            <!-- START menu column -->
+            <!-- START menu -->
             <div class="col-xl-8">
-				<!-- START menu -->
-            	<div class="accordion accordion-white" id="context-menu-accordion">	
-						<div class="accordion-item">
-<h2 class="accordion-header" id="accordion-head-6823">
-<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-body-6823" aria-expanded="false" aria-controls="accordion-body-6823">University essentials</button>
-</h2>
-<div id="accordion-body-6823" class="accordion-collapse collapse" aria-labelledby="accordion-head-6823">
-<div class="accordion-body"><ul><li class="page_item page-item-3339 page_item_has_children"><a href="/university-essentials/acting-academic-integrity/">Acting with academic integrity</a></li>
-<li class="page_item page-item-3347 current_page_item"><a href="/university-essentials/artificial-intelligence-tools/" aria-current="page">Artificial intelligence tools</a></li>
-<li class="page_item page-item-3117"><a href="/university-essentials/critical-thinking-and-argument-analysis/">Critical thinking and argument analysis</a></li>
-<li class="page_item page-item-2501 page_item_has_children"><a href="/university-essentials/getting-started/">Getting started with Uni</a></li>
-<li class="page_item page-item-3097 page_item_has_children"><a href="/university-essentials/group-work/">Group work</a></li>
-<li class="page_item page-item-2496"><a href="/university-essentials/english/">Improve your English</a></li>
-<li class="page_item page-item-6844 page_item_has_children"><a href="/university-essentials/study-essentials/">Study essentials</a></li>
-<li class="page_item page-item-3313 page_item_has_children"><a href="/university-essentials/sustainability/">Sustainability</a></li>
-</ul></div></div></div><div class="accordion-item">
-<h2 class="accordion-header" id="accordion-head-6825">
-<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-body-6825" aria-expanded="false" aria-controls="accordion-body-6825">Writing fundamentals</button>
-</h2>
-<div id="accordion-body-6825" class="accordion-collapse collapse" aria-labelledby="accordion-head-6825">
-<div class="accordion-body"><ul><li class="page_item page-item-2522 page_item_has_children"><a href="/writing-fundamentals/academic-style/">Academic style</a></li>
-<li class="page_item page-item-2534 page_item_has_children"><a href="/writing-fundamentals/academic-word-list-tool/">Academic word list tool</a></li>
-<li class="page_item page-item-2521"><a href="/writing-fundamentals/spelling-tips/">Spelling tips</a></li>
-<li class="page_item page-item-3295"><a href="/writing-fundamentals/understanding-your-audience/">Understanding your audience</a></li>
-<li class="page_item page-item-2537 page_item_has_children"><a href="/writing-fundamentals/writing-coursework/">Writing for coursework</a></li>
-<li class="page_item page-item-2855"><a href="/writing-fundamentals/writing-workplace/">Writing for the workplace</a></li>
-<li class="page_item page-item-3107"><a href="/writing-fundamentals/writing-paragraphs/">Writing paragraphs</a></li>
-<li class="page_item page-item-2520"><a href="/writing-fundamentals/writing-sentences/">Writing sentences</a></li>
-<li class="page_item page-item-2535"><a href="/writing-fundamentals/useful-websites/">Useful websites</a></li>
-</ul></div></div></div><div class="accordion-item">
-<h2 class="accordion-header" id="accordion-head-6828">
-<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-body-6828" aria-expanded="false" aria-controls="accordion-body-6828">Assessments</button>
-</h2>
-<div id="accordion-body-6828" class="accordion-collapse collapse" aria-labelledby="accordion-head-6828">
-<div class="accordion-body"><ul><li class="page_item page-item-2617"><a href="/assessments/annotated-bibliographies/">Annotated bibliographies</a></li>
-<li class="page_item page-item-2578 page_item_has_children"><a href="/assessments/case-studies/">Case studies</a></li>
-<li class="page_item page-item-2516"><a href="/assessments/essays/">Essays</a></li>
-<li class="page_item page-item-7168 page_item_has_children"><a href="/assessments/getting-started-with-assignments/">Getting started with assignments</a></li>
-<li class="page_item page-item-2536"><a href="/assessments/literature-review/">Literature review</a></li>
-<li class="page_item page-item-7204 page_item_has_children"><a href="/assessments/presentations/">Presentations</a></li>
-<li class="page_item page-item-2580"><a href="/assessments/reflective-writing-1/">Reflective writing</a></li>
-<li class="page_item page-item-2544"><a href="/assessments/reports/">Reports</a></li>
-</ul></div></div></div><div class="accordion-item">
-<h2 class="accordion-header" id="accordion-head-2545">
-<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-body-2545" aria-expanded="false" aria-controls="accordion-body-2545">Referencing</button>
-</h2>
-<div id="accordion-body-2545" class="accordion-collapse collapse" aria-labelledby="accordion-head-2545">
-<div class="accordion-body"><ul><li class="page_item page-item-3329"><a href="/referencing/using-other-peoples-ideas/">What is referencing?</a></li>
-<li class="page_item page-item-3346"><a href="/referencing/understanding-citations/">Understanding citations</a></li>
-<li class="page_item page-item-3330"><a href="/referencing/when-referencing-isnt-needed/">When referencing isn't needed</a></li>
-<li class="page_item page-item-3331"><a href="/referencing/quoting/">Quoting</a></li>
-<li class="page_item page-item-3337"><a href="/referencing/paraphrasing-4/">Paraphrasing</a></li>
-<li class="page_item page-item-3334"><a href="/referencing/summarising-0/">Summarising</a></li>
-<li class="page_item page-item-3338"><a href="/referencing/synthesising/">Synthesising</a></li>
-<li class="page_item page-item-3333"><a href="/referencing/integrating-ideas-reporting-words/">Integrating ideas with reporting words</a></li>
-<li class="page_item page-item-3336"><a href="/referencing/getting-help-referencing/">Easy Cite and referencing help</a></li>
-</ul></div></div></div>						<!-- START Subject support
+				<div class="accordion accordion-white" id="context-menu-accordion">	
+						<?php 
+                            //Identify the page ids of each landing page, doContextMenuAccordion 
+                            //will generate the accordion code and list of child pages.
+							              echo doContextMenuAccordion('University essentials', 6823);
+							              echo doContextMenuAccordion('Writing fundamentals', 6825); 
+                            echo doContextMenuAccordion('Assessments', 6828);
+                            echo doContextMenuAccordion('Referencing', 2545);
+                        ?>
+						<!-- START Subject support
                         special case. Effectively each of the child pages here is a section page. For the nav, however, we want toshow these under the banner of subject support. -->
 						<div class="accordion-item">
 							<h2 class="accordion-header" id="accordion-head-subject-support">
@@ -198,9 +208,9 @@ defined('ABSPATH') || exit;
 									<ul>
 										<li><a href="/art-and-design/">Art and design</a></li>
 										<li><a href="/chemistry/">Chemistry</a></li>
-										<li><a href="/law-resources/">Legal studies</a></li>
+										<li><a href="/law/">Law</a></li>
 										<li><a href="/maths-statistics/">Mathematics and statistics</a></li>
-										<li><a href="/resources-nursing/">Nursing</a></li>
+										<li><a href="/nursing/">Nursing</a></li>
 										<li><a href="/physics/">Physics</a></li>
 										<!-- <li><a href="//">Life sciences</a></li> -->
 									</ul>
@@ -208,9 +218,11 @@ defined('ABSPATH') || exit;
 							  </div>
 						</div>
 						<!-- END subject support - special case -->
-                </div>
-            	<!-- END menu -->	
-				<!-- Start theme switcher -->
+                </div>	
+            </div>
+            <!-- END menu -->
+
+            <!-- Start theme switcher -->
 				<div id="theme-switcher">
 					<h2 class="h5">Theme</h2>
 					<div class="theme-bg">
@@ -229,8 +241,6 @@ defined('ABSPATH') || exit;
 					</div>
 				</div>
 				<!-- End theme switcher -->
-            </div>
-            <!-- END menu column -->
         </div>
     </div>
 </nav>

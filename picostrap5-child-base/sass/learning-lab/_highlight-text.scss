@@ -42,9 +42,6 @@
     @include do-space(margin-top, md); 
     @include do-space(margin-bottom, md); 
 
-
-    
-
     // Styles for the content 
     .content {
         
@@ -85,6 +82,20 @@
         .content > *:first-child {
             // Remove top margin for the first child
             margin-top: 0;
+        }
+    }
+}
+
+//add this class after highlight-text to position key above content
+.hl-one-column {
+    @include media-breakpoint-up(md) {  
+        display: block;
+
+        .key {
+            margin-bottom: 2rem;
+        }
+        .key li {
+            display: inline;
         }
     }
 }
