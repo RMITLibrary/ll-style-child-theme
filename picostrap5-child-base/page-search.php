@@ -25,7 +25,7 @@ get_header();
 <a id="main-content"></a>
 <!-- START search -->
 <div class="search-container">
-    <label for="searchInput"><h1 class="margin-top-zero">Search the learning lab</h1></label>
+    <label for="searchInput"><h1 class="margin-top-zero">Search the Learning Lab</h1></label>
     <div class="input-group">
         <input type="search" id="searchInput" class="form-control">
         <button type="submit"  id="searchButton" class="btn btn-primary"><div class="mag-glass"></div><span class="visually-hidden">Search</span></button>
@@ -176,5 +176,5 @@ if (!empty($keywords) && !is_wp_error($keywords)) {
 <!-- END col-xs-12 -->
 </div>
 
-<script type="text/javascript" src="/wp-content/themes/picostrap5-child-base/js/search.js?v=1.0.4"></script>
+<script type="text/javascript" src="/wp-content/themes/picostrap5-child-base/js/search.js?v=1.0.6"></script>
 <?php get_footer();

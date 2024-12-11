@@ -13,7 +13,7 @@ var fullUrl = window.location.href;
 // Create a URL object
 var url = new URL(fullUrl);
 
-console.log("Search script 1.0.4: " +fullUrl);
+console.log("Search script 1.0.6: " +fullUrl);
 
     
 //Check query string for debug=true or query=[search text].
@@ -118,13 +118,28 @@ fetch(dataURL)
                 // Select the element
                 var collapseElement = document.getElementById('results-container');
 
-                // Create a new Bootstrap Collapse instance
-                var collapseInstance = new bootstrap.Collapse(collapseElement, {
-                    toggle: false // Prevents automatic toggle
-                });
+                // if searchString has a value, search is coming from query string (maybe update variable name????)
+                // remove collapse class to just dispolay the results then clear the query string
+                if(searchString != null) {
+                    collapseElement.classList.remove('collapse');
 
-                // Use the show method to expand
-                collapseInstance.show();
+                    //clear the query string here
+                    if (window.history.replaceState) {
+                        const urlWithoutQuery = window.location.origin + window.location.pathname;
+                        window.history.replaceState(null, '', urlWithoutQuery);
+                    }
+
+                }
+                else {
+                    // Create a new Bootstrap Collapse instance
+                    var collapseInstance = new bootstrap.Collapse(collapseElement, {
+                        toggle: false // Prevents automatic toggle
+                    });
+
+                    // Use the show method to expand
+                    collapseInstance.show();
+                }
+                
                 document.getElementById("results-title").focus();
             }
             //END if to avoid blank queries
