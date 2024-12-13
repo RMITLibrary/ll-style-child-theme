@@ -1,4 +1,5 @@
 <?php 
+
 function my_redirects_menu() {
     add_menu_page(
         'Manage Redirects',
@@ -10,17 +11,28 @@ function my_redirects_menu() {
 }
 add_action('admin_menu', 'my_redirects_menu');
 
+// Function to remove fragment from URL - removes # if it's there, define it outside
+function remove_url_fragment($url) {
+    $parsed_url = parse_url($url);
+    $clean_url = $parsed_url['scheme'] . '://' . $parsed_url['host'] . $parsed_url['path'];
+
+    if (isset($parsed_url['query'])) {
+        $clean_url .= '?' . $parsed_url['query'];
+    }
+
+    return $clean_url;
+}
 
 //-------------------------------------------
-//	my_redirects_page
+//    my_redirects_page
 
-//	Generates the admin page for managing redirects with fields for old and new URLs
+//    Generates the admin page for managing redirects with fields for old and new URLs
 
-//	Called from:	my_redirects_menu
+//    Called from:    my_redirects_menu
 
-//	Calls:			None directly, but handles form submissions to update redirects
+//    Calls:            None directly, but handles form submissions to update redirects
 
-//	Usage:			Triggered by form submission on the admin page to save redirects
+//    Usage:            Triggered by form submission on the admin page to save redirects
 //-------------------------------------------
 function my_redirects_page() {
     if (!current_user_can('manage_options')) {
@@ -43,9 +55,12 @@ function my_redirects_page() {
         }
 
         update_option('my_redirects', $redirects);
-        echo '<div class="updated"><p>Redirects saved.</p></div>';
-    }
 
+        // Generate the physical JavaScript file
+        write_redirects_js_file($redirects);
+
+        echo '<div class="updated"><p>Redirects saved!</p></div>';
+    }
 
     // Handle CSV upload
     if (isset($_POST['upload_csv']) && check_admin_referer('upload_redirects_csv')) {
@@ -79,22 +94,12 @@ function my_redirects_page() {
             }
             update_option('my_redirects', $redirects);
 
+            // Generate the physical JavaScript file
+            write_redirects_js_file($redirects);
+
             echo '<div class="updated"><p>Redirects updated from CSV.</p></div>';
         }
     }
-
-    // Function to remove fragment from URL - removes #if it's there
-    function remove_url_fragment($url) {
-        $parsed_url = parse_url($url);
-        $clean_url = $parsed_url['scheme'] . '://' . $parsed_url['host'] . $parsed_url['path'];
-
-        if (isset($parsed_url['query'])) {
-            $clean_url .= '?' . $parsed_url['query'];
-        }
-
-        return $clean_url;
-    }
-
 
     // Get existing redirects
     $redirects = get_option('my_redirects', array());
@@ -188,7 +193,7 @@ function my_redirects_page() {
             document.getElementById('row-count').textContent = 'Number of redirects: ' + rowCount;
         }
 
-        // state delete function
+        // handle delete function
         document.addEventListener('DOMContentLoaded', function() {
             // Get all delete links
             const deleteLinks = document.querySelectorAll('.delete-row');
@@ -206,7 +211,6 @@ function my_redirects_page() {
                 });
             });
         });
-        //end delete function
 
         // Call the function to update the row count display
         updateRowCount();
@@ -215,37 +219,81 @@ function my_redirects_page() {
     <?php
 }
 
+//-------------------------------------------
+//    write_redirects_js_file
+
+//    Creates and writes a JavaScript file containing URL mappings for redirects
+
+//    Called from:    my_redirects_page after updating redirects via the admin interface
+
+//    Calls:            None directly
+
+//    Usage:            Invoke write_redirects_js_file($redirects) to generate
+//                      and update a static JS file with the latest redirects
+//-------------------------------------------
+function write_redirects_js_file($redirects) {
+    $dir = get_stylesheet_directory() . '/js/';
+    $js_file_path = $dir . 'redirects.js'; // Path to save the JS file
+
+    // Check if directory exists and is writable
+    if (!is_dir($dir)) {
+        echo '<div class="error"><p>Directory does not exist: ' . esc_html($dir) . '</p></div>';
+        return;
+    }
+
+    if (!is_writable($dir)) {
+        echo '<div class="error"><p>Directory is not writable: ' . esc_html($dir) . '</p></div>';
+        return;
+    }
+
+    // Prepare JS content
+    $js_content = "const urlMappings = [\n";
+    foreach ($redirects as $redirect) {
+        $js_content .= "{ oldPath: '" . esc_js($redirect['old']) . "', newPath: '" . esc_js($redirect['new']) . "' },\n";
+    }
+    $js_content .= "];\n";
+    $js_content .= "console.log('urlMappings.length: ' + urlMappings.length);\n";
+
+    // Write the JavaScript content to the file
+    if (file_put_contents($js_file_path, $js_content) === false) {
+        echo '<div class="error"><p>Failed to write JS file to: ' . esc_html($js_file_path) . '</p></div>';
+    } else {
+        echo '<div class="updated"><p>JS file successfully written to: ' . esc_html($js_file_path) . '</p></div>';
+    }
+}
 
 //-------------------------------------------
-//	output_redirect_404_script_and_html
+//    output_redirect_404_script_and_html
 
-//	Outputs JavaScript for URL redirects and the HTML structure for redirect and 404 messages
+//    Outputs JavaScript for URL redirects and the HTML structure for redirect and 404 messages
 
-//	Called from:	404.php and pages using the redirect-404 page template (currently https://lab.bitma.app/redirect-404/ )
+//    Called from:    404.php and pages using the redirect-404 page template (currently https://lab.bitma.app/redirect-404/ )
 
-//	Calls:			createBreadcrumbs (ensure this function exists in your theme)
+//    Calls: createBreadcrumbs (ensure this function exists in your theme)
 
-//	Usage:			Call output_redirect_script_and_html() in template files to display redirect logic and messages
+//    Usage:            Call output_redirect_script_and_html() in template files to display redirect logic and messages
 //-------------------------------------------
 
 function output_redirect_404_script_and_html() {
     // Output the JavaScript for redirects
-    $redirects = get_option('my_redirects', array());
+    // $redirects = get_option('my_redirects', array());
 
-    if ($redirects) {
-        $redirectCount = count($redirects); // Count the number of redirects
-        echo "<script type='text/javascript'>\n";
-        echo "const urlMappings = [\n";
-        foreach ($redirects as $redirect) {
-            echo "{ oldPath: '" . esc_js($redirect['old']) . "', newPath: '" . esc_js($redirect['new']) . "' },\n";
-        }
-        echo '];';
-        echo "console.log('urlMappings.length: ' + $redirectCount);\n"; // Output the length of the array
-        echo '</script>';
-    }
+    // if ($redirects) {
+    //     $redirectCount = count($redirects); // Count the number of redirects
+    //     echo "<script type='text/javascript'>\n";
+    //     echo "const urlMappings = [\n";
+    //     foreach ($redirects as $redirect) {
+    //         echo "{ oldPath: '" . esc_js($redirect['old']) . "', newPath: '" . esc_js($redirect['new']) . "' },\n";
+    //     }
+    //     echo '];';
+    //     echo "console.log('urlMappings.length: ' + $redirectCount);\n"; // Output the length of the array
+    //     echo '</script>';
+    // }
 
     // Output the HTML and CSS
     ?>
+
+    <script src="<?php echo get_stylesheet_directory_uri(); ?>/js/redirects.js"></script>
 
     <style>
         #redirect-container {
@@ -407,12 +455,10 @@ function main() {
 
 main();
 
-
 </script>
 <!-- script to punt search input to /search via query string -->
 <script type="text/javascript" src="/wp-content/themes/picostrap5-child-base/js/search-home.js?v=1.0.1"></script>
 
     <?php
-}   //end myRedirectspage
-
+}
 ?>
