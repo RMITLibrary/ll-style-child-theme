@@ -295,6 +295,13 @@ function output_redirect_404_script_and_html() {
 
     <script src="<?php echo get_stylesheet_directory_uri(); ?>/js/redirects.js"></script>
 
+    <!--<script>
+        var script = document.createElement('script');
+        script.src = '<?php echo get_stylesheet_directory_uri(); ?>/js/redirects.js?v=' + new Date().getTime();
+        document.body.appendChild(script);
+    </script>-->
+
+
     <style>
         #redirect-container {
             display: none;
