@@ -293,14 +293,7 @@ function output_redirect_404_script_and_html() {
     // Output the HTML and CSS
     ?>
 
-    <script src="<?php echo get_stylesheet_directory_uri(); ?>/js/redirects.js"></script>
-
-    <!--<script>
-        var script = document.createElement('script');
-        script.src = '<?php echo get_stylesheet_directory_uri(); ?>/js/redirects.js?v=' + new Date().getTime();
-        document.body.appendChild(script);
-    </script>-->
-
+<script src="<?php echo get_stylesheet_directory_uri(); ?>/js/redirects.js?v=<?php echo time(); ?>"></script>
 
     <style>
         #redirect-container {
