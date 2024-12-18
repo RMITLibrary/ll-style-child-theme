@@ -34,6 +34,16 @@ get_header();
             else :
                 _e( 'Sorry, no posts matched your criteria.', 'textdomain' );
             endif;
+
+            //add last page panel
+            //Write markup and styles then addin SC fields
+            $section_title = get_field('section_title');
+
+            if($section_title != "")
+            {
+                echo '<!--'  . $section_title . ' -->';
+            }
+
             ?>
 			<?php 
 				$is_last_page = 'true'; 
