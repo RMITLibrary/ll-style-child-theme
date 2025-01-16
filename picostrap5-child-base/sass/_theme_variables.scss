@@ -45,47 +45,6 @@ $utilities: (
    
 );
 
-/* START COLOUR */
-
-/* core design system colours */
-
-/*$dark-grey: #333;               //primary text colour
-$interface-grey: #BFBFBF;
-$underlay-selected: #E6E6E6;    //use sparingly
-$underlay-grey: #f5f5f5;
-
-$rmit-blue: #000054;
-$blue-70: #4D4D88;
-$blue-hover: #0051A8;
-$rmit-red: #E61E2A;
-$correct-green: #009969;
-
-
-// map our colours to bootstrap variables - is it worth mapping all grey vars? 
-
-$gray-100: $underlay-grey;
-$gray-300: $interface-grey;
-$gray-400: $interface-grey;
-$gray-600: $interface-grey;
-$gray-900: $dark-grey;
-
-$blue: $rmit-blue;
-$green: $correct-green;
-$red: $rmit-red;
-
-
-// link colours 
-$link-hover-color: $blue-hover;
-$link-hover-decoration: none;
-
-$focus-color: rgba(13, 110, 253, 0.5);
-
-
-// tables
-$table-striped-bg: $underlay-grey;*/
-
-/* END COLOUR */
-
 @font-face {
     font-family: 'Museo700';
     src: url("../fonts/museo-700.woff2") format("woff");

@@ -147,7 +147,7 @@ defined('ABSPATH') || exit;
     <div class="container">
         <div class="row">
             <div class="col-auto left-nav">
-                <div class="rmit-logo"><span class="visually-hidden">RMIT University logo</span></div>
+                <a href="https://www.rmit.edu.au/" class="rmit-logo"><span class="visually-hidden">RMIT University</span></a>
 				<h2>
 					<!-- Explicitly turn off one bit of text and turn on the other to deal with JAWS bug - https://github.com/alphagov/govuk-frontend/issues/1643 -->
 					<a href="/home">

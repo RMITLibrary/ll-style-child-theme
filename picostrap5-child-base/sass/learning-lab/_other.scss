@@ -68,3 +68,15 @@ aside.visually-hidden-focusable div {
 		border-left: 0.25rem solid $accent-color-dark;
 	}
 }
+
+// Override .btn-nav-container styles to remove border-bottom at lsrge breakpoints, 
+// due to the presence of keywords on every page.
+
+// Previous and next buttons
+.btn-nav-container {
+	//At a large breakpoint, add in a seperator line
+    @include media-breakpoint-down(xl) {
+        border: 0;
+        padding: 0;
+    }
+}
