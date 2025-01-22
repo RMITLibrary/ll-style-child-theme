@@ -53,7 +53,7 @@
                             <a href="https://www.rmit.edu.au/about/our-values/respect-for-australian-indigenous-cultures" class="link-large">More information</a>
                         </div>
                         <div class="acknowledgement-image">
-                            <img src="https://www.rmit.edu.au/content/dam/rmit/images/sentient-hollie-johnson.jpg" alt="" />
+                            <img src="https://www.rmit.edu.au/content/dam/rmit/images/sentient-hollie-johnson.jpg" alt="Abstract artwork titled 'Sentient' by Hollie Johnson, features a complex pattern of intersecting blue, green, and yellow lines over a white background showing the journeys of life starting, finishing and intersecting. The colouring of the line work illustrates the evolution of nature through many First Nations stories: the sun, the giver of life (yellow), the creation of land (green), and the sea (blue). Red and black concentric diamond and semi-circle shapes symbolise men and women respectively, connecting them to Ancestors who gave birth to them. The artwork is also a representation of RMIT and the experience within our community, culture and pathways." />
                         </div>
                     </section>
                 </div>
