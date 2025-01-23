@@ -33,7 +33,7 @@ get_header();
 			<?php get_template_part( 'page-templates/includes/prev-next-buttons', 'page' ); ?>
 			<div id="additional-info">
 			<?php get_template_part( 'page-templates/includes/additional-resources', 'page' ); ?>
-			<?php get_template_part( 'page-templates/includes/taxonomy', 'page' ); ?>
+			<?php get_template_part( 'page-templates/includes/keywords-embed-modal', 'page' ); ?>
             </div>
         </div>
         <!-- END content --> 

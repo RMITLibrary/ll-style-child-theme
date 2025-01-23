@@ -46,6 +46,48 @@
     }
 }
 
+.btn-sm {
+	position: relative;
+	display: flex;		// useful if icons are added 
+	height: 43px;
+
+	align-items: center;
+	
+	color: var(--bs-link-color);
+    background-color: var(--bs-body-bg-color);
+	border: 1px solid $interface-grey;
+	border-radius: 0.25rem;
+	box-sizing: border-box;
+	
+	@include type-default;
+	
+	padding: 0 1rem;
+	
+	&:focus {
+		@include element-focus;
+	}
+	
+	&:hover {
+		@include link-feature-hover;
+		border-color: $link-hover-color;
+		color: $link-hover-color;
+	}
+}
+
+.btn-icon {
+	@extend .btn-sm;
+
+	padding: 0 1rem 0 0.5rem;
+
+	&::before { 
+		// content: url("inline svg here");	//needs to be replaced in dark mode with colour altered too
+		flex-shrink: 0;
+		width: 32px;
+		height: 32px;
+		margin-right: 0.25rem;
+	}
+} 
+
 // Previous and next buttons
 .btn-nav-container {
 
@@ -155,4 +197,18 @@
     .btn-nav-prev a::before, .btn-nav-next a::after { 
         @include carat-dark;
     }
+
+	.btn-sm {
+        color: $link-color-dark;
+
+        &:hover {
+            @include link-feature-hover;
+            border-color: $link-hover-color-dark;
+            color: $link-color-hover-dark;
+        }
+    }
 }
+
+
+
+    

@@ -28,7 +28,7 @@ get_header();
             endif;
             ?>
             <?php get_template_part( 'page-templates/includes/additional-resources', 'page' ); ?>
-			<?php get_template_part( 'page-templates/includes/taxonomy', 'page' ); ?>
+			<?php get_template_part( 'page-templates/includes/keywords-embed-modal', 'page' ); ?>
         </div>
         <!-- END content --> 
     </div>

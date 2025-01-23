@@ -31,6 +31,7 @@ Note theme_variables.scss is now loaded by bootstrap-loader but can be important
 
 //Simple components
 @import 'design-system/button';
+@import 'design-system/button-icon';
 @import "design-system/accordion";
 @import "design-system/blockquote";
 @import 'design-system/table';
@@ -62,7 +63,9 @@ Note theme_variables.scss is now loaded by bootstrap-loader but can be important
 @import "learning-lab/search";
 
 @import "learning-lab/code-examples";
-@import "learning-lab/other"  ;             //other styles that don't fit into a category
+
+@import "learning-lab/modal";       //for embed moal, positioning of button in other currently
+@import "learning-lab/other";       //other styles that don't fit into a category
     
 //Any final custom styles can go here
 @import "custom";

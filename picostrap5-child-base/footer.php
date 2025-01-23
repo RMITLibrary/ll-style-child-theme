@@ -134,13 +134,8 @@
 
 	<?php wp_footer(); ?>
 
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MPHJK3H"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
-
-<!-- Code to handle hamburger menu, embed mode, dark mode -->
-<script type="text/javascript" src="/wp-content/themes/picostrap5-child-base/js/main-body.js?v=1.0.2"></script>
+<!-- Code to handle hamburger menu, embed mode, modal, dark mode -->
+<script type="text/javascript" src="/wp-content/themes/picostrap5-child-base/js/main-body.js?v=1.0.3"></script>
 
 <!-- Code to handle resizing iframes on this page -->
 <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/js/iframeResizer.min.js"></script>

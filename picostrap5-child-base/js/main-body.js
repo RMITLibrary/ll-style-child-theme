@@ -141,6 +141,45 @@
 })();
 // END Script to turn on embed mode
 
+// START Script to show embed modal
+
+// Updates code, copies code etc.
+ 
+// Unlikely hide-title and hide-intro would be used in concert with show-prev-next 
+const copyCodeButton = document.getElementById("copy-code");
+const feedback = document.getElementById("feedback");
+const embedCodeBox = document.getElementById('embedCode')
+
+function updateEmbedCode() {
+	const hideTitle = document.getElementById('hideTitle').checked;
+	const hideIntro = document.getElementById('hideIntro').checked;
+	const currentUrl = window.location.origin + window.location.pathname;
+	let url = `${currentUrl}?iframe=true`;
+	if (hideTitle) url += '&hide-title=true';
+	if (hideIntro) url += '&hide-intro=true';
+
+	const embedCode = `<iframe src="${url}" width="100%" scrolling="no"></iframe>`;
+	embedCodeBox.value = embedCode;
+
+}
+
+
+//Called when "Copy code" is clicked. Copy the code to clipboard  (won't work on http:// only https:// )
+function copyCode(e) {
+	console.log("Code copied");
+    navigator.clipboard.writeText(embedCodeBox.value);
+	
+	feedback.innerHTML = "Code copied to clipboard";
+	feedback.classList.add("show");
+}
+
+// Initialize the embed code on page load
+document.addEventListener('DOMContentLoaded', function() {
+	updateEmbedCode();
+	copyCodeButton.addEventListener("click", copyCode);
+});
+//END Script to handle embed modal
+
 // START Dark mode
 //There is additional code located in the <head> section of each page. It's not linked to an exterrnal js to minimise flash between content.
 (function() {

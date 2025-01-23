@@ -29,8 +29,11 @@
 	@include media-breakpoint-up(md) { margin-top: 0.25rem; }
 }
 
+.form-check-inline { margin-right: 2rem }
+.form-check-inline:last-child { margin-right: 0rem; }
+
 .form-check-input {
-	margin: 6px 1rem 0 0;
+	margin: 6px 0.75rem 0 0;
     border-color: $interface-grey;
 	
 	&:focus {

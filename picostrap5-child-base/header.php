@@ -135,7 +135,13 @@ defined('ABSPATH') || exit;
 </head>
 
 <body <?php body_class(); ?>>
-	<?php wp_body_open(); ?>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MPHJK3H"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<?php wp_body_open(); ?>
 	
 <header>
 <a href="#main-content" class="visually-hidden-focusable">Skip to main content</a>
