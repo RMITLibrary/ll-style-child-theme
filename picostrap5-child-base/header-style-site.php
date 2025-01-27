@@ -105,36 +105,23 @@ defined('ABSPATH') || exit;
     theme (either from local storage or system settings) and applies it immediately.
     -->
     <script>
-    (function() {
-        'use strict';
+        (function() {
+            'use strict';
 
-        // Function to get the stored theme from local storage
-        const getStoredTheme = () => localStorage.getItem('theme');
+            const getStoredTheme = () => localStorage.getItem('theme');
 
-        // Function to determine the preferred theme
-        const getPreferredTheme = () => {
-        const storedTheme = getStoredTheme(); // Retrieve the stored theme
-        if (storedTheme) {
-            return storedTheme; // If a theme is stored, return it
-        }
-        // If no theme is stored, check the system preference for dark mode
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        };
+            const getPreferredTheme = () => {
+            const storedTheme = getStoredTheme();
+            return storedTheme ? storedTheme : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            };
 
-        // Function to apply the specified theme
-        const setTheme = theme => {
-        if (theme === 'auto') {
-            // If theme is 'auto', set it based on system preference
-            document.documentElement.setAttribute('data-bs-theme', (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
-        } else {
-            // Otherwise, set the theme explicitly
-            document.documentElement.setAttribute('data-bs-theme', theme);
-        }
-        };
+            const setTheme = theme => {
+            const themeToSet = theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme;
+            document.documentElement.setAttribute('data-bs-theme', themeToSet);
+            };
 
-        // Set the theme based on the preferred theme
-        setTheme(getPreferredTheme());
-    })();
+            setTheme(getPreferredTheme());
+        })();
     </script>
 </head>
 
@@ -224,24 +211,24 @@ defined('ABSPATH') || exit;
             <!-- END menu -->
 
             <!-- Start theme switcher -->
-				<div id="theme-switcher">
-					<h2 class="h5">Theme</h2>
-					<div class="theme-bg">
-						<div class="form-check form-check-inline">
-							<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" data-bs-theme-value="auto" value="option1">
-							<label class="form-check-label" for="inlineRadio1">System</label>
-						</div>
-						<div class="form-check form-check-inline">
-							<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" data-bs-theme-value="light" value="option2">
-							<label class="form-check-label" for="inlineRadio2">Light</label>
-						</div>
-						<div class="form-check form-check-inline">
-							<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" data-bs-theme-value="dark" value="option3">
-							<label class="form-check-label" for="inlineRadio3">Dark</label>
-						</div>
-					</div>
-				</div>
-				<!-- End theme switcher -->
+            <form class="theme-switch hamburger-menu">
+                <h2>Theme</h2>
+                <div class="bg">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="themeOptions" data-bs-theme-value="auto">
+                        <label class="form-check-label">System</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="themeOptions" data-bs-theme-value="light">
+                        <label class="form-check-label">Light</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="themeOptions" data-bs-theme-value="dark">
+                        <label class="form-check-label">Dark</label>
+                    </div>
+                </div>
+            </form>
+            <!-- End theme switcher -->
         </div>
     </div>
 </nav>

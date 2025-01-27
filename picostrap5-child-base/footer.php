@@ -135,7 +135,7 @@
 	<?php wp_footer(); ?>
 
 <!-- Code to handle hamburger menu, embed mode, modal, dark mode -->
-<script type="text/javascript" src="/wp-content/themes/picostrap5-child-base/js/main-body.js?v=1.0.3"></script>
+<script type="text/javascript" src="/wp-content/themes/picostrap5-child-base/js/main-body.js?v=1.0.4"></script>
 
 <!-- Code to handle resizing iframes on this page -->
 <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/js/iframeResizer.min.js"></script>

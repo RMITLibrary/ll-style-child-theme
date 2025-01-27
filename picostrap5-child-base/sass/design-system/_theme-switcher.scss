@@ -1,45 +1,57 @@
-#theme-switcher {
-	
+.theme-switch {
+	margin-top: 2rem; 
 	h2 {
-		color: $white;
-		margin-top: 2rem;
-		margin-bottom: 0.75rem;
+		@extend h5;
+		margin-top: 0;
 	}
-	
-	.theme-bg {
+
+	.form-check-inline:last-child { margin-right: 0rem; }
+}
+
+.theme-switch.hamburger-menu {
+	margin-top: 2rem;
+	margin-bottom: 0.75rem;
+
+	h2 { color: $white; }
+
+	.bg {
 		display: inline-block;
 		color: var(--bs-body-color);
 		background-color: var(--bs-body-bg);
-		
-		
+
 		border-radius: 0.5rem;
 		padding: 1rem 1rem;
-		
-		//padding: 1rem 1.5rem;
-	}
-	
-	.form-check-inline {
-		//margin-right: 1.5rem;
-	}
-	
-	.form-check-inline:last-child {
-		margin-right: 0rem;
-		
-		//margin-right: 0.5rem;
-	}
-	
-	@include media-breakpoint-up(sm) {
-		
-		.theme-bg {
-			padding: 1rem 1.5rem;
-		}
 
-		.form-check-inline {
-			margin-right: 1.5rem;
-		}
+		border: 1px solid $rmit-blue;
+		width: 100%;
 
-		.form-check-inline:last-child {
-			margin-right: 0.5rem;
-		}
+		@include media-breakpoint-up(md) { width: auto; }
+
+		@include media-breakpoint-up(sm) { padding: 1rem 1.5rem; }
 	}
+}
+
+.theme-switch.theme-compact {
+	margin-top: 3rem;
+	padding-top: 0.75rem;
+	border-top: 1px solid $interface-grey;
+
+	h2 {
+		@include type-small;
+		font-family: $font-family-sans-serif;
+		color: var(--bs-body-color);
+		display: inline-block;
+		margin-right: 1rem;
+		margin-bottom: 0;
+	}
+
+	.bg { display: inline-block; }
+	label { @include type-small; }
+}
+
+//Add some right margin if sitting underneath right nav
+.theme-switch.theme-right-nav {
+	@include media-breakpoint-up(lg) {
+    	margin-left: 1.5rem;
+    }
 }
