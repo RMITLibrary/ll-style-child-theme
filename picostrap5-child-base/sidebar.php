@@ -34,7 +34,7 @@ $greatGrandParent = get_post_parent($grandParent);
 
 ?>
 <!-- START SIDEBAR NAV PANEL -->
-<nav class="right-nav" aria-label="Section Menu">
+<nav class="right-nav sticky-nav" aria-label="Section Menu">
 
 <?php
 	
