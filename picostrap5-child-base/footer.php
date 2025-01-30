@@ -85,7 +85,7 @@
                     <!-- START legal -->
                     <div class="footer-legal">
                     <ul>
-                        <li>Copyright © 2024 RMIT University</li>
+                        <li>Copyright © <?php echo date("Y"); ?> RMIT University</li>
                         <li><a href="https://www.rmit.edu.au/utilities/terms"><span class="no-focus" tabindex="-1">Terms</span></a></li>
                         <li><a href="https://www.rmit.edu.au/utilities/privacy"><span class="no-focus" tabindex="-1">Privacy</span></a></li>
                         <li>ABN 49 781 030 034</li>
