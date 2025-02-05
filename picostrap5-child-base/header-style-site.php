@@ -212,21 +212,23 @@ defined('ABSPATH') || exit;
 
             <!-- Start theme switcher -->
             <form class="theme-switch hamburger-menu">
-                <h2>Theme</h2>
-                <div class="bg">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="themeOptions" data-bs-theme-value="auto">
-                        <label class="form-check-label">System</label>
+                <fieldset>
+                    <legend>Theme</legend>
+                    <div class="bg">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="themeOptions" data-bs-theme-value="auto" aria-label="System">
+                            <span class="form-check-label">System</span>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="themeOptions" data-bs-theme-value="light" aria-label="Light">
+                            <span class="form-check-label">Light</span>
+                        </div> 
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="themeOptions" data-bs-theme-value="dark" aria-label="Dark">
+                            <span class="form-check-label">Dark</span>
+                        </div>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="themeOptions" data-bs-theme-value="light">
-                        <label class="form-check-label">Light</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="themeOptions" data-bs-theme-value="dark">
-                        <label class="form-check-label">Dark</label>
-                    </div>
-                </div>
+                </fieldset>
             </form>
             <!-- End theme switcher -->
         </div>
