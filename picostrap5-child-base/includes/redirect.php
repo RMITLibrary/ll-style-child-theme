@@ -440,6 +440,9 @@ function main() {
             const newUrl = replaceUrlPath(currentURL, mapping.newPath);
             console.log("Match found! Redirecting to: " + newUrl);
 
+            //Change page title to relect change
+            document.title = "Redirecting you to the new page...";
+
             // Display redirect information
             redirectInfo.style.display = "block";
 
