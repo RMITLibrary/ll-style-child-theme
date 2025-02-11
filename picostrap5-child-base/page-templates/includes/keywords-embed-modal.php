@@ -72,6 +72,7 @@ if( $terms ): ?>
 							<li>Navigate to the page or module where you want to embed the content.</li>
 							<li>In the Rich Content Editor, click on the "HTML Editor" link.</li>
 							<li>Paste the iframe code into the HTML area.</li>
+							<li>By default, the height is set to 1500px. Update this value to match your content.</li>
 							<li>Switch back to the Rich Content Editor to see the embedded content.</li>
 							<li>Save the changes to your page or module.</li>
 						</ol>
