@@ -158,7 +158,8 @@ function updateEmbedCode() {
 	if (hideTitle) url += '&hide-title=true';
 	if (hideIntro) url += '&hide-intro=true';
 
-	const embedCode = `<iframe src="${url}" width="100%" scrolling="no"></iframe>`;
+	//const embedCode = `<iframe src="${url}" width="100%" height="1500" scrolling="no"></iframe>`;
+	const embedCode = `<iframe src="${url}" width="100%" height="1500"></iframe>`;
 	embedCodeBox.value = embedCode;
 
 }
