@@ -158,8 +158,7 @@ function updateEmbedCode() {
 	if (hideTitle) url += '&hide-title=true';
 	if (hideIntro) url += '&hide-intro=true';
 
-	//const embedCode = `<iframe src="${url}" width="100%" height="1500" scrolling="no"></iframe>`;
-	const embedCode = `<iframe src="${url}" width="100%" height="1500"></iframe>`;
+	const embedCode = `<iframe src="${url}" width="100%" scrolling="no"></iframe>`;
 	embedCodeBox.value = embedCode;
 
 }
@@ -176,10 +175,13 @@ function copyCode(e) {
 
 // Initialize the embed code on page load
 document.addEventListener('DOMContentLoaded', function() {
-	updateEmbedCode();
-	copyCodeButton.addEventListener("click", copyCode);
+	if (copyCodeButton) {
+		updateEmbedCode();
+		copyCodeButton.addEventListener("click", copyCode);
+	}
 });
 //END Script to handle embed modal
+
 
 // START Dark mode
 //There is additional code located in the <head> section of each page. It's not linked to an exterrnal js to minimise flash between content.
