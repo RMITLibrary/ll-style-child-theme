@@ -92,3 +92,7 @@ aside.visually-hidden-focusable div {
         .btn-embed { display: none; }
     }
 }
+
+.btn-embed {
+    flex-shrink: 0;
+}
