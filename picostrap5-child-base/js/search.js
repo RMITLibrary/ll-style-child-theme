@@ -74,18 +74,11 @@ fetch(dataURL)
                 const resultsList = document.getElementById('results');
                 resultsList.innerHTML = '';
 
-                const resultsCounter = document.getElementById('results-counter');
+                //reference to hmtl element to display number of results
+                const resultsCountDisplay = document.getElementById('results-counter');
 
-                //update results counter
-                if(results.length == 0) {
-                    resultsCounter.innerHTML = 'No results found.';
-                }
-                else if(results.length == 1) {
-                    resultsCounter.innerHTML = results.length +' result found.'; 
-                }
-                else {
-                    resultsCounter.innerHTML = results.length +' results found.';
-                }
+                //Actual counter of number of results
+                var resultCount = 0;
                 
                 //loop through results displaying each
                 results.forEach(function(result) {
@@ -112,8 +105,22 @@ fetch(dataURL)
                         //add element to the page
                         li.innerHTML = itemOutput;
                         resultsList.appendChild(li);
+
+                        //increment resultsCount
+                        resultCount++;
                     }
                 });
+
+                //update results counter
+                if(resultCount == 0) {
+                    resultsCountDisplay.innerHTML = 'No results found.';
+                }
+                else if(resultCount == 1) {
+                    resultsCountDisplay.innerHTML = resultCount +' result found.'; 
+                }
+                else {
+                    resultsCountDisplay.innerHTML = resultCount +' results found.';
+                }
                 
                 // Select the element
                 var collapseElement = document.getElementById('results-container');
