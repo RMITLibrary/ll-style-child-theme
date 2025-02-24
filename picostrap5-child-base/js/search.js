@@ -1,47 +1,25 @@
-var dataURL = "../wp-content/uploads/pages.json";
+var dataURL = "../wp-content/uploads/pages.json?v=1.1.3";
 var debug = false;
 
-//set default variables for search
-var threshold = 0.4;
-var distance = 1200;
-var mySearchLocation = 0;
-var useExtendedSearch = false;
-var minMatchCharLength = 4;
-
-// set dataURL depending on siteURL
-var fullUrl = window.location.href;
-// Create a URL object
-var url = new URL(fullUrl);
-
-console.log("Search script 1.0.6: " +fullUrl);
-
-    
-//Check query string for debug=true or query=[search text].
-const queryStringSearch = window.location.search;
-const urlParamsSearch = new URLSearchParams(queryStringSearch);
+// Check query string for debug and search initiation
+const urlParamsSearch = new URLSearchParams(window.location.search);
 const debugBool = urlParamsSearch.get('debug');
 const searchString = urlParamsSearch.get('query');
-    
-//If  debug=true, show debug interface
-if(debugBool == 'true') {
+
+// Enable debug mode if flag is present
+if (debugBool === 'true') {
     debug = true;
-    var debugInterface = document.getElementById("search-debug");
-    debugInterface.style.display = "block";
+    document.getElementById("search-debug").style.display = "block";
 }
 
-console.log("dataURL: " +dataURL);
-
-// Fetch the JSON data
 fetch(dataURL)
     .then(response => response.json())
     .then(data => {
+
         function performSearch() {
- 
             var query = document.getElementById('searchInput').value;
-            
-            //if debug is true, populate search variables with values from debug interface
-            if(debug == true)
-            {
+
+            if (debug) {
                 threshold = parseFloat(document.getElementById('threshold').value);
                 distance = parseInt(document.getElementById('distance').value, 10);
                 mySearchLocation = parseInt(document.getElementById('location').value, 10);
@@ -49,173 +27,138 @@ fetch(dataURL)
                 minMatchCharLength = parseInt(document.getElementById('minMatchCharLength').value, 10);
             }
 
-            //build options object
-            const options = {
-                keys: ['title', 'content'], // Specify the fields to search
-                threshold: threshold,
-                distance: distance,
-                location: mySearchLocation,
-                minMatchCharLength: minMatchCharLength,
-                includeScore: true,
-                includeMatches: true,
-            };
+            if (query !== "") {
+                const options = {
+                    keys: ['title', 'content', 'keywords'],
+                    threshold: 0.4,
+                    distance: 1200,
+                    location: 0,
+                    minMatchCharLength: 4,
+                    includeScore: true,
+                    includeMatches: true,
+                };
 
-            console.log("Perform Search: " +query);
-
-            // START if statement to avoid blank queries
-            //If query isn't blank, then perform the search
-            if(query != "")
-            {
-                //Build fuse object
                 const fuse = new Fuse(data, options);
                 const results = fuse.search(query);
-
-                //Get reference to html to display results
                 const resultsList = document.getElementById('results');
                 resultsList.innerHTML = '';
 
-                //reference to hmtl element to display number of results
-                const resultsCountDisplay = document.getElementById('results-counter');
+                let resultCount = 0;
 
-                //Actual counter of number of results
-                var resultCount = 0;
-                
-                //loop through results displaying each
-                results.forEach(function(result) {
+                results.forEach(result => {
                     var title = result.item.title;
-                    var content = result.item.content;
+                    var content = cleanJSONContent(result.item.content);
                     var link = result.item.link;
                     var snippet = getSnippet(content, query);
-                    var score = result.score.toFixed(2); // Get format the score
-                    var matches = result.matches; // Get matches
-                    var keywords = result.item.keywords;
 
-                    // Only output result if keywords don't contain "documentation", "archive", or "redirect"
-                    if (keywords && !keywords.some(keyword => {
-                        const lowerKeyword = keyword.toLowerCase();
-                        return ["documentation", "archive", "redirect"].includes(lowerKeyword);
-                    })) {
-                        //create and format html element
+                    if (shouldIncludeResult(result.item.keywords)) {
                         var li = document.createElement('li');
-                        var itemOutput = '<a href="..' + link + '"><h3 class="text">' + title + '</h3></a><p>' + snippet + '</p>';
-                        
-                        //if debug is true, so score and match vars
-                        if (debug === true) itemOutput += '<p class="small">Score: ' + score + " &nbsp;&nbsp;&nbsp;&nbsp;Matches: " + matches + "</p>";
+                        li.innerHTML = `<a href="..${link}"><h3 class="text">${title}</h3></a><p>${snippet}</p>`;
 
-                        //add element to the page
-                        li.innerHTML = itemOutput;
+                        if (debug) {
+                            var score = result.score.toFixed(2);
+                            var matches = result.matches;
+                            li.innerHTML += `<p class="small">Score: ${score} &nbsp;&nbsp;&nbsp;&nbsp;Matches: ${matches}</p>`;
+                        }
+
                         resultsList.appendChild(li);
-
-                        //increment resultsCount
+                        MathJax.typesetPromise([li]).catch(err => console.log('MathJax error:', err));
                         resultCount++;
                     }
                 });
 
-                //update results counter
-                if(resultCount == 0) {
-                    resultsCountDisplay.innerHTML = 'No results found.';
-                }
-                else if(resultCount == 1) {
-                    resultsCountDisplay.innerHTML = resultCount +' result found.'; 
-                }
-                else {
-                    resultsCountDisplay.innerHTML = resultCount +' results found.';
-                }
-                
-                // Select the element
-                var collapseElement = document.getElementById('results-container');
-
-                // if searchString has a value, search is coming from query string (maybe update variable name????)
-                // remove collapse class to just dispolay the results then clear the query string
-                if(searchString != null) {
-                    collapseElement.classList.remove('collapse');
-
-                    //clear the query string here
-                    if (window.history.replaceState) {
-                        const urlWithoutQuery = window.location.origin + window.location.pathname;
-                        window.history.replaceState(null, '', urlWithoutQuery);
-                    }
-
-                }
-                else {
-                    // Create a new Bootstrap Collapse instance
-                    var collapseInstance = new bootstrap.Collapse(collapseElement, {
-                        toggle: false // Prevents automatic toggle
-                    });
-
-                    // Use the show method to expand
-                    collapseInstance.show();
-                }
-                
-                document.getElementById("results-title").focus();
+                updateResultsCount(resultCount);
+                handleSearchFocus(resultCount);
             }
-            //END if to avoid blank queries
         }
 
-        //Snippet formats the text underneath the search result
         function getSnippet(content, query) {
-            // Return the first 160 characters if the query is empty
-            if (!query) return content.substring(0, 160);
-
-            // Find the index of the query in the content, case-insensitive
-            var index = content.toLowerCase().indexOf(query.toLowerCase());
-
-            // If the query is found
+            const snippetLength = 270; // Desired snippet length
+            const halfSnippetLength = snippetLength / 2;
+        
+            if (!query) return content.substring(0, snippetLength);
+        
+            const index = content.toLowerCase().indexOf(query.toLowerCase());
+        
+            // If the query is found in the content
             if (index !== -1) {
-                // Determine the start position for the snippet
-                var start = Math.max(0, index - 80);
+                let snippetStart = Math.max(0, index - halfSnippetLength);
+                let snippetEnd = Math.min(content.length, index + halfSnippetLength);
+        
+                // Adjust snippetStart if the remaining content length is less than snippetLength
+                if (snippetEnd - snippetStart < snippetLength) {
+                    if (snippetStart == 0) {
+                        snippetEnd = Math.min(content.length, snippetStart + snippetLength);
+                    } else {
+                        snippetStart = Math.max(0, snippetEnd - snippetLength);
+                    }
+                }
+        
+                // Extract and trim the snippet from content
+                let snippet = content.substring(snippetStart, snippetEnd).trim();
 
-                // Try to find the start of a sentence or a space
-                var sentenceStart = content.lastIndexOf('.', start) + 1;
-                var spaceStart = content.lastIndexOf(' ', start) + 1;
-
-                // Choose the maximum of sentenceStart or spaceStart if they are within limits
-                if (sentenceStart > start - 80) start = sentenceStart;
-                else if (spaceStart > start - 80) start = spaceStart;
-
-                // Determine the end position for the snippet
-                var end = Math.min(content.length, index + 80);
-
-                // Extract the snippet from the content
-                var snippet = content.substring(start, end).trim();
-
-                // Escape special characters in the query for regex
-                var escapedQuery = query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-
-                // Create a regex to highlight the query in the snippet
-                var regex = new RegExp('(' + escapedQuery + ')', 'gi');
-
-                // Highlight the query in the snippet
+                 // Remove \ce from the snippet
+                 snippet = snippet.replace(/\\ce/g, '');
+        
+                // Highlight the query within the snippet
+                const escapedQuery = query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+                const regex = new RegExp(`(${escapedQuery})`, 'gi');
                 snippet = snippet.replace(regex, '<span class="highlight-1">$1</span>');
-
+        
                 return snippet;
             }
-
-            // If the query is not found, return the first 160 characters
-            return content.substring(0, 160);
+        
+            // If the query is not found, return the first snippetLength characters as a fallback
+            return content.substring(0, snippetLength);
         }
 
-        //If queryString has query=something then do the search. Used to make home screen search work.
-        if(searchString != null)
-        {
-            //place searchString into input and then execute search
+        function shouldIncludeResult(keywords) {
+            return !keywords || !keywords.some(keyword => 
+                ["documentation", "archive", "redirect"].includes(keyword.toLowerCase())
+            );
+        }
+
+        function cleanJSONContent(content) {
+            return content
+                .replace(/\\\\/g, '\\') // Converts double-escaped backslashes to single
+                .replace(/\\r\\n/g, ' ') // Replaces newline with space
+                .trim();
+        }
+
+        function updateResultsCount(count) {
+            const resultsCountDisplay = document.getElementById('results-counter');
+            if (count === 0) {
+                resultsCountDisplay.textContent = 'No results found.';
+            } else {
+                resultsCountDisplay.textContent = `${count} result${count > 1 ? 's' : ''} found.`;
+            }
+        }
+
+        function handleSearchFocus(count) {
+            var collapseElement = document.getElementById('results-container');
+
+            if (searchString != null) {
+                collapseElement.classList.remove('collapse');
+                if (window.history.replaceState) {
+                    window.history.replaceState(null, '', window.location.origin + window.location.pathname);
+                }
+            } else if (count > 0) {
+                var collapseInstance = new bootstrap.Collapse(collapseElement, { toggle: false });
+                collapseInstance.show();
+                document.getElementById("results-title").focus();
+            }
+        }
+
+        if (searchString != null) {
             document.getElementById('searchInput').value = searchString;
             performSearch();
         }
 
-        // Listen for button click
         document.getElementById('searchButton').addEventListener('click', performSearch);
-
-        // Listen for enter key
         document.getElementById('searchInput').addEventListener('keypress', function(event) {
             if (event.key === 'Enter') {
                 performSearch();
             }
         });
     })
-.catch(function(error) {
-    console.error('Error fetching JSON:', error);
-});
-
-
-
+    .catch(error => console.error('Error fetching JSON:', error));

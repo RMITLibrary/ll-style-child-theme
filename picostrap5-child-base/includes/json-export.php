@@ -64,7 +64,7 @@ function export_content_to_json() {
     }
 
     // Convert to JSON
-    $json_data = json_encode($posts_data);
+    $json_data = json_encode($posts_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
     // Save to a file
     $file = fopen(ABSPATH . '/wp-content/uploads/pages.json', 'w');
