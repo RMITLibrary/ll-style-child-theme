@@ -12,6 +12,7 @@ function export_content_to_json() {
     // Query WordPress content
     $args = array(
         'post_type' => 'page',
+        'post_status' => 'publish', // Only fetch published pages
         'posts_per_page' => -1, // Get all pages
     );
 
