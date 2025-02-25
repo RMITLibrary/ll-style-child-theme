@@ -51,22 +51,10 @@
     outline: none;
 }
 
-/* #results {
 
-    li {
-        margin-top: 2.5rem;
-        overflow: hidden;
-        max-height: 12rem;
-
-        @include media-breakpoint-up(lg) {
-            margin-top: 3.5rem;
-            max-height: 8rem;
-        }
-    }
-} */
 
 #results {
-    li {
+    li.result-item {
         margin-top: 2.5rem;
         overflow: hidden;
         max-height: 14rem;
@@ -84,11 +72,20 @@
             pointer-events: none; // Ensure the overlay doesn't block interactions
         }
 
+        .breadcrumbs { 
+            display: none; 
+            margin-top: 0.5rem;
+        }
+
         @include media-breakpoint-up(lg) {
             margin-top: 3.5rem;
             max-height: 10rem;
+
+            .breadcrumbs { display: block; }
         }
     }
+
+    
 }
 
 // column layout for keywords

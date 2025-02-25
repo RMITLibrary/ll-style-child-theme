@@ -49,11 +49,13 @@ fetch(dataURL)
                     var title = result.item.title;
                     var content = cleanJSONContent(result.item.content);
                     var link = result.item.link;
+                    var breadcrumbs = getBreadcrumbs(result.item.breadcrumbs);
                     var snippet = getSnippet(content, query);
 
                     if (shouldIncludeResult(result.item.keywords)) {
                         var li = document.createElement('li');
-                        li.innerHTML = `<a href="..${link}"><h3 class="text">${title}</h3></a><p>${snippet}</p>`;
+                        li.classList.add('result-item');
+                        li.innerHTML = `<a href="..${link}"><h3 class="text">${title}</h3></a><ul class="breadcrumbs">${breadcrumbs}</ul><p>${snippet}</p>`;
 
                         if (debug) {
                             var score = result.score.toFixed(2);
@@ -70,6 +72,19 @@ fetch(dataURL)
                 updateResultsCount(resultCount);
                 handleSearchFocus(resultCount);
             }
+        }
+
+        function getBreadcrumbs(arr)
+        {
+            var breadcrumbStr = "";
+
+            //last breadcrumb matches title, so exclude
+            for(var i=0; i < arr.length-1; i++)
+            {
+                breadcrumbStr += "<li>" +arr[i]["title"] +"</li>";
+            }
+
+            return breadcrumbStr;
         }
 
         function getSnippet(content, query) {
