@@ -80,36 +80,59 @@ fetch(dataURL)
         
             const index = content.toLowerCase().indexOf(query.toLowerCase());
         
-            // If the query is found in the content
             if (index !== -1) {
                 let snippetStart = Math.max(0, index - halfSnippetLength);
                 let snippetEnd = Math.min(content.length, index + halfSnippetLength);
         
                 // Adjust snippetStart if the remaining content length is less than snippetLength
                 if (snippetEnd - snippetStart < snippetLength) {
-                    if (snippetStart == 0) {
+                    if (snippetStart === 0) {
                         snippetEnd = Math.min(content.length, snippetStart + snippetLength);
                     } else {
                         snippetStart = Math.max(0, snippetEnd - snippetLength);
                     }
                 }
         
+                // Expand to nearest whole words
+                while (snippetStart > 0 && !/\s/.test(content.charAt(snippetStart - 1))) {
+                    snippetStart--;
+                }
+                while (snippetEnd < content.length && !/\s/.test(content.charAt(snippetEnd))) {
+                    snippetEnd++;
+                }
+        
+                // Adjust for unmatched MathJax delimiters
+                const openIndex = content.lastIndexOf('\\[', snippetStart);
+                const closeIndex = content.indexOf('\\]', snippetEnd);
+        
+                if (openIndex !== -1 && (closeIndex === -1 || closeIndex > snippetEnd)) {
+                    snippetEnd = Math.min(content.length, closeIndex + 2);
+                }
+        
                 // Extract and trim the snippet from content
                 let snippet = content.substring(snippetStart, snippetEnd).trim();
-
-                 // Remove \ce from the snippet
-                 snippet = snippet.replace(/\\ce/g, '');
+        
+                // Remove \ce from the snippet
+                snippet = snippet.replace(/\\ce/g, '');
+        
+                // Add ellipses if snippet doesn't start or end at content bounds
+                if (snippetStart > 0) {
+                    snippet = "&hellip;" + snippet;
+                }
+                if (snippetEnd < content.length) {
+                    snippet += "&hellip;";
+                }
         
                 // Highlight the query within the snippet
                 const escapedQuery = query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
                 const regex = new RegExp(`(${escapedQuery})`, 'gi');
                 snippet = snippet.replace(regex, '<span class="highlight-1">$1</span>');
-        
+                
                 return snippet;
             }
         
             // If the query is not found, return the first snippetLength characters as a fallback
-            return content.substring(0, snippetLength);
+            return content.substring(0, snippetLength) + "&hellip;";
         }
 
         function shouldIncludeResult(keywords) {
