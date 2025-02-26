@@ -5,6 +5,43 @@ defined( 'ABSPATH' ) || exit;
 
 get_header();
 ?>
+<?php
+
+function createKeywordBreadcrumbs($thePost)
+{
+	$parent = get_post_parent($thePost);
+	$grandParent = get_post_parent($parent);
+	$greatGrandParent = get_post_parent($grandParent);
+	
+//	Debug code
+//	echo('<p>id: ' . $greatGrandParent->ID . ' greatGrandParent: ' . $greatGrandParent->post_name . '<br/>');
+//	echo('id: ' . $grandParent->ID . ' grandParent: '. $grandParent->post_name . '<br/>');
+//	echo('id: ' . $parent->ID . ' parent: ' . $parent->post_name . '<br/>');
+//	echo("---</p>");
+	
+	$output = '';
+
+	$output .= '<ul class="breadcrumbs">' . "\n";
+	
+	//	At one level $greatGrandParent and $parent have the same value. Due to bug?
+	//	Check that both $greatGrandParent and $grandParent have a value to solve this.
+	if($greatGrandParent->ID && $grandParent->ID) {
+		$output .= '<li>' . formatAfterTheColon(get_the_title($greatGrandParent)) . '</li>' . "\n";
+	}
+	
+	if($grandParent->ID && $parent->ID) {
+		$output .= '<li>' . formatAfterTheColon(get_the_title($grandParent)) . '</li>' . "\n";
+	}
+	
+	if($parent->ID) {
+		$output .= '<li>' . formatAfterTheColon(get_the_title($parent)) . '</li>' . "\n";
+	}
+	
+	$output .= '</ul>'  . "\n";
+	return $output;	
+}
+
+?>
   
 <div class="container" id="page-content">
     <div class="row ">
@@ -24,7 +61,7 @@ get_header();
             
             <?php if ( have_posts() ) : ?>
                 <div>
-                    <ul class="list-link-expanded">
+                    <ul class="list-link-expanded" id="keywords">
 
                     <?php while ( have_posts() ) : the_post(); 
 
@@ -34,9 +71,6 @@ get_header();
 
 
                     ?>
-                   <script>
-                        console.log("title: " + "<?php echo esc_html( get_the_title() ); ?>");
-                    </script>
                     <?php
                         
                         if ( $terms ) {
@@ -53,12 +87,13 @@ get_header();
                             continue;
                         }
                     ?>
-                        <li>
+                        <li class="result-item">
                             <h2 class="h3">
                                 <a href="<?php echo esc_url( get_permalink() ); ?>">
                                     <?php echo esc_html( get_the_title() ); ?>
                                 </a>
                             </h2>
+                            <?php echo createKeywordBreadcrumbs($post); ?>
                             <p><?php echo esc_html( get_the_excerpt() ); ?></p>
                         </li>
                     <?php endwhile; ?>

@@ -21,7 +21,7 @@ get_header();
          <!-- START home intro -->
         <div class="home-intro">
             <p class="lead">The Learning Lab provides foundation skills and study support materials for writing, assessments, referencing, health sciences, physics, chemistry, maths and much more.</p>
-            <p class="small" id="caption-text">Image by Digital Learning, RMIT Library</p>
+            <p class="small" id="caption-text">Image by <a href="https://rmit.edu.au/">RMIT</a>, licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY-NC 4.0</a>.</p>
             
             <!-- START search -->
             <div class="search-container label-side">
@@ -64,7 +64,7 @@ get_header();
             <a href="/subject-areas/" class="home-panel">
                 <img src="https://rmitlibrary.github.io/cdn/learninglab/illustration/landing/subject-support.png" alt="" />
                 <h2 class="link-large">Subject support</h2>
-                <p>Specific resources for specific subjects. Whether it's statistics or art, chemistry or nursing, subject support can help.</p>
+                <p>Specific resources for specific subjects. Whether it's maths or art, science or nursing, subject support can help.</p>
             </a>
         </div>
         <!-- END home panels -->
