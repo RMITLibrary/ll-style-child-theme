@@ -52,7 +52,7 @@ fetch(dataURL)
                     var breadcrumbs = getBreadcrumbs(result.item.breadcrumbs);
                     var snippet = getSnippet(content, query);
                     
-                    if (shouldIncludeResult(result.item.keywords)) {
+                    if (shouldIncludeResult(result.item.keywords, result.item.link)) {
                         var li = document.createElement('li');
                         li.classList.add('result-item');
                         li.innerHTML = `<a href="..${link}"><h3 class="text">${title}</h3></a>`;
@@ -156,10 +156,17 @@ fetch(dataURL)
             return content.substring(0, snippetLength) + "&hellip;";
         }
 
-        function shouldIncludeResult(keywords) {
-            return !keywords || !keywords.some(keyword => 
-                ["documentation", "archive", "redirect"].includes(keyword.toLowerCase())
+        function shouldIncludeResult(keywords, link) {
+            const excludeKeywords = ["documentation", "archive", "redirect"];
+            const excludePaths = ["/work-in-progress/"];
+        
+            const excludeByKeyword = !keywords || !keywords.some(keyword =>
+                excludeKeywords.includes(keyword.toLowerCase())
             );
+        
+            const excludeByLink = !excludePaths.some(path => link.includes(path));
+        
+            return excludeByKeyword && excludeByLink;
         }
 
         function cleanJSONContent(content) {
