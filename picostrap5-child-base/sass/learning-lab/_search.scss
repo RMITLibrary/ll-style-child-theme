@@ -53,9 +53,8 @@
 
 
 
-#results {
+#results, #keywords {
     li.result-item {
-        margin-top: 2.5rem;
         overflow: hidden;
         max-height: 14rem;
         position: relative; // Make sure the li has positioning context
@@ -67,7 +66,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            height: 4rem; // Adjust this height to control the fade length
+            height: 2.5rem; // Adjust this height to control the fade length
             background: linear-gradient(to bottom, transparent, $body-bg); // Set your background color here
             pointer-events: none; // Ensure the overlay doesn't block interactions
         }
@@ -78,14 +77,43 @@
         }
 
         @include media-breakpoint-up(lg) {
-            margin-top: 3.5rem;
-            max-height: 10rem;
+            max-height: 11rem;
 
-            .breadcrumbs { display: block; }
+            .breadcrumbs { 
+                display: block; 
+            
+                li:first-child { padding: 0; }
+	
+                li {
+                    padding-left: 0.5rem;
+                }
+                
+                li::after {
+                    content: '/';
+                    padding-left: 0.5rem;
+                }
+                
+                li:last-child::after { 
+                    content: none;
+                    padding: 0;
+                }
+            }
         }
-    }
+    }   
+}
 
-    
+#keywords {
+    li.result-item {
+
+        @include media-breakpoint-up(lg) {
+
+            .breadcrumbs { 	
+                li {
+                    padding-left: 0.25rem;
+                }
+            }
+        }
+    }   
 }
 
 // column layout for keywords

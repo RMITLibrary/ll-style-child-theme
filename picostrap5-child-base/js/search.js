@@ -51,18 +51,24 @@ fetch(dataURL)
                     var link = result.item.link;
                     var breadcrumbs = getBreadcrumbs(result.item.breadcrumbs);
                     var snippet = getSnippet(content, query);
-
+                    
                     if (shouldIncludeResult(result.item.keywords)) {
                         var li = document.createElement('li');
                         li.classList.add('result-item');
-                        li.innerHTML = `<a href="..${link}"><h3 class="text">${title}</h3></a><ul class="breadcrumbs">${breadcrumbs}</ul><p>${snippet}</p>`;
-
+                        li.innerHTML = `<a href="..${link}"><h3 class="text">${title}</h3></a>`;
+                        
+                        if (breadcrumbs) {
+                            li.innerHTML += `<ul class="breadcrumbs">${breadcrumbs}</ul>`;
+                        }
+                        
+                        li.innerHTML += `<p>${snippet}</p>`;
+                        
                         if (debug) {
                             var score = result.score.toFixed(2);
                             var matches = result.matches;
                             li.innerHTML += `<p class="small">Score: ${score} &nbsp;&nbsp;&nbsp;&nbsp;Matches: ${matches}</p>`;
                         }
-
+                
                         resultsList.appendChild(li);
                         MathJax.typesetPromise([li]).catch(err => console.log('MathJax error:', err));
                         resultCount++;
