@@ -12,6 +12,7 @@ function export_content_to_json() {
     // Query WordPress content
     $args = array(
         'post_type' => 'page',
+        'post_status' => 'publish', // Only fetch published pages
         'posts_per_page' => -1, // Get all pages
     );
 
@@ -49,6 +50,8 @@ function export_content_to_json() {
                 }
             }
 
+            $breadcrumbs = get_breadcrumbs(get_the_ID());
+
             $posts_data[] = array(
                 'id' => get_the_ID(),
                 'title' => get_the_title(),
@@ -57,18 +60,52 @@ function export_content_to_json() {
                 'date' => get_the_date(),
                 'link' => wp_parse_url(get_permalink(), PHP_URL_PATH), // Extract the path from the URL
                 'keywords' => $keywords,
+                'breadcrumbs' => $breadcrumbs
             );
         }
         wp_reset_postdata();
     }
 
     // Convert to JSON
-    $json_data = json_encode($posts_data);
+    $json_data = json_encode($posts_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
     // Save to a file
     $file = fopen(ABSPATH . '/wp-content/uploads/pages.json', 'w');
     fwrite($file, $json_data);
     fclose($file);
+}
+
+//-----------------------------
+//	get_breadcrumbs
+//	Generates a breadcrumb trail for a given post/page
+
+//	Called from:	export_content_to_json() - Custom export function
+
+//	Returns:		Array of breadcrumb items with title and link
+
+//	Usage:			Used to add breadcrumb data to JSON export
+
+function get_breadcrumbs($post_id) {
+    $breadcrumbs = array();
+    $parent_id = wp_get_post_parent_id($post_id);
+
+    // Traverse up to get all parent pages
+    while ($parent_id) {
+        $page = get_post($parent_id);
+        array_unshift($breadcrumbs, array(
+            'title' => get_the_title($page->ID),
+            'link' => get_permalink($page->ID)
+        ));
+        $parent_id = wp_get_post_parent_id($page->ID);
+    }
+
+    // Add the current page
+    $breadcrumbs[] = array(
+        'title' => get_the_title($post_id),
+        'link' => get_permalink($post_id)
+    );
+
+    return $breadcrumbs;
 }
 
 //-----------------------------

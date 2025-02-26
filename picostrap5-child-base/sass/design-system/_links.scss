@@ -160,7 +160,7 @@ p a:visited:hover {
 	@include do-space(margin-top, lg);
 	
 	h5 {
-		margin-top: 0;
+		margin-top: 0; 
 	}
 	
 	ul {
@@ -221,6 +221,12 @@ p a:visited:hover {
     
     .link-large::after {
         @include carat-dark;
+    }
+
+    .list-link-expanded {       
+        a:after { 
+            @include carat-dark;
+        }
     }
     
 	.link-list {

@@ -13,7 +13,6 @@ defined( 'ABSPATH' ) || exit;
 get_header();
 ?>
 <div class="container" id="page-content">
-
 <!-- FUSE script --> 
 <script src="https://cdn.jsdelivr.net/npm/fuse.js"></script>
 <div class="col-xl-8">
@@ -176,5 +175,5 @@ if (!empty($keywords) && !is_wp_error($keywords)) {
 <!-- END col-xs-12 -->
 </div>
 
-<script type="text/javascript" src="/wp-content/themes/picostrap5-child-base/js/search.js?v=1.0.6"></script>
+<script type="text/javascript" src="/wp-content/themes/picostrap5-child-base/js/search.js?v=1.3.7"></script>
 <?php get_footer();
