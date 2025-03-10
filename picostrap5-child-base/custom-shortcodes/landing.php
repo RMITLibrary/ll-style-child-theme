@@ -110,12 +110,102 @@ function landing_list_att($atts) {
     return $output;
 }
 
+
+//-----------------------------
+//	home_panel_atts
+
+//	Creates a home panel, with an image, title, escription and a link
+
+//	args:		$atts - attributes as follows:
+
+//  $atts:      link        	Url where the panel links to
+//				title       	Title of the banner
+//              img         	Absolute path to image
+//              description		A short description
+
+//  shortcode:  [home-panel]
+
+//	usage:			
+//  [home-panel title='Numbers and measurement' link='/arithmetic/' img='path.to.img']<p>Description</p>[/home-panel]
+
+//  Expected output
+// <a href="/arithmetic/" class="home-panel">
+//     <img src="path.to.img" alt="">
+//     <h2 class="link-large">Numbers and measurement</h2>
+//     <p>Description</p>
+// </a>
+
+function home_panel_atts($atts, $content = null) {
+    // Extract attributes passed to the shortcode
+    $atts = shortcode_atts(
+        array(
+            'link' => '#',
+            'title' => '',
+            'img' => '',
+        ), 
+        $atts, 
+        'home-panel'
+    );
+
+    // Determine the class based on whether an image is provided
+    $class = 'home-panel';
+    if (empty($atts['img'])) {
+        $class = 'home-panel-no-img';
+    }
+
+    // Build the HTML output for a single home panel
+    $output = '<a href="' . esc_url($atts['link']) . '" class="' . esc_attr($class) . '">';
+    if (!empty($atts['img'])) {
+        $output .= '<img src="' . esc_url($atts['img']) . '" alt="">';
+    }
+    $output .= '<h2 class="link-large">' . esc_html($atts['title']) . '</h2>';
+    $output .= '<p>' . do_shortcode($content) . '</p>';
+    $output .= '</a>';
+    
+    return $output;
+}
+
+
+
+//-----------------------------
+//	home_panel_container_atts
+
+//	Creates a home panel container, to hold panels
+
+//	args:		$atts
+//  shortcode:  [home-panel-container]
+
+//	usage:			
+//  [home-panel-container]
+//	... list of [home-panel] shortcodes
+//  [/home-panel-container]
+
+//  Expected output
+// <div class="home-panel-container">
+// ..Series of home-panels
+// </div>
+
+function home_panel_container_atts($atts, $content = null) {
+    // Build the HTML output for the container
+    $output = '<div class="home-panel-container">';
+    $output .= do_shortcode($content);
+    $output .= '</div>';
+
+    return $output;
+}
+
+
 //add code to list (used in the_content_filter)
 add_shortcode_to_list("landing-banner");
 add_shortcode_to_list("landing-list");
+add_shortcode_to_list("home-panel");
+add_shortcode_to_list("home-panel-container");
 
 //add code to wordpress itself
 add_shortcode('landing-banner', 'landing_banner_att');
 add_shortcode('landing-list', 'landing_list_att');
+
+add_shortcode('home-panel', 'home_panel_atts');
+add_shortcode('home-panel-container', 'home_panel_container_atts');
 
 ?>

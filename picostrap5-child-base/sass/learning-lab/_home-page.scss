@@ -125,7 +125,7 @@
     
     margin-top: 3rem;
     
-    .home-panel {
+    .home-panel, .home-panel-no-img {
         @include link-feature;
         display: block;
         
@@ -157,7 +157,7 @@
         }
     }
 	
-	.home-panel:hover {
+	.home-panel:hover, .home-panel-no-img:hover {
         h2 {
            @include link-feature-hover;
         }
@@ -173,7 +173,7 @@
         flex-wrap: wrap;       
         gap: 1.5rem;
         
-        .home-panel {
+        .home-panel, .home-panel-no-img {
             width: 13.5rem;
             flex-shrink: 0;
             
@@ -191,7 +191,7 @@
         gap: 3rem 1.5rem;
         margin-top: 4rem;
         
-        .home-panel {
+        .home-panel, .home-panel-no-img {
             width: 18.5rem;
             
             h2 {
@@ -203,7 +203,7 @@
     }
     
     @include media-breakpoint-up(xl) {       
-        .home-panel {
+        .home-panel, .home-panel-no-img {
             width: 22.25rem;
             
             p {
@@ -213,13 +213,23 @@
     }
     
     @include media-breakpoint-up(xxl) {         
-        .home-panel {
+        .home-panel, .home-panel-no-img {
             width: 26rem;
             
             h2 {
                 font-size: 1.75rem;
             }
         }
+    }
+
+    .home-panel-no-img {
+        
+        h2 {
+            margin-top: 2rem;
+        }
+
+        border-radius: 0 0 0.5rem 0.5rem;
+        border-top: 0.25rem solid $accent-color;
     }
     
 }
@@ -237,13 +247,13 @@
 		}
 	}
     
-    .home-panel {
+    .home-panel, .home-panel-no-img {
         h2 {
            color: $link-color-dark;
         }
     }
     
-    .home-panel:hover {
+    .home-panel:hover, .home-panel-no-img:hover {
         h2 {
             color: $link-color-hover-dark;
         }
@@ -251,5 +261,9 @@
         p {
             color: $link-color-dark;
         }
+    }
+
+    .home-panel-no-img {
+        border-top: 0.25rem solid $accent-color-dark;
     }
 }
