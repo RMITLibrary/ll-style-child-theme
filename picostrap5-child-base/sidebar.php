@@ -140,6 +140,28 @@ function outputChildNav($parent_id, $thePost, $thePostParent = null)
 			// Output the title and link to the page
             
             $post_slug = get_post_field('post_name', get_the_ID());
+
+			// Retrieve the value of the 'nav-divider' select field
+			$nav_divider = get_field('nav-divider');
+
+			// Check if $nav_divider is set and not equal to 'Select'
+			if ($nav_divider && $nav_divider !== 'Select a divider label') {
+
+				// Check if the selected value is 'Other'
+				if ($nav_divider === 'Other') {
+					// Retrieve the value from the 'nav-divider-other' text field
+					$nav_divider_other = get_field('nav-divider-other');
+
+					// If 'nav-divider-other' has a value, output it as a list item
+					if ($nav_divider_other) {
+						echo '<li class="nav-divider">' . esc_html($nav_divider_other) . '</li>';
+					}
+
+				} else {
+					// For values other than 'Other', output the value of 'nav-divider' as a list item
+					echo '<li class="nav-divider">' . esc_html($nav_divider) . '</li>';
+				}
+			}
             
 			if($thePost->ID == get_the_ID()) {
                 // If the post ID matches with the current page, output the selected code and then output the child nav if there are children (recursively)
