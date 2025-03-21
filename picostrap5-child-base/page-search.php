@@ -141,16 +141,26 @@ if (!empty($keywords) && !is_wp_error($keywords)) {
             $posts = get_posts($query_args);
             $has_valid_post = false;
 
-            // Check if there's at least one post without the "Archive" term
+            // Check if there's at least one post without the "Archive" term and "work-in-progress" in the URL
             foreach ($posts as $post_id) {
                 $post_terms = get_the_terms($post_id, 'keyword');
+                $has_archive_term = false;
+                
                 if ($post_terms) {
                     foreach ($post_terms as $term) {
                         if ($term->name == "Archive") {
-                            continue 2; // Skip this post if it has the "Archive" term
+                            $has_archive_term = true;
+                            break; // Break the loop if the "Archive" term is found
                         }
                     }
                 }
+                
+                // Check if the post URL contains "work-in-progress"
+                $post_url = get_permalink($post_id);
+                if ($has_archive_term || stripos($post_url, 'work-in-progress') !== false) {
+                    continue; // Skip this post if it has the "Archive" term or "work-in-progress" in the URL
+                }
+                
                 $has_valid_post = true;
                 break; // Exit loop if a valid post is found
             }
