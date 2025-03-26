@@ -47,20 +47,7 @@
     height: 26px;
 }
 
-//Scrolls the content wrapped within horizontally. Useful for wide content (equations, diagrams)
-.hscroll {
-	overflow-x: auto; 
-	-webkit-overflow-scrolling: touch;
-	//width: calc(100% + 0.75rem);	//push the content right to the edge
 
-	// background: linear-gradient(to right, transparent calc(100% - 2rem), $body-bg);
-	// -webkit-mask-image: linear-gradient(to right, black calc(100% - 2rem), transparent);
-	// mask-image: linear-gradient(to right, black calc(100% - 2rem), transparent);
-	
-	// &.on-backing {
-	// 	background: linear-gradient(to right, transparent calc(100% - 2rem), $underlay-grey);
-	// }
-}
 
 // Custom classes to set minimum widths for elements.
 // Useful when used with horizontal scrolling for responsive design (ie hscroll class above).

@@ -40,9 +40,9 @@ function ll_grid_att($atts, $content = null) {
 
     // Apply optional class for 3 or 4 columns
     if ($a['columns'] == '3') {
-        $tag .= ' my-grid-3up';
+        $tag .= ' my-grid-3up ';
     } elseif ($a['columns'] == '4') {
-        $tag .= ' my-grid-4up';
+        $tag .= ' my-grid-4up ';
     }
 
     // Apply optional class for large gap
