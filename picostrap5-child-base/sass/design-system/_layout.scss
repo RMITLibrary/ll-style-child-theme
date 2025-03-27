@@ -388,15 +388,15 @@ $img-width-sm: 18.5rem;     //296px*/
 }
 
 .grid-width- {
-	&lg {
+	&md {
 		max-width: $img-width-lg;
 	}
 
-	&md {
+	&sm {
 		max-width: $img-width-md;
 	}
 
-	&sm {
+	&xs {
 		max-width: $img-width-sm;
 	}
 }
@@ -405,6 +405,12 @@ $img-width-sm: 18.5rem;     //296px*/
 .hscroll {
 	overflow-x: auto; 
 	-webkit-overflow-scrolling: touch;
+
+	@include do-space(margin-top, sm); 
+    @include do-space(margin-bottom, sm);
+
+	padding-bottom: 1rem;
+	
 	//width: calc(100% + 0.75rem);	//push the content right to the edge
 
 	// background: linear-gradient(to right, transparent calc(100% - 2rem), $body-bg);
@@ -417,8 +423,15 @@ $img-width-sm: 18.5rem;     //296px*/
 
 	//style to alter grid behaviour within a hscroll element
 	//two by two grid by default in a horizontal scroll panel
+
+	* {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+
 	.my-grid {
 		grid-template-columns: 1fr 1fr;
+		width: 856px;
 	}
 
 	.my-grid-3up {
@@ -430,16 +443,28 @@ $img-width-sm: 18.5rem;     //296px*/
 	}
 
 	.grid-width- {
-		&lg {
-			width: $img-width-lg;
+		&xs {
+			width: $width-xs;
 		}
-	
-		&md {
-			width: $img-width-md;
-		}
-	
+		
 		&sm {
-			width: $img-width-sm;
+			width: $width-sm;
+		}
+		
+		&md {
+			width: $width-md;
+		}
+		
+		&lg {
+			width: $width-lg;
+		}
+		
+		&xl {
+			width: $width-xl;
+		}
+		
+		&xxl {
+			width: $width-xxl;
 		}
 	}
 }

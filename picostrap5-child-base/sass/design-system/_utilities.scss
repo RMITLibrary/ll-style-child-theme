@@ -46,16 +46,3 @@
     width: 26px;
     height: 26px;
 }
-
-
-
-// Custom classes to set minimum widths for elements.
-// Useful when used with horizontal scrolling for responsive design (ie hscroll class above).
-// Based on Bootstrap's responsive breakpoints for consistency.
-
-.min-width-xs { min-width: 20rem; }  // Equivalent to 320px
-.min-width-sm { min-width: 36rem; }  // Equivalent to 576px
-.min-width-md { min-width: 48rem; }  // Equivalent to 768px
-.min-width-lg { min-width: 62rem; }  // Equivalent to 992px
-.min-width-xl { min-width: 75rem; }  // Equivalent to 1200px
-.min-width-xxl { min-width: 125rem; } // Custom size, equivalent to 2000px
