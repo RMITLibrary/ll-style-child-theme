@@ -105,6 +105,10 @@
         color: $white;
         background-color: $rmit-blue;
     }
+
+    .accordion-button:not(.collapsed) {
+        box-shadow: 0;
+    }
     
     .accordion-button::before {
         @include carat-white;

@@ -12,28 +12,44 @@
 	}
 }
 
-#context-menu {
-    .accordion-body  {	
-        a {
-            color: $white;
-            text-decoration: none;
-            @include default-focus ('dark');
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        ul {
-            padding-left: 2.5rem;
-            margin-bottom: 0 !important;
-        }
-        li {
-            list-style-type: none;
-            margin-bottom: 1rem;
-        }
-        @include media-breakpoint-up(md) { 
-            ul {
-                column-count: 2;
+.top-navigation {
+    .left-nav {
+        
+        h2 {
+            //hide when screens get really small. This covers text zoom to 150 on iOS
+            //width may need to change depending on length of text
+            @media (max-width: 290px) {
+                display: none;
             }
-        }
+        }  
     }
+}
+
+#context-menu {
+	.accordion-body  {	
+		a {
+			color: $white;
+			text-decoration: none;
+		}
+
+		a:hover {
+			text-decoration: underline;
+		}
+
+		ul {
+			padding-left: 2.5rem;
+			margin-bottom: 0 !important;
+		}
+
+		li {
+			list-style-type: none;
+			margin-bottom: 1rem;
+		}
+
+		@include media-breakpoint-up(md) { 
+			ul {
+				column-count: 2;
+			}
+		}
+	}
 }
