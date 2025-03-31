@@ -40,9 +40,9 @@ function ll_grid_att($atts, $content = null) {
 
     // Apply optional class for 3 or 4 columns
     if ($a['columns'] == '3') {
-        $tag .= ' my-grid-3up';
+        $tag .= ' my-grid-3up ';
     } elseif ($a['columns'] == '4') {
-        $tag .= ' my-grid-4up';
+        $tag .= ' my-grid-4up ';
     }
 
     // Apply optional class for large gap
@@ -50,13 +50,20 @@ function ll_grid_att($atts, $content = null) {
         $tag .= ' gap-lg';
     }
 
-    // Apply optional class for width classes
-    if ($a['size'] == 'lg') {
-        $tag .= ' grid-width-lg ';
-    } elseif ($a['size'] == 'md') {
+    // Apply optional class for width classes. Note only sm, md and lg work normally
+    //other sizes can be used for grids within an hscroll
+    if ($a['size'] == 'md') {
         $tag .= ' grid-width-md ';
     } elseif ($a['size'] == 'sm') {
         $tag .= ' grid-width-sm ';
+    } elseif ($a['size'] == 'xs') {
+        $tag .= ' grid-width-xs ';
+    } elseif ($a['size'] == 'lg') {
+        $tag .= ' grid-width-lg ';
+    } elseif ($a['size'] == 'xl') {
+        $tag .= ' grid-width-xl ';
+    } elseif ($a['size'] == 'xxl') {
+        $tag .= ' grid-width-xxl ';
     }
 
     //if there's anything in clesses, add it (don't document this, for web devs only)

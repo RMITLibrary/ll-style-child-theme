@@ -388,15 +388,83 @@ $img-width-sm: 18.5rem;     //296px*/
 }
 
 .grid-width- {
-	&lg {
+	&md {
 		max-width: $img-width-lg;
 	}
 
-	&md {
+	&sm {
 		max-width: $img-width-md;
 	}
 
-	&sm {
+	&xs {
 		max-width: $img-width-sm;
+	}
+}
+
+//Scrolls the content wrapped within horizontally. Useful for wide content (equations, diagrams)
+.hscroll {
+	overflow-x: auto; 
+	-webkit-overflow-scrolling: touch;
+
+	@include do-space(margin-top, sm); 
+    @include do-space(margin-bottom, sm);
+
+	padding-bottom: 1rem;
+	
+	//width: calc(100% + 0.75rem);	//push the content right to the edge
+
+	// background: linear-gradient(to right, transparent calc(100% - 2rem), $body-bg);
+	// -webkit-mask-image: linear-gradient(to right, black calc(100% - 2rem), transparent);
+	// mask-image: linear-gradient(to right, black calc(100% - 2rem), transparent);
+	
+	// &.on-backing {
+	// 	background: linear-gradient(to right, transparent calc(100% - 2rem), $underlay-grey);
+	// }
+
+	//style to alter grid behaviour within a hscroll element
+	//two by two grid by default in a horizontal scroll panel
+
+	* {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+
+	.my-grid {
+		grid-template-columns: 1fr 1fr;
+		width: 856px;
+	}
+
+	.my-grid-3up {
+			grid-template-columns: 1fr 1fr 1fr; 
+	}
+	
+	.my-grid-4up {
+		grid-template-columns: 1fr 1fr 1fr 1fr; 
+	}
+
+	.grid-width- {
+		&xs {
+			width: $width-xs;
+		}
+		
+		&sm {
+			width: $width-sm;
+		}
+		
+		&md {
+			width: $width-md;
+		}
+		
+		&lg {
+			width: $width-lg;
+		}
+		
+		&xl {
+			width: $width-xl;
+		}
+		
+		&xxl {
+			width: $width-xxl;
+		}
 	}
 }
