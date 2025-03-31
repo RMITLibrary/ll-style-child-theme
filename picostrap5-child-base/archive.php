@@ -82,8 +82,8 @@ function createKeywordBreadcrumbs($thePost)
                             }
                         }
 
-                        // Skip the post if it has a term with the keyword "Archive"
-                        if ( $has_archive_term ) {
+                        // Skip the post if it has a term with the keyword "Archive" or 'work-in-progres' in the URL
+                        if ( $has_archive_term || stripos(get_permalink(), 'work-in-progress') !== false ) {
                             continue;
                         }
                     ?>

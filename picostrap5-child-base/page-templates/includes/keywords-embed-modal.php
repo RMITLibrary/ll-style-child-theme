@@ -8,27 +8,28 @@ $llcategory = get_field("field_65275ce3c7e36");
 
 
 <!-- keywords echo - https://www.advancedcustomfields.com/resources/taxonomy/ -->      
-<?php if ($llkeywords ){ ?>
 
-<?php 
-$terms = get_field('field_6527440d6f9a2');
-if( $terms ): ?>
+
 <hr class="margin-top-xl">
 
 <div class="keyword-embed-contain">
     <div class="keywords">
+	<?php 
+$terms = get_field('field_6527440d6f9a2');
+if( $terms ): ?>
         <h2 class="h5">Keywords</h2>
         <ul>
         <?php foreach( $terms as $term ): ?>
             <li><a href="<?php echo esc_url( get_term_link($term)); ?>"><?php echo esc_html($term->name); ?></a></li>  
         <?php endforeach; ?>
         </ul>
+<?php endif; ?> 
     </div>
     <button class="btn-embed" type="button" data-bs-toggle="modal" data-bs-target="#embedModal">Embed this page</button>
 </div>
-<?php endif; ?> 
+
 <!-- keywords echo end -->
-<?php } ?>
+
 
 <!-- START embed modal -->
 <div class="modal fade" id="embedModal" tabindex="-1" aria-labelledby="embedModalLabel" aria-hidden="true">
