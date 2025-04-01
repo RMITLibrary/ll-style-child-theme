@@ -195,6 +195,67 @@ function home_panel_container_atts($atts, $content = null) {
 }
 
 
+//-----------------------------
+//	display_landing_columns
+
+function display_landing_columns() {
+    ob_start(); // Start output buffering
+
+    // Get the ID of the current page
+    $current_page_id = get_the_ID();
+
+    // Get the children of the current page
+    $child_pages = get_pages(array(
+        'child_of' => $current_page_id,
+        'sort_column' => 'menu_order'
+    ));
+
+    echo '<nav class="landing-column-container">';
+    
+    foreach ($child_pages as $child_page) {
+        // Check if the child has the 'nav divider' template, output the divider value
+        if (get_page_template_slug($child_page->ID) == 'page-templates/nav-divider.php') {
+            $nav_divider_name = get_field('nav-divider', $child_page->ID);
+            if($nav_divider_name === 'Other') {
+                $nav_divider_name = get_field('nav-divider-other', $child_page->ID);
+            }
+            echo '<div class="landing-column">';
+            echo '<div class="landing-column-inner divider">';
+            echo '<h2>' . esc_html($nav_divider_name) . '</h2>';
+        }
+
+        echo '<h3>' . esc_html($child_page->post_title) . '</h3>';
+        echo '<ul class="link-list">';
+
+        // Get grandchildren of the current child page
+        $grandchild_pages = get_pages(array(
+            'child_of' => $child_page->ID,
+            'sort_column' => 'menu_order'
+        ));
+
+        foreach ($grandchild_pages as $grandchild_page) {
+            echo '<li><a href="' . esc_url(get_permalink($grandchild_page->ID)) . '">' . esc_html($grandchild_page->post_title) . '</a></li>';
+        }
+        
+        echo '</ul>';
+
+        if (get_page_template_slug($child_page->ID) == 'template-nav-divider.php') {
+            echo '</div>'; // Close landing-column-inner
+            echo '</div>'; // Close landing-column
+        }
+    }
+
+    echo '</nav>';
+
+    return ob_get_clean(); // Return the buffered content
+}
+
+// Register the shortcode
+add_shortcode('landing-columns', 'display_landing_columns');
+
+
+
+
 //add code to list (used in the_content_filter)
 add_shortcode_to_list("landing-banner");
 add_shortcode_to_list("landing-list");
