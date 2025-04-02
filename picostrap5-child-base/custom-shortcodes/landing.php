@@ -212,34 +212,65 @@ function display_landing_columns() {
 
     echo '<nav class="landing-column-container">';
     
-    foreach ($child_pages as $child_page) {
-        // Check if the child has the 'nav divider' template, output the divider value
-        if (get_page_template_slug($child_page->ID) == 'page-templates/nav-divider.php') {
-            $nav_divider_name = get_field('nav-divider', $child_page->ID);
-            if($nav_divider_name === 'Other') {
-                $nav_divider_name = get_field('nav-divider-other', $child_page->ID);
-            }
-            echo '<div class="landing-column">';
-            echo '<div class="landing-column-inner divider">';
-            echo '<h2>' . esc_html($nav_divider_name) . '</h2>';
-        }
+    $column_tag = '<div class="landing-column">' . "\n" . '<div class="landing-column-inner divider">';
 
-        echo '<h3>' . esc_html($child_page->post_title) . '</h3>';
-        echo '<ul class="link-list">';
+    $end_list_tag = '';
+
+    foreach ($child_pages as $key => $child_page) {
 
         // Get grandchildren of the current child page
         $grandchild_pages = get_pages(array(
             'child_of' => $child_page->ID,
             'sort_column' => 'menu_order'
         ));
+        
+        //if nav divider template is present, output divider name
+        if (get_page_template_slug($child_page->ID) == 'page-templates/nav-divider.php') {
 
-        foreach ($grandchild_pages as $grandchild_page) {
-            echo '<li><a href="' . esc_url(get_permalink($grandchild_page->ID)) . '">' . esc_html($grandchild_page->post_title) . '</a></li>';
+            $nav_divider_name = get_field('nav-divider', $child_page->ID);
+            if($nav_divider_name === 'Other') {
+                $nav_divider_name = get_field('nav-divider-other', $child_page->ID);
+            }
+
+            echo $column_tag;
+
+            //update column tag to close of previous column divs
+            $column_tag = '</div>' . "\n". '</div>' . "\n" . '<div class="landing-column">' . "\n" . '<div class="landing-column-inner divider">';
+
+            echo '<h2>' . esc_html($nav_divider_name) . '</h2>';
+
+            //if only child pages, start the list
+            if (empty($grandchild_pages)) {
+                echo '<ul class="link-list">';
+            }
+            
+            $end_list_tag = '';
         }
         
-        echo '</ul>';
 
-        if (get_page_template_slug($child_page->ID) == 'template-nav-divider.php') {
+        //If there are grandchildren
+        if (!empty($grandchild_pages)) {
+            //close the previous list if it exists
+            echo $end_list_tag;
+            echo '<h3>' . esc_html($child_page->post_title) . '</h3>';
+            echo '<ul class="link-list">';  
+
+            //set var to close list tag, required if we have more than one grandchild list
+            $end_list_tag = '</ul>';
+        }
+        else {
+            //Wordpress pumps out a link regardless of child or grandchild. Thanks wordpress
+            echo '<li><a href="' . esc_url(get_permalink($child_page->ID)) . '">' . esc_html($child_page->post_title) . '</a></li>';
+        }
+        
+        // Check if this is the last element
+        if ($key === array_key_last($child_pages)) {
+
+            //if only child pages, end the list
+            if (empty($grandchild_pages)) {
+                echo '</ul>';
+            }
+
             echo '</div>'; // Close landing-column-inner
             echo '</div>'; // Close landing-column
         }
