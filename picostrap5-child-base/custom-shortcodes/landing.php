@@ -214,6 +214,7 @@ function display_landing_columns() {
     
     $column_tag = '<div class="landing-column">' . "\n" . '<div class="landing-column-inner divider">';
 
+    //used to close lists
     $end_list_tag = '';
 
     foreach ($child_pages as $key => $child_page) {
@@ -281,11 +282,6 @@ function display_landing_columns() {
     return ob_get_clean(); // Return the buffered content
 }
 
-// Register the shortcode
-add_shortcode('landing-columns', 'display_landing_columns');
-
-
-
 
 //add code to list (used in the_content_filter)
 add_shortcode_to_list("landing-banner");
@@ -299,5 +295,6 @@ add_shortcode('landing-list', 'landing_list_att');
 
 add_shortcode('home-panel', 'home_panel_atts');
 add_shortcode('home-panel-container', 'home_panel_container_atts');
+add_shortcode('landing-columns', 'display_landing_columns');
 
 ?>
