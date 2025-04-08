@@ -14,13 +14,22 @@
 //-------------------------------------------
 
 // Disable WordPress's canonical redirect feature
+// This prevents WordPress from automatically redirecting URLs to their canonical versions.
 remove_filter('template_redirect', 'redirect_canonical');
-// Prevent any redirect from happening by returning false for the source URL
+
+// Prevent the Redirection plugin from performing any redirects by returning false for the source URL.
+// This effectively disables the plugin's redirect functionality for source URLs.
 add_filter('redirection_url_source', '__return_false');
 
-// Prevent any redirect from happening by returning false for the target URL
+// Prevent the Redirection plugin from performing any redirects by returning false for the target URL.
+// This effectively disables the plugin's redirect functionality for target URLs.
 add_filter('redirection_url_target', '__return_false');
 
+// Disable logging of 404 errors by the Redirection plugin.
+// This prevents the plugin from recording 404 errors in its logs.
+add_filter('redirection_log_404', function ($log) {
+  return false;
+}, 1);
 
 
 function write_redirects_js_file()
