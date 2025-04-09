@@ -186,8 +186,19 @@ function home_panel_atts($atts, $content = null) {
 // </div>
 
 function home_panel_container_atts($atts, $content = null) {
+
+    $default = array(
+        '4-column' => ''
+    );
+    $a = shortcode_atts($default, $atts);
+    
     // Build the HTML output for the container
-    $output = '<div class="home-panel-container">';
+    $output = '<div class="home-panel-container">' . "\n";
+
+    if($a['4-column'] == 'true') {
+		$output =  '<div class="home-panel-container panel-4up">' . "\n";
+	}
+    
     $output .= do_shortcode($content);
     $output .= '</div>';
 
