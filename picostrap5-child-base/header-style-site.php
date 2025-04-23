@@ -69,9 +69,9 @@ defined('ABSPATH') || exit;
     <!-- END Additional meta tags not covered by wp_head -->
 
     <!-- START print styles -->
-    <link rel='stylesheet' href='/print.css' media='print' />
+    <link rel='stylesheet' href='/wp-content/themes/picostrap5-child-base/print.css' media='print' />
 
-    
+
     <!-- START Additional scripts for tracking -->
 
     <!-- Microsoft Clarity - does hotspot tracking of pages -->
