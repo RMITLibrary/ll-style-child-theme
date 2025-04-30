@@ -46,6 +46,14 @@ ul.breadcrumbs li:last-child::before {
 }
 /* END accordions */
 
+/* START floated images */
+.float-right {
+    float: right;
+    margin: .5rem 0 1rem 2rem;
+    width: 18.5rem
+}
+/* END floated images */
+
 /* START footers */
 #additional-info, .ask-container, footer  {
     display: none;
