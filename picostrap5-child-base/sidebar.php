@@ -140,6 +140,8 @@ function outputChildNav($parent_id, $thePost, $thePostParent = null)
 			// Output the title and link to the page
             
             $post_slug = get_post_field('post_name', get_the_ID());
+			
+			$post_url = get_permalink(get_the_ID());
 
 			// Retrieve the value of the 'nav-divider' select field
 			$nav_divider = get_field('nav-divider');
@@ -167,13 +169,13 @@ function outputChildNav($parent_id, $thePost, $thePostParent = null)
                 // If the post ID matches with the current page, output the selected code and then output the child nav if there are children (recursively)
 				// This only outputs the children of the current page and not the children of the current page siblings
 				// If the title has a colon, implement the formatAfterTheColon() function to shorten the title
-                echo '<li><a href="/' . $post_slug . '" class="selected"  aria-current="page">' . formatAfterTheColon(get_the_title()) . '</a>';
+                echo '<li><a href="' . $post_url . '" class="selected"  aria-current="page">' . formatAfterTheColon(get_the_title()) . '</a>';
 				outputChildNav($thePost->ID, $thePost);
 			}
 			else {
                 // Otherwise, output the link
 				// If the title has a colon after the first part, implement the formatAfterTheColon() function (in functions.php) to remove the first part and shorten the title
-                echo '<li><a href="/' . $post_slug . '">' . formatAfterTheColon(get_the_title()) . '</a>';
+                echo '<li><a href="' . $post_url . '">' . formatAfterTheColon(get_the_title()) . '</a>';
                 // If thePostParent->ID exists, we are in a subpage.
 				// If thePostParent->ID matches the loop item, do children pages (recursively)
 				// This only outputs the siblings of the current page and not the children of the current page
@@ -203,13 +205,15 @@ function doNavHeading($myPost, $tag, $selected = null)
 	// Set the title and slug for the navigation item
 	$title = get_the_title($myPost);
 	$slug = $myPost->post_name;
+
+	$post_url = get_permalink($myPost->ID);
     
 	// If the item ins selected, set the class to "selected"
 	if($selected == true) {
 		$output .= '<' . $tag . ' class="selected">' . $title . '</' . $tag . '>';
 	}
 	else {
-		$output .= '<' . $tag . '><a href="/' . $slug . '">' . $title . '</a></' . $tag . '>';
+		$output .= '<' . $tag . '><a href="' . $post_url . '">' . $title . '</a></' . $tag . '>';
 	}	
 		
 	return $output;
