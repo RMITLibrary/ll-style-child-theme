@@ -15,7 +15,7 @@
 
 // Disable WordPress's canonical redirect feature
 // This prevents WordPress from automatically redirecting URLs to their canonical versions.
-remove_filter('template_redirect', 'redirect_canonical');
+//remove_filter('template_redirect', 'redirect_canonical'); removed as it was causing the wordpress to break as we only use slugs in some instances, and wordpress was redirecting for us
 
 // Prevent the Redirection plugin from performing any redirects by returning false for the source URL.
 // This effectively disables the plugin's redirect functionality for source URLs.
