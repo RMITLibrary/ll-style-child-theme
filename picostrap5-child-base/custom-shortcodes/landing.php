@@ -186,12 +186,111 @@ function home_panel_atts($atts, $content = null) {
 // </div>
 
 function home_panel_container_atts($atts, $content = null) {
+
+    $default = array(
+        '4-column' => ''
+    );
+    $a = shortcode_atts($default, $atts);
+    
     // Build the HTML output for the container
-    $output = '<div class="home-panel-container">';
+    $output = '<div class="home-panel-container">' . "\n";
+
+    if($a['4-column'] == 'true') {
+		$output =  '<div class="home-panel-container panel-4up">' . "\n";
+	}
+    
     $output .= do_shortcode($content);
     $output .= '</div>';
 
     return $output;
+}
+
+
+//-----------------------------
+//	display_landing_columns
+
+function display_landing_columns() {
+    ob_start(); // Start output buffering
+
+    // Get the ID of the current page
+    $current_page_id = get_the_ID();
+
+    // Get the children of the current page
+    $child_pages = get_pages(array(
+        'child_of' => $current_page_id,
+        'sort_column' => 'menu_order'
+    ));
+
+    echo '<nav class="landing-column-container">';
+    
+    $column_tag = '<div class="landing-column">' . "\n" . '<div class="landing-column-inner divider">';
+
+    //used to close lists
+    $end_list_tag = '';
+
+    foreach ($child_pages as $key => $child_page) {
+
+        // Get grandchildren of the current child page
+        $grandchild_pages = get_pages(array(
+            'child_of' => $child_page->ID,
+            'sort_column' => 'menu_order'
+        ));
+        
+        //if nav divider template is present, output divider name
+        if (get_page_template_slug($child_page->ID) == 'page-templates/nav-divider.php') {
+
+            $nav_divider_name = get_field('nav-divider', $child_page->ID);
+            if($nav_divider_name === 'Other') {
+                $nav_divider_name = get_field('nav-divider-other', $child_page->ID);
+            }
+
+            echo $column_tag;
+
+            //update column tag to close of previous column divs
+            $column_tag = '</div>' . "\n". '</div>' . "\n" . '<div class="landing-column">' . "\n" . '<div class="landing-column-inner divider">';
+
+            echo '<h2>' . esc_html($nav_divider_name) . '</h2>';
+
+            //if only child pages, start the list
+            if (empty($grandchild_pages)) {
+                echo '<ul class="link-list">';
+            }
+            
+            $end_list_tag = '';
+        }
+        
+
+        //If there are grandchildren
+        if (!empty($grandchild_pages)) {
+            //close the previous list if it exists
+            echo $end_list_tag;
+            echo '<h3>' . esc_html($child_page->post_title) . '</h3>';
+            echo '<ul class="link-list">';  
+
+            //set var to close list tag, required if we have more than one grandchild list
+            $end_list_tag = '</ul>';
+        }
+        else {
+            //Wordpress pumps out a link regardless of child or grandchild. Thanks wordpress
+            echo '<li><a href="' . esc_url(get_permalink($child_page->ID)) . '">' . esc_html($child_page->post_title) . '</a></li>';
+        }
+        
+        // Check if this is the last element
+        if ($key === array_key_last($child_pages)) {
+
+            //if only child pages, end the list
+            if (empty($grandchild_pages)) {
+                echo '</ul>';
+            }
+
+            echo '</div>'; // Close landing-column-inner
+            echo '</div>'; // Close landing-column
+        }
+    }
+
+    echo '</nav>';
+
+    return ob_get_clean(); // Return the buffered content
 }
 
 
@@ -207,5 +306,6 @@ add_shortcode('landing-list', 'landing_list_att');
 
 add_shortcode('home-panel', 'home_panel_atts');
 add_shortcode('home-panel-container', 'home_panel_container_atts');
+add_shortcode('landing-columns', 'display_landing_columns');
 
 ?>

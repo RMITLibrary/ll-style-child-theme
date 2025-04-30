@@ -116,7 +116,8 @@ function img_text_att($atts, $content = null) {
         'icon' => '',
         'url' => '',
         'alt' => '',
-        'attribution-id' => ''
+        'attribution-id' => '',
+        'classes' => ''
     );
 
     $a = shortcode_atts($default, $atts);
@@ -131,8 +132,12 @@ function img_text_att($atts, $content = null) {
     }
 
     if ($a['align-top'] != '') {
-        $tag .= 'align-items-top';
+        $tag .= 'align-items-top ';
     }
+
+    if($a['classes'] != '') { 
+        $tag .= $a['classes']; 
+    } 
 
     // Complete tag
     $tag .= '">';
