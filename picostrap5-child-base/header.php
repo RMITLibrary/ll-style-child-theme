@@ -201,6 +201,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 										<li><a href="/art-and-design/">Art and design</a></li>
 										<li><a href="/chemistry/">Chemistry</a></li>
 										<li><a href="/law/">Law</a></li>
+                                        <li><a href="/life-science/">Life science</a></li>
 										<li><a href="/maths-statistics/">Mathematics and statistics</a></li>
 										<li><a href="/nursing/">Nursing</a></li>
 										<li><a href="/physics/">Physics</a></li>
