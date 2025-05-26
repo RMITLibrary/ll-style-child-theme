@@ -243,7 +243,7 @@ function output_redirect_404_script_and_html()
     // Main execution
     function main() {
       // Ensure the current URL has a trailing slash if no .html is present
-      //ensureTrailingSlash(); // Commented out as it might be causing issues
+      ensureTrailingSlash();
 
       // Get the current URL
       const currentURL = window.location.href;
