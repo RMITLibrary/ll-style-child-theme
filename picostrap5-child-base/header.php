@@ -205,7 +205,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 										<li><a href="/maths-statistics/">Mathematics and statistics</a></li>
 										<li><a href="/nursing/">Nursing</a></li>
 										<li><a href="/physics/">Physics</a></li>
-										<!-- <li><a href="//">Life sciences</a></li> -->
 									</ul>
 								</div>
 							  </div>
