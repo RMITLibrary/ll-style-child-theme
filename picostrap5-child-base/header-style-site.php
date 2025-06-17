@@ -185,6 +185,7 @@ defined('ABSPATH') || exit;
 							              echo doContextMenuAccordion('Writing fundamentals', 6825); 
                             echo doContextMenuAccordion('Assessments', 6828);
                             echo doContextMenuAccordion('Referencing', 2545);
+                                        echo doContextMenuAccordion('Digital skills', 0000);
                         ?>
 						<!-- START Subject support
                         special case. Effectively each of the child pages here is a section page. For the nav, however, we want toshow these under the banner of subject support. -->
