@@ -13,11 +13,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Deploy to WP Engine
-        uses: wpengine/github-action-wpe-site-deploy@v4
+        uses: wpengine/github-action-wpe-site-deploy@v3
         with:
           wpe_ssh_key_private: ${{ secrets.WPE_SSHG_KEY_PRIVATE }}
           wpe_env: ${{ secrets.ENV_PRD }}
           src_path: '.'                # Optional, default is '.'
-          remote_path: '/wp-content/themes/ll-style-child-theme'  # Set to your theme path
+          remote_path: '/wp-content/themes/'  # Set to your theme path
           cache_clear: true            # Optional
           php_lint: true               # Optional
