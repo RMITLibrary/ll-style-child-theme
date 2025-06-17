@@ -1,15 +1,23 @@
 name: Deploy to WP Engine PRD
+
 on:
   push:
     branches:
-     - main
+      - main
+
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: GitHub Action Deploy to WP Engine
-      uses: wpengine/github-action-wpe-site-deploy@v3
-      with:
-        WPE_SSHG_KEY_PRIVATE: ${{ secrets.WPE_SSHG_KEY_PRIVATE }}
-        WPE_ENV: learninglabprd
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to WP Engine
+        uses: wpengine/github-action-wpe-site-deploy@v4
+        with:
+          wpe_ssh_key_private: ${{ secrets.WPE_SSHG_KEY_PRIVATE }}
+          wpe_env: ${{ secrets.ENV_PRD }}
+          src_path: '.'                # Optional, default is '.'
+          remote_path: '/wp-content/themes/ll-style-child-theme'  # Set to your theme path
+          cache_clear: true            # Optional
+          php_lint: true               # Optional
