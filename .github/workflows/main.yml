@@ -1,10 +1,8 @@
 name: Deploy to WP Engine PRD
-
 on:
   push:
     branches:
       - main
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -15,9 +13,8 @@ jobs:
       - name: Deploy to WP Engine
         uses: wpengine/github-action-wpe-site-deploy@v3
         with:
-          wpe_ssh_key_private: ${{ secrets.WPE_SSHG_KEY_PRIVATE }}
-          wpe_env: ${{ secrets.ENV_PRD }}
-          src_path: '.'                # Optional, default is '.'
-          remote_path: '/wp-content/themes/'  # Set to your theme path
-          cache_clear: true            # Optional
-          php_lint: true               # Optional
+          WPE_SSHG_KEY_PRIVATE: ${{ secrets.WPE_SSHG_KEY_PRIVATE }}
+          WPE_ENV: ${{ secrets.ENV_PRD }}
+          SRC_PATH: '.'                # Optional, default is '.'
+          REMOTE_PATH: '/wp-content/themes/'  # Set to your theme path
+          CACHE_CLEAR: true            # Optional
