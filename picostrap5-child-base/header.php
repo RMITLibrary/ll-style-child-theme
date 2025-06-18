@@ -38,8 +38,8 @@ defined('ABSPATH') || exit;
         // https://learninglab.rmit.edu.au/ in the tags below before upload to prod
     ?>
 
-    <link href="https://rmitlibrary.github.io/cdn/learninglab/illustration/dev-fav-icon-style.png" rel="icon" type="image/x-icon"/>
-    <link href="https://rmitlibrary.github.io/cdn/learninglab/illustration/dev-fav-icon-style.png" rel="shortcut icon" type="image/x-icon"/>
+    <link href="https://rmitlibrary.github.io/cdn/learninglab/illustration/dev-fav-icon.png" rel="icon" type="image/x-icon"/>
+    <link href="https://rmitlibrary.github.io/cdn/learninglab/illustration/dev-fav-icon.png" rel="shortcut icon" type="image/x-icon"/>
 
     <meta name="author" content="RMIT Library">
 
@@ -74,22 +74,18 @@ defined('ABSPATH') || exit;
 
     <!-- START Additional scripts for tracking -->
 
-    <!-- Microsoft Clarity - does hotspot tracking of pages -->
-    <script async="" src="https://www.clarity.ms/tag/ku7m575lss"></script>
-
-    <!-- Google tag - (gtag.js) --> 
-    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-VLHPB23GYR"></script> 
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-VLHPB23GYR');
-    </script>
-
-    <!-- Microsoft Bing - Not sure how useful this is? --> 
-    <meta name="msvalidate.01" content="8E4954E1DFAB7E2F8A92DD0A0BD6ED09">
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MPHJK3H');</script>
+    <!-- End Google Tag Manager -->
 
     <!-- END Additional scripts for tracking -->
+
+    <!-- Microsoft Bing - Not sure how useful this is? -->
+    <meta name="msvalidate.01" content="8E4954E1DFAB7E2F8A92DD0A0BD6ED09">
 
     <style>
     <?php 
@@ -129,16 +125,21 @@ defined('ABSPATH') || exit;
 </head>
 
 <body <?php body_class(); ?>>
-	<?php wp_body_open(); ?>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MPHJK3H"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<?php wp_body_open(); ?>
 	
 <header>
 <a href="#main-content" class="visually-hidden-focusable">Skip to main content</a>
-<div class="top-navigation" style="background-color: #005435">
+<div class="top-navigation">
     <div class="container">
         <div class="row">
             <div class="col-auto left-nav">
                 <a href="https://www.rmit.edu.au/" class="rmit-logo"><span class="visually-hidden">RMIT University</span></a>
-                <!--<div class="rmit-logo"><span class="visually-hidden">RMIT University logo</span></div>-->
 				<h2>
 					<!-- Explicitly turn off one bit of text and turn on the other to deal with JAWS bug - https://github.com/alphagov/govuk-frontend/issues/1643 -->
 					<a href="/home">
@@ -165,7 +166,7 @@ defined('ABSPATH') || exit;
                         <button id="menu-button" 
                         class="btn btn-primary collapsed" type="button" data-bs-toggle="collapse" 
                         data-bs-target="#context-menu" data-bs-display="static" aria-expanded="false" 
-                        aria-controls="context-menu" style="background-color: #005435">Click for main menu</button>
+                        aria-controls="context-menu">Click for main menu</button>
                     </li>
                 </ul> 
             </div>   
@@ -181,11 +182,11 @@ defined('ABSPATH') || exit;
 						<?php 
                             //Identify the page ids of each landing page, doContextMenuAccordion 
                             //will generate the accordion code and list of child pages.
-							              echo doContextMenuAccordion('University essentials', 6823);
-							              echo doContextMenuAccordion('Writing fundamentals', 6825); 
+							echo doContextMenuAccordion('University essentials', 6823);
+							echo doContextMenuAccordion('Writing fundamentals', 6825); 
                             echo doContextMenuAccordion('Assessments', 6828);
                             echo doContextMenuAccordion('Referencing', 2545);
-                                        echo doContextMenuAccordion('Digital skills', 13243);
+                            echo doContextMenuAccordion('Digital skills', 15640);
                         ?>
 						<!-- START Subject support
                         special case. Effectively each of the child pages here is a section page. For the nav, however, we want toshow these under the banner of subject support. -->
@@ -201,10 +202,10 @@ defined('ABSPATH') || exit;
 										<li><a href="/art-and-design/">Art and design</a></li>
 										<li><a href="/chemistry/">Chemistry</a></li>
 										<li><a href="/law/">Law</a></li>
+                                        <li><a href="/life-science/">Life science</a></li>
 										<li><a href="/maths-statistics/">Mathematics and statistics</a></li>
 										<li><a href="/nursing/">Nursing</a></li>
 										<li><a href="/physics/">Physics</a></li>
-										<!-- <li><a href="//">Life sciences</a></li> -->
 									</ul>
 								</div>
 							  </div>
