@@ -74,9 +74,6 @@ defined('ABSPATH') || exit;
 
     <!-- START Additional scripts for tracking -->
 
-    <!-- Microsoft Clarity - does hotspot tracking of pages -->
-    <script async="" src="https://www.clarity.ms/tag/ku7m575lss"></script>
-
     <!-- Google tag - (gtag.js) --> 
     <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-VLHPB23GYR"></script> 
     <script>
