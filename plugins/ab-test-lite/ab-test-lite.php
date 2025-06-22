@@ -33,6 +33,14 @@ add_shortcode('variation-test', function($atts, $content = null) {
     <div class="variation-test" data-test-name="<?php echo esc_attr($test_name); ?>" data-variant="<?php echo esc_attr($selected); ?>">
         <?php echo $content; ?>
     </div>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    dataLayer.push({
+        event: 'ab_test_view',
+        ab_test_name: "<?php echo esc_js($test_name); ?>",
+        ab_test_variant: "<?php echo esc_js($selected); ?>"
+    });
+    </script>
     <noscript><div style="color:red;">This content requires JavaScript to display.</div></noscript>
     <?php return ob_get_clean();
 });
