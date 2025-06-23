@@ -48,10 +48,23 @@ A lightweight A/B testing solution for WordPress with GA4 event tracking. Works 
 ```
 
 #### Tracking Events
-- Add `track-` prefix to any class to track clicks:
-  ```
-  <button class="track-button">Click Me</button>
-  ```
+
+You can track clicks in two ways:
+
+1. **Using `track-` prefix** (recommended for single elements):
+   ```html
+   <button class="track-button">Click Me</button>
+   ```
+
+2. **Using `click-track` attribute** (tracks all clicks within variant):
+   ```
+   [variation var-test="a" click-track="variant-a"]
+       <button>Button 1</button>
+       <a href="#">Link</a> <!-- All clicks within variant will be tracked -->
+   [/variation]
+   ```
+
+Both methods will send `ab_test_click` events with the test name, variant, and click class.
 
 #### Debug Mode
 Add `?debug_ab=true` to the URL to see all variants
