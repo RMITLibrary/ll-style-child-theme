@@ -46,24 +46,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let visibleTime = 0;
     let lastVisible = null;
+    let isTracking = false;
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           lastVisible = Date.now();
+          isTracking = true;
         } else if (lastVisible) {
           visibleTime += Date.now() - lastVisible;
           lastVisible = null;
+          isTracking = false;
         }
       });
     }, { threshold: 0.5 });
 
     observer.observe(target);
 
-    const sendEngagement = () => {
-      if (lastVisible) {
+    // Function to send final engagement data
+    const sendFinalEngagement = () => {
+      // Add any remaining visible time
+      if (isTracking && lastVisible) {
         visibleTime += Date.now() - lastVisible;
-        lastVisible = null;
       }
 
       const seconds = Math.round(visibleTime / 1000);
@@ -85,8 +89,22 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     };
 
-    timers[testName] = setTimeout(sendEngagement, 30000);
-    window.addEventListener("beforeunload", sendEngagement);
+    // Set up cleanup and final data send
+    const cleanup = () => {
+      sendFinalEngagement();
+      observer.disconnect();
+      window.removeEventListener('beforeunload', cleanup);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        cleanup();
+      }
+    };
+
+    window.addEventListener('beforeunload', cleanup);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     const wrapper = target.querySelector("[class^='track-']");
     if (wrapper) {
