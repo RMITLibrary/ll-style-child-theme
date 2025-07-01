@@ -32,10 +32,23 @@ document.addEventListener("DOMContentLoaded", function () {
       if (stored) {
         variant = stored;
         container.dataset.variant = variant;
+        console.log(`Cookie found, setting variant to stored value: ${variant}`);
+      } else {
+        variant = Math.random() < 0.5 ? 'a' : 'b'; // Random selection
+        container.dataset.variant = variant;
+        setCookie(cookieName, variant);
+        console.log(`Randomly setting variant to: ${variant}`);
+      }
+    }
+    /* if (!forced) {
+      const stored = getCookie(cookieName);
+      if (stored) {
+        variant = stored;
+        container.dataset.variant = variant;
       } else {
         setCookie(cookieName, variant);
       }
-    }
+    } */
 
     const target = container.querySelector(`.ab-variant[data-variant="${variant}"]`);
     if (!target) return;
