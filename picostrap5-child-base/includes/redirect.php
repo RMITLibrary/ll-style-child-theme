@@ -93,6 +93,14 @@ function write_redirects_js_file()
 // Hook into Redirection plugin's actions
 add_action('redirection_redirect_updated', 'write_redirects_js_file');
 add_action('redirection_redirect_deleted', 'write_redirects_js_file');
+add_action('redirection_redirect_created', 'write_redirects_js_file');
+
+// Additional hooks to catch status changes (enabled/disabled)
+add_action('redirection_redirect_enabled', 'write_redirects_js_file');
+add_action('redirection_redirect_disabled', 'write_redirects_js_file');
+
+// Fallback - regenerate on any redirect table changes
+add_action('redirection_flush_cache', 'write_redirects_js_file');
 
 //-------------------------------------------
 //    output_redirect_404_script_and_html
