@@ -15,7 +15,7 @@
 
 // Disable WordPress's canonical redirect feature
 // This prevents WordPress from automatically redirecting URLs to their canonical versions.
-//remove_filter('template_redirect', 'redirect_canonical'); removed as it was causing the wordpress to break as we only use slugs in some instances, and wordpress was redirecting for us
+//remove_filter('template_redirect', 'redirect_canonical'); //removed as it was causing the wordpress to break as we only use slugs in some instances, and wordpress was redirecting for us
 
 // Prevent the Redirection plugin from performing any redirects by returning false for the source URL.
 // This effectively disables the plugin's redirect functionality for source URLs.
@@ -78,9 +78,10 @@ function write_redirects_js_file()
     return;
   }
 
-  // Prepare JS content
-  $js_content = "const urlMappings = " . json_encode($url_mappings) . ";\n";
+  // Prepare JS content with proper JSON escaping for regex patterns
+  $js_content = "const urlMappings = " . json_encode($url_mappings, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . ";\n";
   $js_content .= "console.log('urlMappings.length: ' + urlMappings.length);\n";
+  $js_content .= "console.log('Regex patterns found: ' + urlMappings.filter(m => m.regex).length);\n";
 
   // Write the JavaScript content to the file
   if (file_put_contents($js_file_path, $js_content) === false) {
@@ -232,10 +233,23 @@ function output_redirect_404_script_and_html()
     }
 
     // Function to perform the redirect after all checks and URL processing
-    function doRedirect(redirectUrl, delay = 2000) {
+    function doRedirect(redirectUrl, delay = 1000) {
+      // Add meta refresh for better SEO
+      const metaRefresh = document.createElement('meta');
+      metaRefresh.httpEquiv = 'refresh';
+      metaRefresh.content = '0;url=' + redirectUrl;
+      document.head.appendChild(metaRefresh);
+
+      // Add canonical link for SEO
+      const canonicalLink = document.createElement('link');
+      canonicalLink.rel = 'canonical';
+      canonicalLink.href = redirectUrl;
+      document.head.appendChild(canonicalLink);
+
+      // Perform immediate redirect for better UX
       setTimeout(() => {
         console.log('Redirecting to: ' + redirectUrl);
-        window.location.href = redirectUrl;
+        window.location.replace(redirectUrl);
       }, delay);
     }
 
@@ -277,7 +291,9 @@ function output_redirect_404_script_and_html()
             mapping = urlMappings.find(mapping => {
               if (mapping.regex) {
                 try {
-                  const regex = new RegExp(mapping.pattern);
+                  // Properly escape the regex pattern for JavaScript
+                  const regex = new RegExp(mapping.pattern, 'i');
+                  console.log('Testing regex pattern:', mapping.pattern, 'against:', extractedPath);
                   return regex.test(extractedPath);
                 } catch (e) {
                   console.error('Invalid regex pattern:', mapping.pattern, e);
@@ -293,15 +309,32 @@ function output_redirect_404_script_and_html()
             let newUrl;
             if (mapping.regex) {
               try {
-                const regex = new RegExp(mapping.pattern);
+                // Use the same regex pattern for matching and replacement
+                const regex = new RegExp(mapping.pattern, 'i');
                 const matches = extractedPath.match(regex);
                 if (matches) {
-                  // If there are matches, do the replacement if needed
-                  newUrl = mapping.newPath.replace(/\$(\d+)/g, (_, groupIndex) => matches[groupIndex] || '');
+                  // If there are matches, do the replacement using captured groups
+                  newUrl = mapping.newPath.replace(/\$(\d+)/g, (_, groupIndex) => {
+                    const matchIndex = parseInt(groupIndex);
+                    return matches[matchIndex] || '';
+                  });
+                  console.log('Regex replacement result:', newUrl);
                 } else {
                   // If no matches, use the new path as is
                   newUrl = mapping.newPath;
                 }
+
+                // Preserve query parameters and hash for regex redirects
+                const urlObj = new URL(currentURL);
+                const finalUrlObj = new URL(newUrl, urlObj.origin);
+                if (urlObj.search) {
+                  finalUrlObj.search = urlObj.search;
+                }
+                if (urlObj.hash) {
+                  finalUrlObj.hash = urlObj.hash;
+                }
+                newUrl = finalUrlObj.toString();
+
               } catch (e) {
                 console.error('Error during regex replacement:', e);
                 newUrl = mapping.newPath;
