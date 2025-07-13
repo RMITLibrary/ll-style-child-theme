@@ -232,6 +232,19 @@ function output_redirect_404_script_and_html()
       return false;
     }
 
+    // Function to normalize path by removing index.html
+    function normalizeIndexPath(path) {
+      // Remove /index.html from the end if present
+      if (path.endsWith('/index.html')) {
+        return path.slice(0, -11); // Remove '/index.html' (11 characters)
+      }
+      // Remove index.html from the end if present (no leading slash)
+      if (path.endsWith('index.html')) {
+        return path.slice(0, -10) || '/'; // Remove 'index.html' (10 characters), default to '/' if empty
+      }
+      return path;
+    }
+
     // Function to perform the redirect after all checks and URL processing
     function doRedirect(redirectUrl, delay = 1000) {
       // Add meta refresh for better SEO
@@ -273,28 +286,32 @@ function output_redirect_404_script_and_html()
       // Extract the path from the current URL
       const extractedPath = extractPath(currentURL);
 
-      // Debugging log to check the extracted path
+      // Normalize the path by removing index.html
+      const normalizedPath = normalizeIndexPath(extractedPath);
+
+      // Debugging log to check the extracted and normalized paths
       console.log("Extracted Path: " + extractedPath);
+      console.log("Normalized Path: " + normalizedPath);
 
       // Process old site links and redirect if applicable
-      const contentBool = processOldSiteLinksAndRedirect(extractedPath);
+      const contentBool = processOldSiteLinksAndRedirect(normalizedPath);
 
       // If no redirect occurred from old site links
       if (!contentBool) {
         // Check if urlMappings is defined before using it.
         if (typeof urlMappings !== 'undefined') {
-          // First, try to find an exact match (non-regex)
-          let mapping = urlMappings.find(mapping => !mapping.regex && normalizePath(mapping.oldPath) === normalizePath(extractedPath));
+          // First, try to find an exact match (non-regex) using normalized path
+          let mapping = urlMappings.find(mapping => !mapping.regex && normalizePath(mapping.oldPath) === normalizePath(normalizedPath));
 
-          // If no exact match, then try regex matching
+          // If no exact match, then try regex matching using normalized path
           if (!mapping) {
             mapping = urlMappings.find(mapping => {
               if (mapping.regex) {
                 try {
                   // Properly escape the regex pattern for JavaScript
                   const regex = new RegExp(mapping.pattern, 'i');
-                  console.log('Testing regex pattern:', mapping.pattern, 'against:', extractedPath);
-                  return regex.test(extractedPath);
+                  console.log('Testing regex pattern:', mapping.pattern, 'against:', normalizedPath);
+                  return regex.test(normalizedPath);
                 } catch (e) {
                   console.error('Invalid regex pattern:', mapping.pattern, e);
                   return false; // Skip this mapping if the regex is invalid
@@ -311,7 +328,7 @@ function output_redirect_404_script_and_html()
               try {
                 // Use the same regex pattern for matching and replacement
                 const regex = new RegExp(mapping.pattern, 'i');
-                const matches = extractedPath.match(regex);
+                const matches = normalizedPath.match(regex);
                 if (matches) {
                   // If there are matches, do the replacement using captured groups
                   newUrl = mapping.newPath.replace(/\$(\d+)/g, (_, groupIndex) => {
