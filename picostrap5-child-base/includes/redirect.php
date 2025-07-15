@@ -357,8 +357,14 @@ function output_redirect_404_script_and_html()
                 newUrl = mapping.newPath;
               }
             } else {
-              // Non-regex match, use replaceUrlPath for oldPath/newPath
-              newUrl = replaceUrlPath(currentURL, mapping.newPath);
+              // Non-regex match, check if newPath is external URL or relative path
+              if (mapping.newPath.startsWith('http://') || mapping.newPath.startsWith('https://')) {
+                // External URL - use as is
+                newUrl = mapping.newPath;
+              } else {
+                // Relative path - use replaceUrlPath
+                newUrl = replaceUrlPath(currentURL, mapping.newPath);
+              }
             }
             console.log("Match found! Redirecting to: " + newUrl);
 
