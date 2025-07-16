@@ -315,8 +315,13 @@ function output_redirect_404_script_and_html()
             return mapping;
           }
 
-          // First, try to find a mapping with the original normalized path
-          let mapping = findMapping(normalizedPath);
+          // First, try to find a mapping with the ORIGINAL extracted path (before normalization)
+          let mapping = findMapping(extractedPath);
+
+          // If no mapping found, try the normalized path
+          if (!mapping) {
+            mapping = findMapping(normalizedPath);
+          }
 
           // If no mapping found and path contains '/content/', try replacing it with '/'
           if (!mapping && normalizedPath.includes('/content/')) {
@@ -346,6 +351,25 @@ function output_redirect_404_script_and_html()
             // Perform the redirect - if that page also 404s, it will come back here
             doRedirect(normalizedUrl);
             return; // Exit early to prevent immediate 404 display
+          }
+
+          // If no mapping found but we have content/ in the original path, test if the content-stripped URL exists
+          if (!mapping && extractedPath.includes('/content/')) {
+            const pathWithoutContent = extractedPath.replace('/content/', '/');
+            if (pathWithoutContent !== extractedPath) {
+              console.log('No mapping found, trying content-stripped URL:', pathWithoutContent);
+              const contentStrippedUrl = window.location.origin + pathWithoutContent + window.location.search + window.location.hash;
+
+              // Change page title to reflect change
+              document.title = "Redirecting you to the correct page...";
+
+              // Display redirect information
+              redirectInfo.style.display = "block";
+
+              // Perform the redirect - if that page also 404s, it will come back here
+              doRedirect(contentStrippedUrl);
+              return; // Exit early to prevent immediate 404 display
+            }
           }
 
           // If a matching mapping is found, redirect to the new URL
