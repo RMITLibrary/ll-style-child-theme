@@ -418,4 +418,5 @@ add_filter("excerpt_length", function($in){
 
 include('includes/json-export.php');        // exports the site date to json. Required for search to function
 include('includes/redirect.php');           // redirect and 404 code for both admin and client side
+include('includes/seo-noindex-inheritance.php'); // noindex inheritance for work in progress pages
 include('custom-shortcodes/_main.php');     // All shortcode code is included and added below

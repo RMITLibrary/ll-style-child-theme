@@ -216,23 +216,8 @@ function output_redirect_404_script_and_html()
       return urlObj.toString();
     }
 
-    // Function to process old site links and redirect if necessary
-    function processOldSiteLinksAndRedirect(path) {
-      // Remove ".html" if present
-      if (path.endsWith('.html')) {
-        path = path.slice(0, -5);
-      }
 
-      // Replace "/content/" with "/"
-      if (path.startsWith('content/')) {
-        const newPath = path.replace('content/', '/');
-        doRedirect(pathPrefix + newPath, 0);
-        return true;
-      }
-      return false;
-    }
-
-    // Function to normalize path by removing index.html
+    // Function to normalize path by removing index.html and .html
     function normalizeIndexPath(path) {
       // Remove /index.html from the end if present
       if (path.endsWith('/index.html')) {
@@ -241,6 +226,10 @@ function output_redirect_404_script_and_html()
       // Remove index.html from the end if present (no leading slash)
       if (path.endsWith('index.html')) {
         return path.slice(0, -10) || '/'; // Remove 'index.html' (10 characters), default to '/' if empty
+      }
+      // Remove .html from the end if present
+      if (path.endsWith('.html')) {
+        return path.slice(0, -5); // Remove '.html' (5 characters)
       }
       return path;
     }
@@ -287,38 +276,76 @@ function output_redirect_404_script_and_html()
       const extractedPath = extractPath(currentURL);
 
       // Normalize the path by removing index.html
-      const normalizedPath = normalizeIndexPath(extractedPath);
+      let normalizedPath = normalizeIndexPath(extractedPath);
 
       // Debugging log to check the extracted and normalized paths
       console.log("Extracted Path: " + extractedPath);
       console.log("Normalized Path: " + normalizedPath);
 
-      // Process old site links and redirect if applicable
-      const contentBool = processOldSiteLinksAndRedirect(normalizedPath);
-
-      // If no redirect occurred from old site links
-      if (!contentBool) {
+      // Check for redirect mappings
+      {
         // Check if urlMappings is defined before using it.
         if (typeof urlMappings !== 'undefined') {
-          // First, try to find an exact match (non-regex) using normalized path
-          let mapping = urlMappings.find(mapping => !mapping.regex && normalizePath(mapping.oldPath) === normalizePath(normalizedPath));
 
-          // If no exact match, then try regex matching using normalized path
-          if (!mapping) {
-            mapping = urlMappings.find(mapping => {
-              if (mapping.regex) {
-                try {
-                  // Properly escape the regex pattern for JavaScript
-                  const regex = new RegExp(mapping.pattern, 'i');
-                  console.log('Testing regex pattern:', mapping.pattern, 'against:', normalizedPath);
-                  return regex.test(normalizedPath);
-                } catch (e) {
-                  console.error('Invalid regex pattern:', mapping.pattern, e);
-                  return false; // Skip this mapping if the regex is invalid
+          // Function to search for a mapping with a given path
+          function findMapping(searchPath) {
+            console.log('Searching for mapping with path:', searchPath);
+
+            // First, try to find an exact match (non-regex)
+            let mapping = urlMappings.find(mapping => !mapping.regex && normalizePath(mapping.oldPath) === normalizePath(searchPath));
+
+            // If no exact match, then try regex matching
+            if (!mapping) {
+              mapping = urlMappings.find(mapping => {
+                if (mapping.regex) {
+                  try {
+                    // Properly escape the regex pattern for JavaScript
+                    const regex = new RegExp(mapping.pattern, 'i');
+                    console.log('Testing regex pattern:', mapping.pattern, 'against:', searchPath);
+                    return regex.test(searchPath);
+                  } catch (e) {
+                    console.error('Invalid regex pattern:', mapping.pattern, e);
+                    return false; // Skip this mapping if the regex is invalid
+                  }
                 }
-              }
-              return false;
-            });
+                return false;
+              });
+            }
+
+            return mapping;
+          }
+
+          // First, try to find a mapping with the original normalized path
+          let mapping = findMapping(normalizedPath);
+
+          // If no mapping found and path contains '/content/', try replacing it with '/'
+          if (!mapping && normalizedPath.includes('/content/')) {
+            console.log('No direct match found, trying with /content/ replaced by /');
+            const pathWithoutContent = normalizedPath.replace('/content/', '/');
+            mapping = findMapping(pathWithoutContent);
+
+            // If we found a match with the content-stripped path, update the search path for redirect processing
+            if (mapping) {
+              console.log('Found match after replacing /content/ with /');
+              // Use the path without content for the redirect processing
+              normalizedPath = pathWithoutContent;
+            }
+          }
+
+          // If no mapping found but URL was normalized, try redirecting to normalized URL
+          if (!mapping && normalizedPath !== extractedPath) {
+            console.log('No mapping found, trying normalized URL:', normalizedPath);
+            const normalizedUrl = window.location.origin + normalizedPath + window.location.search + window.location.hash;
+
+            // Change page title to reflect change
+            document.title = "Redirecting you to the correct page...";
+
+            // Display redirect information
+            redirectInfo.style.display = "block";
+
+            // Perform the redirect - if that page also 404s, it will come back here
+            doRedirect(normalizedUrl);
+            return; // Exit early to prevent immediate 404 display
           }
 
           // If a matching mapping is found, redirect to the new URL
