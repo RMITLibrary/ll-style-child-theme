@@ -317,10 +317,12 @@ function output_redirect_404_script_and_html()
 
           // First, try to find a mapping with the ORIGINAL extracted path (before normalization)
           let mapping = findMapping(extractedPath);
+          let matchedPath = extractedPath;
 
           // If no mapping found, try the normalized path
           if (!mapping) {
             mapping = findMapping(normalizedPath);
+            matchedPath = normalizedPath;
           }
 
           // If no mapping found and path contains '/content/', try replacing it with '/'
@@ -334,6 +336,7 @@ function output_redirect_404_script_and_html()
               console.log('Found match after replacing /content/ with /');
               // Use the path without content for the redirect processing
               normalizedPath = pathWithoutContent;
+              matchedPath = pathWithoutContent;
             }
           }
 
@@ -379,12 +382,18 @@ function output_redirect_404_script_and_html()
               try {
                 // Use the same regex pattern for matching and replacement
                 const regex = new RegExp(mapping.pattern, 'i');
-                const matches = normalizedPath.match(regex);
+
+                // Use the path that was used to find the mapping
+                const matches = matchedPath.match(regex);
+                console.log('Regex match attempt - Pattern:', mapping.pattern, 'Matched path:', matchedPath, 'Matches:', matches);
+
                 if (matches) {
                   // If there are matches, do the replacement using captured groups
                   newUrl = mapping.newPath.replace(/\$(\d+)/g, (_, groupIndex) => {
                     const matchIndex = parseInt(groupIndex);
-                    return matches[matchIndex] || '';
+                    const replacement = matches[matchIndex] || '';
+                    console.log('Replacing $' + groupIndex + ' with:', replacement);
+                    return replacement;
                   });
                   console.log('Regex replacement result:', newUrl);
                 } else {
