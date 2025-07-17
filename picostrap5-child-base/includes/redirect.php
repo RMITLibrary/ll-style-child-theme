@@ -179,8 +179,8 @@ function output_redirect_404_script_and_html()
 
   <script>
     // References to DOM objects
-    const fourOhInfo = document.getElementById("four-oh-container");
-    const redirectInfo = document.getElementById("redirect-container");
+    const fourOhInfo = document.getElementById('four-oh-container');
+    const redirectInfo = document.getElementById('redirect-container');
 
     // Prefix for the environment; set to '' for live and '/preview' for test
     const pathPrefix = '';
@@ -208,7 +208,6 @@ function output_redirect_404_script_and_html()
       }
     }
 
-
     // Function to replace the old URL path with the new URL path, adding the prefix
     function replaceUrlPath(url, newPath) {
       const urlObj = new URL(url);
@@ -216,21 +215,28 @@ function output_redirect_404_script_and_html()
       return urlObj.toString();
     }
 
-
     // Function to normalize path by removing index.html and .html
     function normalizeIndexPath(path) {
+      console.log('normalizeIndexPath input:', path);
       // Remove /index.html from the end if present
       if (path.endsWith('/index.html')) {
-        return path.slice(0, -11); // Remove '/index.html' (11 characters)
+        const result = path.slice(0, -11); // Remove '/index.html' (11 characters)
+        console.log('normalizeIndexPath removed /index.html, result:', result);
+        return result;
       }
       // Remove index.html from the end if present (no leading slash)
       if (path.endsWith('index.html')) {
-        return path.slice(0, -10) || '/'; // Remove 'index.html' (10 characters), default to '/' if empty
+        const result = path.slice(0, -10) || '/'; // Remove 'index.html' (10 characters), default to '/' if empty
+        console.log('normalizeIndexPath removed index.html, result:', result);
+        return result;
       }
       // Remove .html from the end if present
       if (path.endsWith('.html')) {
-        return path.slice(0, -5); // Remove '.html' (5 characters)
+        const result = path.slice(0, -5); // Remove '.html' (5 characters)
+        console.log('normalizeIndexPath removed .html, result:', result);
+        return result;
       }
+      console.log('normalizeIndexPath no change, result:', path);
       return path;
     }
 
@@ -258,8 +264,8 @@ function output_redirect_404_script_and_html()
     // Ensure URL has a trailing slash if necessary
     function ensureTrailingSlash() {
       const myPath = window.location.pathname;
-      if (!myPath.endsWith("/") && !myPath.endsWith(".html")) {
-        const newPath = myPath + "/";
+      if (!myPath.endsWith('/') && !myPath.endsWith('.html')) {
+        const newPath = myPath + '/';
         window.location.replace(newPath + window.location.search + window.location.hash);
       }
     }
@@ -279,24 +285,25 @@ function output_redirect_404_script_and_html()
       let normalizedPath = normalizeIndexPath(extractedPath);
 
       // Debugging log to check the extracted and normalized paths
-      console.log("Extracted Path: " + extractedPath);
-      console.log("Normalized Path: " + normalizedPath);
+      console.log('Extracted Path: ' + extractedPath);
+      console.log('Extracted Path length: ' + extractedPath.length);
+      console.log('Normalized Path: ' + normalizedPath);
+      console.log('Normalized Path length: ' + normalizedPath.length);
 
       // Check for redirect mappings
       {
         // Check if urlMappings is defined before using it.
         if (typeof urlMappings !== 'undefined') {
-
           // Function to search for a mapping with a given path
           function findMapping(searchPath) {
             console.log('Searching for mapping with path:', searchPath);
 
             // First, try to find an exact match (non-regex)
-            let mapping = urlMappings.find(mapping => !mapping.regex && normalizePath(mapping.oldPath) === normalizePath(searchPath));
+            let mapping = urlMappings.find((mapping) => !mapping.regex && normalizePath(mapping.oldPath) === normalizePath(searchPath));
 
             // If no exact match, then try regex matching
             if (!mapping) {
-              mapping = urlMappings.find(mapping => {
+              mapping = urlMappings.find((mapping) => {
                 if (mapping.regex) {
                   try {
                     // Properly escape the regex pattern for JavaScript
@@ -346,10 +353,10 @@ function output_redirect_404_script_and_html()
             const normalizedUrl = window.location.origin + normalizedPath + window.location.search + window.location.hash;
 
             // Change page title to reflect change
-            document.title = "Redirecting you to the correct page...";
+            document.title = 'Redirecting you to the correct page...';
 
             // Display redirect information
-            redirectInfo.style.display = "block";
+            redirectInfo.style.display = 'block';
 
             // Perform the redirect - if that page also 404s, it will come back here
             doRedirect(normalizedUrl);
@@ -364,10 +371,10 @@ function output_redirect_404_script_and_html()
               const contentStrippedUrl = window.location.origin + pathWithoutContent + window.location.search + window.location.hash;
 
               // Change page title to reflect change
-              document.title = "Redirecting you to the correct page...";
+              document.title = 'Redirecting you to the correct page...';
 
               // Display redirect information
-              redirectInfo.style.display = "block";
+              redirectInfo.style.display = 'block';
 
               // Perform the redirect - if that page also 404s, it will come back here
               doRedirect(contentStrippedUrl);
@@ -411,7 +418,6 @@ function output_redirect_404_script_and_html()
                   finalUrlObj.hash = urlObj.hash;
                 }
                 newUrl = finalUrlObj.toString();
-
               } catch (e) {
                 console.error('Error during regex replacement:', e);
                 newUrl = mapping.newPath;
@@ -426,25 +432,25 @@ function output_redirect_404_script_and_html()
                 newUrl = replaceUrlPath(currentURL, mapping.newPath);
               }
             }
-            console.log("Match found! Redirecting to: " + newUrl);
+            console.log('Match found! Redirecting to: ' + newUrl);
 
             //Change page title to relect change
-            document.title = "Redirecting you to the new page...";
+            document.title = 'Redirecting you to the new page...';
 
             // Display redirect information
-            redirectInfo.style.display = "block";
+            redirectInfo.style.display = 'block';
 
             // Perform the redirect
             doRedirect(newUrl);
           } else {
             // If no mapping is found, display 404 information
-            console.log("No match found. Displaying 404 info.");
-            fourOhInfo.style.display = "block";
+            console.log('No match found. Displaying 404 info.');
+            fourOhInfo.style.display = 'block';
           }
         } else {
           // urlMappings is not defined, display 404 information
-          console.log("urlMappings is not defined. Displaying 404 info.");
-          fourOhInfo.style.display = "block";
+          console.log('urlMappings is not defined. Displaying 404 info.');
+          fourOhInfo.style.display = 'block';
         }
       }
     }
