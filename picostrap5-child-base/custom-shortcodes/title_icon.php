@@ -8,6 +8,7 @@
 //              $atts - attributes as follows:
 //
 //  $atts:      heading-tag    Specifies the heading level (h1-h6), default is 'h2'.
+//              heading-size   Adds a classs to adjust physical size (h1-h6).
 //              type           CSS class name for distinguishing styles.
 //							   aboriginal-flag, torres-strait-flag, quiz-icon are 
 //			   				   predefined values, images etc. coded into css
@@ -43,6 +44,7 @@
 function title_icon($atts, $content = null) {
 	$default = array(
         'heading-tag' => '',
+        'heading-size' => '',
         'type' => '',
 		'img' => '',
 		'img-dark' => '',
@@ -74,7 +76,9 @@ function title_icon($atts, $content = null) {
     }
 
     $type = $a['type'];
-    $heading .= '<' . $headingTag . ' class="title-icon ' . $type .'"' . $myId .'>';
+    $headingSize = $a['heading-size'];
+
+    $heading .= '<' . $headingTag . ' class="title-icon ' . $type . ' ' . $headingSize . '"' . $myId .'>';
 	$heading .= $content . '</' . $headingTag . '>';
 
 	$style = '';

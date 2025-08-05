@@ -207,6 +207,17 @@ $img-width-sm: 18.5rem;     //296px*/
 		@include type-default;
 	}	
 }
+
+// Dark Mode
+@include color-mode(dark) {
+    .card {
+        h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+            color: $headings-color-dark;
+        }
+    }
+}
+
+
 // Striped list 
 // Mirrors functionality of a striped table
 .striped-list {
