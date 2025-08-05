@@ -82,6 +82,7 @@ include('layout.php');               //handles grid, image-text and icon-text
 include('highlight-text.php');      //handles highlight text
 
 include('horizontal-scroll-panel.php');      //handles horizontal scroll panel
+include('title_icon.php');      //handles horizontal scroll panel
 
 //include('redirect-listing.php');    // DEPRECATED allows us to list every redirect via a shortcode
 
