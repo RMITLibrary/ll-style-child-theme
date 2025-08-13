@@ -76,6 +76,47 @@ function export_content_to_json() {
 }
 
 //-----------------------------
+//	export_page_urls_to_json
+//
+//	Creates a json file that contains only page URLs (paths) for all published pages
+//
+//	Called from:	export_json_page()
+//
+function export_page_urls_to_json() {
+    // Query WordPress pages
+    $args = array(
+        'post_type' => 'page',
+        'post_status' => 'publish', // Only fetch published pages
+        'posts_per_page' => -1, // Get all pages
+    );
+
+    $query = new WP_Query($args);
+    $urls = array();
+
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            // Use path-only to be consistent with pages.json
+            $path = wp_parse_url(get_permalink(), PHP_URL_PATH);
+            // Exclude any URLs containing '/work-in-progress/'
+            if (strpos($path, '/work-in-progress/') !== false) {
+                continue;
+            }
+            $urls[] = $path;
+        }
+        wp_reset_postdata();
+    }
+
+    // Convert to JSON
+    $json_data = json_encode($urls, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+    // Save to a file
+    $file = fopen(ABSPATH . '/wp-content/uploads/pages-urls.json', 'w');
+    fwrite($file, $json_data);
+    fclose($file);
+}
+
+//-----------------------------
 //	get_breadcrumbs
 //	Generates a breadcrumb trail for a given post/page
 
@@ -144,7 +185,8 @@ add_action('admin_menu', 'register_export_page');
 function export_json_page() {
     if (isset($_POST['export_json'])) {
         export_content_to_json();
-        echo '<div class="updated"><p>Content exported to JSON successfully!</p></div>';
+        export_page_urls_to_json();
+        echo '<div class="updated"><p>Content and Page URLs exported to JSON successfully!</p></div>';
     }
     ?>
     <div class="wrap">
