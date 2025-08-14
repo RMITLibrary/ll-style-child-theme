@@ -178,7 +178,7 @@ function output_redirect_404_script_and_html()
   </div>
 
   <script>
-    // References to DOM objects
+ // References to DOM objects
     const fourOhInfo = document.getElementById('four-oh-container');
     const redirectInfo = document.getElementById('redirect-container');
 
@@ -218,26 +218,103 @@ function output_redirect_404_script_and_html()
     // Function to normalize path by removing index.html and .html
     function normalizeIndexPath(path) {
       console.log('normalizeIndexPath input:', path);
-      // Remove /index.html from the end if present
-      if (path.endsWith('/index.html')) {
-        const result = path.slice(0, -11); // Remove '/index.html' (11 characters)
-        console.log('normalizeIndexPath removed /index.html, result:', result);
-        return result;
+      if (typeof path !== 'string') return '';
+      let p = path;
+      // Remove trailing '/index.html'
+      if (p.endsWith('/index.html')) {
+        p = p.slice(0, -10);
+      } else if (p.endsWith('index.html')) {
+        // Handle 'index.html' without a preceding slash
+        p = p.slice(0, -10) || '/';
+      } else if (p.endsWith('.html')) {
+        // Remove '.html'
+        p = p.slice(0, -5);
       }
-      // Remove index.html from the end if present (no leading slash)
-      if (path.endsWith('index.html')) {
-        const result = path.slice(0, -10) || '/'; // Remove 'index.html' (10 characters), default to '/' if empty
-        console.log('normalizeIndexPath removed index.html, result:', result);
-        return result;
+      // Remove a trailing slash if not root
+      if (p.length > 1 && p.endsWith('/')) {
+        p = p.slice(0, -1);
       }
-      // Remove .html from the end if present
-      if (path.endsWith('.html')) {
-        const result = path.slice(0, -5); // Remove '.html' (5 characters)
-        console.log('normalizeIndexPath removed .html, result:', result);
-        return result;
+      if (!p.startsWith('/')) p = '/' + p;
+      console.log('normalizeIndexPath result:', p);
+      return p;
+    }
+
+    // Database-backed URL validation and redirect guard helpers
+    const PAGES_URLS_JSON_URL = '/wp-content/uploads/pages-urls.json'; // preferred (array of paths)
+    const PAGES_JSON_URL = '/wp-content/uploads/pages.json'; // fallback (array of objects with link)
+    let VALID_PATHS = null; // Set of normalized valid paths
+
+    function standardizePathForDb(path) {
+      if (typeof path !== 'string') return '';
+      let p = path;
+      // Strip environment prefix
+      if (p.startsWith(pathPrefix)) p = p.substring(pathPrefix.length);
+      p = normalizeIndexPath(p);
+      // Ensure canonical no-trailing-slash except root
+      if (p.length > 1 && p.endsWith('/')) p = p.slice(0, -1);
+      if (!p.startsWith('/')) p = '/' + p;
+      return p;
+    }
+
+    function extractPathFromLink(link) {
+      try {
+        const u = new URL(link, window.location.origin);
+        return standardizePathForDb(u.pathname);
+      } catch (e) {
+        return '';
       }
-      console.log('normalizeIndexPath no change, result:', path);
-      return path;
+    }
+
+    async function loadValidPaths() {
+      if (VALID_PATHS) return VALID_PATHS;
+      try {
+        // Try the lightweight pages-urls.json first
+        let res = await fetch(PAGES_URLS_JSON_URL, { cache: 'force-cache' });
+        let data;
+        if (res.ok) {
+          data = await res.json();
+        } else {
+          // Fallback to legacy pages.json
+          res = await fetch(PAGES_JSON_URL, { cache: 'force-cache' });
+          data = await res.json();
+        }
+        const set = new Set();
+        if (Array.isArray(data)) {
+          data.forEach(item => {
+            // Support both formats: strings (paths) and objects (with link/url/permalink)
+            let p = '';
+            if (typeof item === 'string') {
+              p = standardizePathForDb(item);
+            } else {
+              const link = item && (item.link || item.url || item.permalink);
+              p = extractPathFromLink(link);
+            }
+            if (p) {
+              set.add(p);
+              if (p !== '/' && !p.endsWith('/')) set.add(p + '/');
+            }
+          });
+        }
+        VALID_PATHS = set;
+        console.log('Loaded valid paths count:', set.size);
+        return set;
+      } catch (e) {
+        console.warn('Failed to load pages.json; redirects will be suppressed.', e);
+        VALID_PATHS = new Set();
+        return VALID_PATHS;
+      }
+    }
+
+    function isUrlValidInDb(url) {
+      try {
+        const u = new URL(url, window.location.origin);
+        // Allow external URLs (cannot validate client-side)
+        if (u.origin !== window.location.origin) return true;
+        const p = standardizePathForDb(u.pathname);
+        return VALID_PATHS && (VALID_PATHS.has(p) || VALID_PATHS.has(p + '/'));
+      } catch (e) {
+        return false;
+      }
     }
 
     // Function to perform the redirect after all checks and URL processing
@@ -271,7 +348,7 @@ function output_redirect_404_script_and_html()
     }
 
     // Main execution
-    function main() {
+    async function main() {
       // Ensure the current URL has a trailing slash if no .html is present
       //ensureTrailingSlash();
 
@@ -347,38 +424,44 @@ function output_redirect_404_script_and_html()
             }
           }
 
-          // If no mapping found but URL was normalized, try redirecting to normalized URL
+          // If no mapping found but URL was normalized, try redirecting to normalized URL if it exists in DB
           if (!mapping && normalizedPath !== extractedPath) {
-            console.log('No mapping found, trying normalized URL:', normalizedPath);
+            console.log('No mapping found, considering normalized URL:', normalizedPath);
             const normalizedUrl = window.location.origin + normalizedPath + window.location.search + window.location.hash;
-
-            // Change page title to reflect change
-            document.title = 'Redirecting you to the correct page...';
-
-            // Display redirect information
-            redirectInfo.style.display = 'block';
-
-            // Perform the redirect - if that page also 404s, it will come back here
-            doRedirect(normalizedUrl);
-            return; // Exit early to prevent immediate 404 display
+            // Load DB only when needed
+            await loadValidPaths();
+            if (isUrlValidInDb(normalizedUrl)) {
+              // Change page title to reflect change
+              document.title = 'Redirecting you to the correct page...';
+              // Display redirect information
+              redirectInfo.style.display = 'block';
+              // Perform the redirect
+              doRedirect(normalizedUrl);
+              return; // Exit early to prevent immediate 404 display
+            } else {
+              console.log('Normalized URL not in database, skipping redirect:', normalizedPath);
+            }
           }
 
-          // If no mapping found but we have content/ in the original path, test if the content-stripped URL exists
+          // If no mapping found but we have content/ in the original path, try content-stripped URL if it exists in DB
           if (!mapping && extractedPath.includes('/content/')) {
             const pathWithoutContent = extractedPath.replace('/content/', '/');
             if (pathWithoutContent !== extractedPath) {
-              console.log('No mapping found, trying content-stripped URL:', pathWithoutContent);
+              console.log('No mapping found, considering content-stripped URL:', pathWithoutContent);
               const contentStrippedUrl = window.location.origin + pathWithoutContent + window.location.search + window.location.hash;
-
-              // Change page title to reflect change
-              document.title = 'Redirecting you to the correct page...';
-
-              // Display redirect information
-              redirectInfo.style.display = 'block';
-
-              // Perform the redirect - if that page also 404s, it will come back here
-              doRedirect(contentStrippedUrl);
-              return; // Exit early to prevent immediate 404 display
+              // Load DB only when needed
+              await loadValidPaths();
+              if (isUrlValidInDb(contentStrippedUrl)) {
+                // Change page title to reflect change
+                document.title = 'Redirecting you to the correct page...';
+                // Display redirect information
+                redirectInfo.style.display = 'block';
+                // Perform the redirect
+                doRedirect(contentStrippedUrl);
+                return; // Exit early to prevent immediate 404 display
+              } else {
+                console.log('Content-stripped URL not in database, skipping redirect:', pathWithoutContent);
+              }
             }
           }
 
