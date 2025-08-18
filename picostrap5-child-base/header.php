@@ -129,9 +129,11 @@ defined('ABSPATH') || exit;
       setTheme(getPreferredTheme());
     })();
   </script>
-  <?php if (is_404()) : ?>
-    <link rel="prefetch" href="/wp-content/uploads/pages-urls.json">
-  <?php endif; ?>
+
+  <link rel="prefetch" href="<?php echo esc_url(content_url('uploads/pages-urls.json')); ?>">
+  <link rel="prefetch" href="<?php echo esc_url(content_url('uploads/pages.json')); ?>">
+
+
 </head>
 
 <body <?php body_class(); ?>>
